@@ -1,29 +1,43 @@
-# README #
+# Rentman for Craft plugin for Craft CMS 3.x
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Automatically Import Rentman Products to Craft. Let visitors create orders. Orders are automatically send to rentman as a project request.
 
-### What is this repository for? ###
+![Screenshot](resources/img/plugin-logo.png)
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+## Requirements
 
-### How do I get set up? ###
+This plugin requires Craft CMS 3.0.0-beta.23 or later.
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+## Installation
 
-### Contribution guidelines ###
+To install the plugin, follow these instructions.
 
-* Writing tests
-* Code review
-* Other guidelines
+1. Open your terminal and go to your Craft project:
 
-### Who do I talk to? ###
+        cd /path/to/project
 
-* Repo owner or admin
-* Other community or team contact
+2. Then tell Composer to load the plugin:
+
+        composer require /rentman-for-craft
+
+3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Rentman for Craft.
+
+## Rentman for Craft Overview
+
+-Insert text here-
+
+## Configuring Rentman for Craft
+
+-Insert text here-
+
+## Using Rentman for Craft
+
+-Insert text here-
+
+## Rentman for Craft Roadmap
+
+Some things to do, and ideas for potential features:
+
+* Release it
+
+Brought to you by [Furbo GmbH](https://furbo.ch)

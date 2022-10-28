@@ -1,0 +1,46 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Rentman for Craft plugin for Craft CMS 3.x
+ *
+ * Rentman for Craft index.twig
+ *
+ * @author    Furbo GmbH
+ * @copyright Copyright (c) 2022 Furbo GmbH
+ * @link      https://furbo.ch
+ * @package   RentmanForCraft
+ * @since     1.0.0
+ */
+#}
+
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("furbo\\rentmanforcraft\\assetbundles\\rentmanforcraft\\RentmanForCraftAsset") %}
+{% do view.registerAssetBundle("furbo\\rentmanforcraft\\assetbundles\\indexcpsection\\IndexCPSectionAsset") %}
+
+{# Link for the ? icon at the bottom of the page #}
+{% set docsUrl = "???" %}
+
+{# The title of this CP section #}
+{% set title = "Rentman for Craft" %}
+
+{# The URL to this plugin's base CP section #}
+{% set pluginCpUrl = url('rentman-for-craft') %}
+
+{# Get a URL to an image in our AssetBundle #}
+{% set iconUrl = view.getAssetManager().getPublishedUrl('@furbo/rentmanforcraft/assetbundles/indexcpsection/dist', true) ~ '/img/Index-icon.svg' %}
+
+{# Content that should appear in the page header#}
+{% set extraPageHeaderHtml %}
+    <div class="buttons">
+        <a href="{{ pluginCpUrl }}" class="btn submit add icon">{{ "Click Me!"|t('rentman-for-craft') }}</a>
+    </div>
+{% endset %}
+
+{# The content of the CP Section#}
+{% set content %}
+    <h2>{{ "Index CP Section body goes here"|t('rentman-for-craft') }}</h2>
+    <img src="{{ iconUrl }}" height="64" width="64" />
+    <p class="textline"></p>
+{% endset %}

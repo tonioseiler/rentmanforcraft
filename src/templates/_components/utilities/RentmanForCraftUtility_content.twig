@@ -1,0 +1,24 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Rentman for Craft plugin for Craft CMS
+ *
+ * RentmanForCraftUtility Utility Content
+ *
+ * @author    Furbo GmbH
+ * @copyright Copyright (c) 2022 Furbo GmbH
+ * @link      https://furbo.ch
+ * @package   RentmanForCraft
+ * @since     1.0.0
+ */
+#}
+
+<h1>RentmanForCraftUtility</h1>
+
+{% set iconUrl = view.getAssetManager().getPublishedUrl('@furbo/rentmanforcraft/assetbundles/rentmanforcraftutilityutility/dist', true) ~ '/img/RentmanForCraftUtility-icon.svg' %}
+
+<img src="{{ iconUrl }}" height="64" width="64" />
+
+<p>Your Utility content goes here</p>
+
+<p>{{ someVar }}</p>
