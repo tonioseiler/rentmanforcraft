@@ -18,6 +18,7 @@ class Install extends Migration
             $this->createTable('{{%rentman-for-craft_categories}}', [
                 'id' => $this->primaryKey(),
                 'parent_id' => $this->integer()->null(),
+                'rentman_id' => $this->integer()->notNull(),
                 'displayname' => $this->string()->null(),
                 'order' =>  $this->integer()->null(),
                 'itemtype' => $this->string()->null(),
@@ -25,6 +26,8 @@ class Install extends Migration
                 'dateUpdated' => $this->dateTime()->notNull(),
                 'uid' => $this->uid()
             ]);
+
+            $this->createIndex(null, '{{%rentman-for-craft_categories}}' , ['rentman_id'], false);
 
             // give it a foreign key to the elements table
             $this->addForeignKey(
@@ -42,6 +45,7 @@ class Install extends Migration
             // create the items table
             $this->createTable('{{%rentman-for-craft_products}}', [
                 'id' => $this->primaryKey(),
+                'rentman_id' => $this->integer()->notNull(),
                 'custom' => $this->longText()->null(),
                 'displayname' => $this->string()->null(),
                 'category_id' => $this->integer()->null(),
@@ -87,6 +91,8 @@ class Install extends Migration
                 'dateUpdated' => $this->dateTime()->notNull(),
                 'uid' => $this->uid()
             ]);
+
+            $this->createIndex(null, '{{%rentman-for-craft_products}}' , ['rentman_id'], false);
 
             // give it a foreign key to the elements table
             $this->addForeignKey(
@@ -192,10 +198,11 @@ class Install extends Migration
      */
     public function safeDown(): bool
     {
+        $this->dropTable('{{%rentman-for-craft_projectitems}}');
         $this->dropTable('{{%rentman-for-craft_projects}}');
         $this->dropTable('{{%rentman-for-craft_products}}');
-        $this->dropTable('{{%rentman-for-craft_categorries}}');
-        $this->dropTable('{{%rentman-for-craft_projectitems}}');
+        $this->dropTable('{{%rentman-for-craft_categories}}');
         return true;
+        
     }
 }

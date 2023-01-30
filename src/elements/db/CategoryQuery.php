@@ -13,9 +13,17 @@ class CategoryQuery extends ElementQuery
 
     public $parentId;
 
+    public $rentmanId;
+
     public function parentId($value)
     {
         $this->parentId = $value;
+        return $this;
+    }
+
+    public function rentmanId($value)
+    {
+        $this->rentmanId = $value;
         return $this;
     }
 
@@ -26,6 +34,10 @@ class CategoryQuery extends ElementQuery
 
         if ($this->parentId) {
             $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.parent_id', $this->parentId));
+        }
+
+        if ($this->rentmanId) {
+            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.rentman_id', $this->rentmanId));
         }
 
         return parent::beforePrepare();

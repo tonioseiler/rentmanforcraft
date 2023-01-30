@@ -9,11 +9,14 @@ use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\services\Elements;
 use craft\web\UrlManager;
+use craft\web\twig\variables\CraftVariable;
+
 use furbo\rentmanforcraft\elements\Category;
 use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\models\Settings;
 use furbo\rentmanforcraft\services\RentmanService;
+use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
 use yii\base\Event;
 
 /**
@@ -87,5 +90,41 @@ class RentmanForCraft extends Plugin
             $event->rules['categories'] = ['template' => 'rentman-for-craft/categories/_index.twig'];
             $event->rules['categories/<elementId:\\d+>'] = 'elements/edit';
         });
+
+
+        // Executed after settings are saved
+        Event::on(
+            Plugin::class,
+            Plugin::EVENT_AFTER_SAVE_SETTINGS,
+            function (Event $event) {
+                if ($event->sender::class == "furbo\\rentmanforcraft\\RentmanForCraft") {
+                    
+                    dd($_POST);
+
+                    //save field layout
+                    $fieldsService = Craft::$app->getFields();
+                    
+                    $fieldLayout1 = $fieldsService->assembleLayoutFromPost('settings');
+                    $fieldLayout1->type = Product::class;
+                    $fieldsService->saveLayout($fieldLayout1);
+
+                    $fieldLayout2 = $fieldsService->assembleLayoutFromPost('settings');
+                    $fieldLayout2->type = Category::class;
+                    $fieldsService->saveLayout($fieldLayout2);
+                    
+                }
+            }
+        );
+
+        // Register our variables
+        Event::on(
+            CraftVariable::class,
+            CraftVariable::EVENT_INIT,
+            function (Event $event) {
+                /** @var CraftVariable $variable */
+                $variable = $event->sender;
+                $variable->set('rentman', RentmanForCraftVariable::class);
+            }
+        );
     }
 }

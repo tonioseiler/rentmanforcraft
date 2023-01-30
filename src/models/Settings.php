@@ -10,4 +10,18 @@ use craft\base\Model;
  */
 class Settings extends Model
 {
+
+    /**
+     * Some field model attribute
+     *
+     * @var string
+     */
+    public $cpTitle = 'Rentman';
+
+    public $apiUrl = 'https://api.rentman.net/';
+
+    public $apiKey = '';
+
+    public $sites = [];
+
 }

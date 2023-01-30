@@ -11,6 +11,8 @@ use craft\helpers\UrlHelper;
 use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
+use furbo\rentmanforcraft\elements\conditions\ProjectCondition;
+
 /**
  * Project element type
  */

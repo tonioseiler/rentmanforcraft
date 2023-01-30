@@ -11,6 +11,8 @@ use craft\helpers\UrlHelper;
 use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
+use furbo\rentmanforcraft\elements\conditions\CategoryCondition;
+
 /**
  * Category element type
  */
@@ -262,4 +264,10 @@ class Category extends Element
 
         parent::afterSave($isNew);
     }
+
+    public function getFieldLayout(): ?craft\models\FieldLayout
+    {
+        return \Craft::$app->fields->getLayoutByType(Category::class);
+    }
+
 }

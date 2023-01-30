@@ -11,6 +11,8 @@ use craft\helpers\UrlHelper;
 use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
+use furbo\rentmanforcraft\elements\conditions\ProductCondition;
+
 /**
  * Product element type
  */
@@ -261,5 +263,10 @@ class Product extends Element
         }
 
         parent::afterSave($isNew);
+    }
+
+    public function getFieldLayout(): ?craft\models\FieldLayout
+    {
+        return \Craft::$app->fields->getLayoutByType(Product::class);
     }
 }
