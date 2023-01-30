@@ -33,11 +33,11 @@ class CategoryQuery extends ElementQuery
         $this->joinElementTable('rentman-for-craft_categories');
 
         if ($this->parentId) {
-            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.parent_id', $this->parentId));
+            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.parentId', $this->parentId));
         }
 
         if ($this->rentmanId) {
-            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.rentman_id', $this->rentmanId));
+            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.rentmanId', $this->rentmanId));
         }
 
         return parent::beforePrepare();

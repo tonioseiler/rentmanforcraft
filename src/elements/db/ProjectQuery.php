@@ -35,7 +35,7 @@ class ProjectQuery extends ElementQuery
         }
 
         if ($this->userId) {
-            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_projects.user_id', $this->userId));
+            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_projects.userId', $this->userId));
         }
 
         return parent::beforePrepare();

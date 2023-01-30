@@ -96,7 +96,7 @@ class RentmanService extends Component
                     $productData['in_shop'] = $rentmanProduct['in_shop'];
                     $productData['shop_description_short'] = html_entity_decode(strip_tags($rentmanProduct['shop_description_short']));
                     $productData['shop_description_long'] = $rentmanProduct['shop_description_long'];
-                    $productData['rentman_id'] = $rentmanProduct['id'];
+                    $productData['rentmanId'] = $rentmanProduct['id'];
                     $productData['rentman_modified'] = $rentmanProduct['modified'];
                     $productData['rentman_created'] = $rentmanProduct['created'];
                     $productData['displayname'] = $rentmanProduct['displayname'];
@@ -115,7 +115,7 @@ class RentmanService extends Component
                     $tmp = explode('/', $rentmanProduct['folder']);
                     if (!empty($tmp)) {
                         $tmpId = array_pop($tmp);
-                        $category = Category::where('rentman_id', '=', $tmpId)->withTrashed();
+                        $category = Category::where('rentmanId', '=', $tmpId)->withTrashed();
 
                         if ($category->exists()) {
                             $productData['category_id'] = $category->first()->id;
@@ -126,7 +126,7 @@ class RentmanService extends Component
                         $productData['category_id'] = 0;
                     }
 
-                    $product = Product::where('rentman_id', '=', $productData['rentman_id'])->withTrashed();
+                    $product = Product::where('rentmanId', '=', $productData['rentmanId'])->withTrashed();
 
                     if ($product->exists()) {
 
@@ -143,7 +143,7 @@ class RentmanService extends Component
 
                     //get files
                     //https://api.rentman.net/equipment/4566/files
-                    $response = $this->client->request('GET', $this->apiUrl.'equipment/'.$product->rentman_id.'/files', [
+                    $response = $this->client->request('GET', $this->apiUrl.'equipment/'.$product->rentmanId.'/files', [
                         'headers' => $this->requestHeaders
                     ]);
 
@@ -162,9 +162,9 @@ class RentmanService extends Component
             }
 
             //check if products were deleted
-            $products = Product::select('id', 'rentman_id')->whereNull('deleted_at')->get();
+            $products = Product::select('id', 'rentmanId')->whereNull('deleted_at')->get();
             foreach ($products as $product) {
-                if (in_array($product->rentman_id, $rentmanProductIds) === false) {
+                if (in_array($product->rentmanId, $rentmanProductIds) === false) {
                     $product->delete();
                 }
             }
@@ -204,7 +204,7 @@ class RentmanService extends Component
 
                 //Category
                 $categoryData = [
-                     'rentman_id' => $rentmanCat['id'],
+                     'rentmanId' => $rentmanCat['id'],
                      'sort' => $rentmanCat['order'],
                      'in_shop' => true,
                      'rentman_created' =>  $rentmanCat['created'],
@@ -214,21 +214,21 @@ class RentmanService extends Component
                 ];
 
                 if (empty($rentmanCat['parent'])) {
-                    $categoryData['parent_id'] = 0;
+                    $categoryData['parentId'] = 0;
                 } else {
                     $tmp = explode('/', $rentmanCat['parent']);
                     $tmpId = array_pop($tmp);
 
-                    $parent = Category::where('rentman_id', '=', $tmpId)->withTrashed();
+                    $parent = Category::where('rentmanId', '=', $tmpId)->withTrashed();
 
                     if ($parent->exists()) {
-                        $categoryData['parent_id'] = $parent->first()->id;
+                        $categoryData['parentId'] = $parent->first()->id;
                     } else {
-                        $categoryData['parent_id'] = 0;
+                        $categoryData['parentId'] = 0;
                     }
                 }
 
-                $category = Category::where('rentman_id', '=', $categoryData['rentman_id'])->withTrashed();
+                $category = Category::where('rentmanId', '=', $categoryData['rentmanId'])->withTrashed();
                 if ($category->exists()) {
                     $category = $category->first();
 
@@ -260,9 +260,9 @@ class RentmanService extends Component
             }
             //check if categories were deleted
             $rentmanCategoryIds = Arr::pluck($rentmanCategories, 'id');
-            $categories = Category::select('id', 'rentman_id')->whereNull('deleted_at')->get();
+            $categories = Category::select('id', 'rentmanId')->whereNull('deleted_at')->get();
             foreach ($categories as $category) {
-                if (in_array($category->rentman_id, $rentmanCategoryIds) === false) {
+                if (in_array($category->rentmanId, $rentmanCategoryIds) === false) {
                     $category->delete();
                 }
             }
@@ -403,7 +403,7 @@ class RentmanService extends Component
                 //translate id to rentman id
                 $product = Product::find($productId);
 
-                $response = $this->client->request('GET', $this->apiUrl.'equipment/'.$product->rentman_id.'/accessories', [
+                $response = $this->client->request('GET', $this->apiUrl.'equipment/'.$product->rentmanId.'/accessories', [
                     'headers' => $this->requestHeaders
                 ]);
 
@@ -415,7 +415,7 @@ class RentmanService extends Component
                     $tmp = explode('/',$equipment);
                     $rentmanIds[] = end($tmp);
                 }
-                $setProducts = Product::whereIn('rentman_id',$rentmanIds)->get();
+                $setProducts = Product::whereIn('rentmanId',$rentmanIds)->get();
 
                 return $setProducts;
 
@@ -438,7 +438,7 @@ class RentmanService extends Component
                 //translate id to rentman id
                 $product = Product::find($productId);
 
-                $response = $this->client->request('GET', $this->apiUrl.'equipment/'.$product->rentman_id.'/equipmentsetscontent', [
+                $response = $this->client->request('GET', $this->apiUrl.'equipment/'.$product->rentmanId.'/equipmentsetscontent', [
                     'headers' => $this->requestHeaders
                 ]);
 
@@ -450,7 +450,7 @@ class RentmanService extends Component
                     $tmp = explode('/',$equipment);
                     $rentmanIds[] = end($tmp);
                 }
-                $setProducts = Product::whereIn('rentman_id',$rentmanIds)->get();
+                $setProducts = Product::whereIn('rentmanId',$rentmanIds)->get();
 
                 return $setProducts;
 

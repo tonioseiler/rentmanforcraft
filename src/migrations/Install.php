@@ -17,8 +17,8 @@ class Install extends Migration
             // create the items table
             $this->createTable('{{%rentman-for-craft_categories}}', [
                 'id' => $this->primaryKey(),
-                'parent_id' => $this->integer()->null(),
-                'rentman_id' => $this->integer()->notNull(),
+                'parentId' => $this->integer()->null(),
+                'rentmanId' => $this->integer()->notNull(),
                 'displayname' => $this->string()->null(),
                 'order' =>  $this->integer()->null(),
                 'itemtype' => $this->string()->null(),
@@ -27,7 +27,7 @@ class Install extends Migration
                 'uid' => $this->uid()
             ]);
 
-            $this->createIndex(null, '{{%rentman-for-craft_categories}}' , ['rentman_id'], false);
+            $this->createIndex(null, '{{%rentman-for-craft_categories}}' , ['rentmanId'], false);
 
             // give it a foreign key to the elements table
             $this->addForeignKey(
@@ -45,10 +45,10 @@ class Install extends Migration
             // create the items table
             $this->createTable('{{%rentman-for-craft_products}}', [
                 'id' => $this->primaryKey(),
-                'rentman_id' => $this->integer()->notNull(),
+                'rentmanId' => $this->integer()->notNull(),
                 'custom' => $this->longText()->null(),
                 'displayname' => $this->string()->null(),
-                'category_id' => $this->integer()->null(),
+                'categoryId' => $this->integer()->null(),
                 'code' => $this->string()->null(),
                 'internal_remark' => $this->text()->null(),
                 'external_remark' => $this->text()->null(),
@@ -92,7 +92,7 @@ class Install extends Migration
                 'uid' => $this->uid()
             ]);
 
-            $this->createIndex(null, '{{%rentman-for-craft_products}}' , ['rentman_id'], false);
+            $this->createIndex(null, '{{%rentman-for-craft_products}}' , ['rentmanId'], false);
 
             // give it a foreign key to the elements table
             $this->addForeignKey(
@@ -110,8 +110,8 @@ class Install extends Migration
             // create the items table
             $this->createTable('{{%rentman-for-craft_projects}}', [
                 'id' => $this->primaryKey(),
-                'session_id' => $this->integer()->null(),
-                'user_id' => $this->integer()->null(),
+                'sessionId' => $this->integer()->null(),
+                'userId' => $this->integer()->null(),
                 'contact_mailing_number' => $this->string()->null(),
                 'contact_mailing_country' => $this->string()->null(),
                 'contact_name' => $this->string()->null(),
@@ -161,8 +161,8 @@ class Install extends Migration
             // create the items table
             $this->createTable('{{%rentman-for-craft_projectitems}}', [
                 'id' => $this->primaryKey(),
-                'project_id' => $this->integer()->notNull(),
-                'product_id' => $this->integer()->notNull(),
+                'projectId' => $this->integer()->notNull(),
+                'productId' => $this->integer()->notNull(),
                 'factor' => $this->double()->defaultValue(1),
                 'quantity' => $this->integer()->defaultValue(1),
                 'unit_price' => $this->double()->defaultValue(1),
@@ -174,17 +174,17 @@ class Install extends Migration
             ]);
 
             $this->addForeignKey(
-                $this->db->getForeignKeyName('{{%rentman-for-craft_projects}}', 'project_id'),
+                $this->db->getForeignKeyName('{{%rentman-for-craft_projects}}', 'projectId'),
                 '{{%rentman-for-craft_projectitems}}',
-                'project_id',
+                'projectId',
                 '{{%rentman-for-craft_projects}}',
                 'id',
             );
 
             $this->addForeignKey(
-                $this->db->getForeignKeyName('{{%rentman-for-craft_products}}', 'product_id'),
+                $this->db->getForeignKeyName('{{%rentman-for-craft_products}}', 'productId'),
                 '{{%rentman-for-craft_projectitems}}',
-                'product_id',
+                'productId',
                 '{{%rentman-for-craft_products}}',
                 'id'
             );

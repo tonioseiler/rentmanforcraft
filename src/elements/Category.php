@@ -12,6 +12,7 @@ use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
 use furbo\rentmanforcraft\elements\conditions\CategoryCondition;
+use furbo\rentmanforcraft\records\Category as CategoryRecord;
 
 /**
  * Category element type
@@ -259,10 +260,24 @@ class Category extends Element
     public function afterSave(bool $isNew): void
     {
         if (!$this->propagating) {
-            // todo: update the `categories` table
+            if ($isNew) {
+                $record = new CategoryRecord();
+                $record->id = $this->id;
+            }
+            else {
+                $record = CategoryRecord::findOne($this->id);
+            }
+
+            $record->parentId = $this->parentId;
+            $record->rentmanId = $this->rentmanId;
+            $record->displayname = $this->displayname;
+            $record->order = $this->order;
+            $record->itemtype = $this->itemtype;
+            $record->save(false);
         }
 
         parent::afterSave($isNew);
+
     }
 
     public function getFieldLayout(): ?craft\models\FieldLayout

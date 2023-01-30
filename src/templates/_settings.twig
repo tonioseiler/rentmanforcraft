@@ -91,11 +91,8 @@
                 allowReorder: false
             }) }}
 
-        </div>
+            <hr />
 
-        <hr />
-
-        <div id="product-settings">
             {{ forms.fieldLayoutDesignerField({
                 label: "Additional fields for products"|t('app'),
                 id: 'test1',
@@ -103,20 +100,10 @@
                     'furbo\\rentmanforcraft\\elements\\Product'
                 ),
             }) }}
+            
         </div>
 
-        <hr />
-
-        <div id="category-settings">
-
-            {{ forms.fieldLayoutDesignerField({
-                label: "Additional fields for categories"|t('app'),
-                id: 'test2',
-                fieldLayout: craft.app.fields.getLayoutByType(
-                    'furbo\\rentmanforcraft\\elements\\Category'
-                ),
-            }) }}
-
+        
         </div>
     </div>
 {% endblock %}

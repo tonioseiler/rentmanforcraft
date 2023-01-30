@@ -37,7 +37,7 @@ class ProductQuery extends ElementQuery
         }
 
         if ($this->rentmanId) {
-            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.rentman_id', $this->rentmanId));
+            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.rentmanId', $this->rentmanId));
         }
 
         return parent::beforePrepare();
