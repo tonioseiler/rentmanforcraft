@@ -1,237 +1,91 @@
 <?php
-/**
- * Rentman for Craft plugin for Craft CMS 3.x
- *
- * Automatically Import Rentman Products to Craft. Let visitors create orders. Orders are automatically send to rentman as a project request.
- *
- * @link      https://furbo.ch
- * @copyright Copyright (c) 2022 Furbo GmbH
- */
 
 namespace furbo\rentmanforcraft;
 
-use furbo\rentmanforcraft\services\RentmanForCraftService as RentmanForCraftServiceService;
-use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
-use furbo\rentmanforcraft\models\Settings;
-use furbo\rentmanforcraft\elements\Products as ProductsElement;
-use furbo\rentmanforcraft\utilities\RentmanForCraftUtility as RentmanForCraftUtilityUtility;
-use furbo\rentmanforcraft\widgets\RentmanForCraftWidget as RentmanForCraftWidgetWidget;
-
 use Craft;
+use craft\base\Model;
 use craft\base\Plugin;
-use craft\services\Plugins;
-use craft\events\PluginEvent;
-use craft\console\Application as ConsoleApplication;
-use craft\web\UrlManager;
-use craft\services\Elements;
-use craft\services\Utilities;
-use craft\web\twig\variables\CraftVariable;
-use craft\services\Dashboard;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
-
+use craft\services\Elements;
+use craft\web\UrlManager;
+use furbo\rentmanforcraft\elements\Category;
+use furbo\rentmanforcraft\elements\Product;
+use furbo\rentmanforcraft\elements\Project;
+use furbo\rentmanforcraft\models\Settings;
+use furbo\rentmanforcraft\services\RentmanService;
 use yii\base\Event;
 
 /**
- * Craft plugins are very much like little applications in and of themselves. We’ve made
- * it as simple as we can, but the training wheels are off. A little prior knowledge is
- * going to be required to write a plugin.
+ * Rentman for Craft plugin
  *
- * For the purposes of the plugin docs, we’re going to assume that you know PHP and SQL,
- * as well as some semi-advanced concepts like object-oriented programming and PHP namespaces.
- *
- * https://docs.craftcms.com/v3/extend/
- *
- * @author    Furbo GmbH
- * @package   RentmanForCraft
- * @since     1.0.0
- *
- * @property  RentmanForCraftServiceService $rentmanForCraftService
- * @property  Settings $settings
- * @method    Settings getSettings()
+ * @method static RentmanForCraft getInstance()
+ * @method Settings getSettings()
+ * @author Furbo GmbH <support@furbo.ch>
+ * @copyright Furbo GmbH
+ * @license https://craftcms.github.io/license/ Craft License
+ * @property-read RentmanService $rentmanService
  */
 class RentmanForCraft extends Plugin
 {
-    // Static Properties
-    // =========================================================================
+    public string $schemaVersion = '1.0.0';
+    public bool $hasCpSettings = true;
 
-    /**
-     * Static property that is an instance of this plugin class so that it can be accessed via
-     * RentmanForCraft::$plugin
-     *
-     * @var RentmanForCraft
-     */
-    public static $plugin;
+    public static function config(): array
+    {
+        return [
+            'components' => ['rentmanService' => RentmanService::class],
+        ];
+    }
 
-    // Public Properties
-    // =========================================================================
-
-    /**
-     * To execute your plugin’s migrations, you’ll need to increase its schema version.
-     *
-     * @var string
-     */
-    public $schemaVersion = '1.0.0';
-
-    /**
-     * Set to `true` if the plugin should have a settings view in the control panel.
-     *
-     * @var bool
-     */
-    public $hasCpSettings = true;
-
-    /**
-     * Set to `true` if the plugin should have its own section (main nav item) in the control panel.
-     *
-     * @var bool
-     */
-    public $hasCpSection = true;
-
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * Set our $plugin static property to this class so that it can be accessed via
-     * RentmanForCraft::$plugin
-     *
-     * Called after the plugin class is instantiated; do any one-time initialization
-     * here such as hooks and events.
-     *
-     * If you have a '/vendor/autoload.php' file, it will be loaded for you automatically;
-     * you do not need to load it in your init() method.
-     *
-     */
     public function init()
     {
         parent::init();
-        self::$plugin = $this;
 
-        // Add in our console commands
-        if (Craft::$app instanceof ConsoleApplication) {
-            $this->controllerNamespace = 'furbo\rentmanforcraft\console\controllers';
-        }
-
-        // Register our site routes
-        Event::on(
-            UrlManager::class,
-            UrlManager::EVENT_REGISTER_SITE_URL_RULES,
-            function (RegisterUrlRulesEvent $event) {
-                $event->rules['siteActionTrigger1'] = 'rentman-for-craft/default';
-            }
-        );
-
-        // Register our CP routes
-        Event::on(
-            UrlManager::class,
-            UrlManager::EVENT_REGISTER_CP_URL_RULES,
-            function (RegisterUrlRulesEvent $event) {
-                $event->rules['cpActionTrigger1'] = 'rentman-for-craft/default/do-something';
-            }
-        );
-
-        // Register our elements
-        Event::on(
-            Elements::class,
-            Elements::EVENT_REGISTER_ELEMENT_TYPES,
-            function (RegisterComponentTypesEvent $event) {
-                $event->types[] = ProductsElement::class;
-            }
-        );
-
-        // Register our utilities
-        Event::on(
-            Utilities::class,
-            Utilities::EVENT_REGISTER_UTILITY_TYPES,
-            function (RegisterComponentTypesEvent $event) {
-                $event->types[] = RentmanForCraftUtilityUtility::class;
-            }
-        );
-
-        // Register our widgets
-        Event::on(
-            Dashboard::class,
-            Dashboard::EVENT_REGISTER_WIDGET_TYPES,
-            function (RegisterComponentTypesEvent $event) {
-                $event->types[] = RentmanForCraftWidgetWidget::class;
-            }
-        );
-
-        // Register our variables
-        Event::on(
-            CraftVariable::class,
-            CraftVariable::EVENT_INIT,
-            function (Event $event) {
-                /** @var CraftVariable $variable */
-                $variable = $event->sender;
-                $variable->set('rentmanForCraft', RentmanForCraftVariable::class);
-            }
-        );
-
-        // Do something after we're installed
-        Event::on(
-            Plugins::class,
-            Plugins::EVENT_AFTER_INSTALL_PLUGIN,
-            function (PluginEvent $event) {
-                if ($event->plugin === $this) {
-                    // We were just installed
-                }
-            }
-        );
-
-/**
- * Logging in Craft involves using one of the following methods:
- *
- * Craft::trace(): record a message to trace how a piece of code runs. This is mainly for development use.
- * Craft::info(): record a message that conveys some useful information.
- * Craft::warning(): record a warning message that indicates something unexpected has happened.
- * Craft::error(): record a fatal error that should be investigated as soon as possible.
- *
- * Unless `devMode` is on, only Craft::warning() & Craft::error() will log to `craft/storage/logs/web.log`
- *
- * It's recommended that you pass in the magic constant `__METHOD__` as the second parameter, which sets
- * the category to the method (prefixed with the fully qualified class name) where the constant appears.
- *
- * To enable the Yii debug toolbar, go to your user account in the AdminCP and check the
- * [] Show the debug toolbar on the front end & [] Show the debug toolbar on the Control Panel
- *
- * http://www.yiiframework.com/doc-2.0/guide-runtime-logging.html
- */
-        Craft::info(
-            Craft::t(
-                'rentman-for-craft',
-                '{name} plugin loaded',
-                ['name' => $this->name]
-            ),
-            __METHOD__
-        );
+        // Defer most setup tasks until Craft is fully initialized
+        Craft::$app->onInit(function() {
+            $this->attachEventHandlers();
+            // ...
+        });
     }
 
-    // Protected Methods
-    // =========================================================================
-
-    /**
-     * Creates and returns the model used to store the plugin’s settings.
-     *
-     * @return \craft\base\Model|null
-     */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?Model
     {
-        return new Settings();
+        return Craft::createObject(Settings::class);
     }
 
-    /**
-     * Returns the rendered settings HTML, which will be inserted into the content
-     * block on the settings page.
-     *
-     * @return string The rendered settings HTML
-     */
-    protected function settingsHtml(): string
+    protected function settingsHtml(): ?string
     {
-        return Craft::$app->view->renderTemplate(
-            'rentman-for-craft/settings',
-            [
-                'settings' => $this->getSettings()
-            ]
-        );
+        return Craft::$app->view->renderTemplate('rentman-for-craft/_settings.twig', [
+            'plugin' => $this,
+            'settings' => $this->getSettings(),
+        ]);
+    }
+
+    private function attachEventHandlers(): void
+    {
+        // Register event handlers here ...
+        // (see https://craftcms.com/docs/4.x/extend/events.html to get started)
+        Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function (RegisterComponentTypesEvent $event) {
+            $event->types[] = Product::class;
+        });
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function (RegisterUrlRulesEvent $event) {
+            $event->rules['products'] = ['template' => 'rentman-for-craft/products/_index.twig'];
+            $event->rules['products/<elementId:\\d+>'] = 'elements/edit';
+        });
+        Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function (RegisterComponentTypesEvent $event) {
+            $event->types[] = Project::class;
+        });
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function (RegisterUrlRulesEvent $event) {
+            $event->rules['projects'] = ['template' => 'rentman-for-craft/projects/_index.twig'];
+            $event->rules['projects/<elementId:\\d+>'] = 'elements/edit';
+        });
+        Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function (RegisterComponentTypesEvent $event) {
+            $event->types[] = Category::class;
+        });
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function (RegisterUrlRulesEvent $event) {
+            $event->rules['categories'] = ['template' => 'rentman-for-craft/categories/_index.twig'];
+            $event->rules['categories/<elementId:\\d+>'] = 'elements/edit';
+        });
     }
 }

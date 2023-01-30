@@ -2,43 +2,47 @@
     "name": "furbo/rentman-for-craft",
     "description": "Automatically Import Rentman Products to Craft. Let visitors create orders. Orders are automatically send to rentman as a project request.",
     "type": "craft-plugin",
-    "version": "1.0.0",
-    "keywords": [
-        "craft",
-        "cms",
-        "craftcms",
-        "craft-plugin",
-        "rentman for craft"
-    ],
+    "license": "proprietary",
     "support": {
-        "docs": "???",
-        "issues": "???"
+        "email": "support@furbo.ch",
+        "issues": "https://github.com/tonioseiler/rentmanforcraft/issues?state=open",
+        "source": "https://github.com/tonioseiler/rentmanforcraft",
+        "docs": "https://github.com/tonioseiler/rentmanforcraft",
+        "rss": "https://github.com/tonioseiler/rentmanforcraft/releases.atom"
     },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Furbo GmbH",
-            "homepage": "https://furbo.ch"
-        }
-    ],
     "require": {
-        "craftcms/cms": "^3.0.0"
+        "php": ">=8.0.2",
+        "craftcms/cms": "^4.3.5"
+    },
+    "require-dev": {
+        "craftcms/ecs": "dev-main"
     },
     "autoload": {
         "psr-4": {
-          "furbo\\rentmanforcraft\\": "src/"
+            "furbo\\rentmanforcraft\\": "src/"
         }
     },
     "extra": {
-        "name": "Rentman for Craft",
         "handle": "rentman-for-craft",
+        "name": "Rentman for Craft",
         "developer": "Furbo GmbH",
-        "developerUrl": "https://furbo.ch",
-        "documentationUrl": "???",
-        "changelogUrl": "???",
-        "components": {
-            "rentmanForCraftService": "furbo\\rentmanforcraft\\services\\RentmanForCraftService"
-        },
+        "documentationUrl": "https://github.com/tonioseiler/rentmanforcraft",
         "class": "furbo\\rentmanforcraft\\RentmanForCraft"
+    },
+    "scripts": {
+        "check-cs": "ecs check --ansi",
+        "fix-cs": "ecs check --ansi --fix",
+        "phpstan": "phpstan --memory-limit=1G"
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.0.2"
+        },
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        }
     }
 }
+
