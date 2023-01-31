@@ -12,6 +12,7 @@ use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
 use furbo\rentmanforcraft\elements\conditions\ProductCondition;
+use furbo\rentmanforcraft\records\Product as ProductRecord;
 
 /**
  * Product element type
@@ -259,7 +260,57 @@ class Product extends Element
     public function afterSave(bool $isNew): void
     {
         if (!$this->propagating) {
-            // todo: update the `products` table
+            if ($isNew) {
+                $record = new ProductRecord();
+                $record->id = $this->id;
+            }
+            else {
+                $record = ProductRecord::findOne($this->id);
+            }
+
+            $record->rentmanId = $this->rentmanId;
+            $record->custom = $this->custom;
+            $record->displayname = $this->displayname;
+            $record->categoryId = $this->categoryId;
+            $record->code = $this->code;
+            $record->internal_remark = $this->internal_remark;
+            $record->external_remark = $this->external_remark;
+            $record->location_in_warehouse = $this->location_in_warehouse;
+            $record->unit = $this->unit;
+            $record->in_shop = $this->in_shop;
+            $record->surface_article = $this->surface_article;
+            $record->shop_description_short = $this->shop_description_short;
+            $record->shop_description_long = $this->shop_description_long;
+            $record->shop_seo_title = $this->shop_seo_title;
+            $record->shop_seo_keyword = $this->shop_seo_keyword;
+            $record->shop_seo_description = $this->shop_seo_description;
+            $record->shop_featured = $this->shop_featured;
+            $record->price = $this->price;
+            $record->subrental_costs = $this->subrental_costs;
+            $record->critical_stock_level = $this->critical_stock_level;
+            $record->type = $this->type;
+            $record->rental_sales = $this->rental_sales;
+            $record->temporary = $this->temporary;
+            $record->in_planner = $this->in_planner;
+            $record->in_archive = $this->in_archive;
+            $record->stock_management = $this->stock_management;
+            $record->taxclass = $this->taxclass;
+            $record->list_price = $this->list_price;
+            $record->volume = $this->volume;
+            $record->packed_per = $this->packed_per;
+            $record->height = $this->height;
+            $record->width = $this->width;
+            $record->length = $this->length;
+            $record->weight = $this->weight;
+            $record->power = $this->power;
+            $record->current = $this->current;
+            $record->images = $this->images;
+            $record->files = $this->files;
+            $record->ledger = $this->ledger;
+            $record->defaultValuegroup = $this->defaultValuegroup;
+            $record->qrcodes = $this->qrcodes;
+            $record->qrcodes_of_serial_numbers = $this->qrcodes_of_serial_numbers;
+            $record->save(false);
         }
 
         parent::afterSave($isNew);

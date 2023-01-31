@@ -66,7 +66,7 @@ class Category extends Element
 
     public static function isLocalized(): bool
     {
-        return false;
+        return true;
     }
 
     public static function hasStatuses(): bool

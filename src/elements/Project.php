@@ -12,6 +12,7 @@ use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
 use furbo\rentmanforcraft\elements\conditions\ProjectCondition;
+use furbo\rentmanforcraft\records\Project as ProjectRecord;
 
 /**
  * Project element type
@@ -259,7 +260,46 @@ class Project extends Element
     public function afterSave(bool $isNew): void
     {
         if (!$this->propagating) {
-            // todo: update the `projects` table
+            if ($isNew) {
+                $record = new ProjectRecord();
+                $record->id = $this->id;
+            }
+            else {
+                $record = ProjectRecord::findOne($this->id);
+            }
+
+            $record->sessionId = $this->sessionId;
+            $record->userId = $this->userId;
+            $record->contact_mailing_number = $this->contact_mailing_number;
+            $record->contact_mailing_country = $this->contact_mailing_country;
+            $record->contact_name = $this->contact_name;
+            $record->contact_mailing_postalcode = $this->contact_mailing_postalcode;
+            $record->contact_mailing_city = $this->contact_mailing_city;
+            $record->contact_mailing_street = $this->contact_mailing_street;
+            $record->contact_person_lastname = $this->contact_person_lastname;
+            $record->contact_person_email = $this->contact_person_email;
+            $record->contact_person_middle_name = $this->contact_person_middle_name;
+            $record->contact_person_first_name = $this->contact_person_first_name;
+            $record->usageperiod_end = $this->usageperiod_end;
+            $record->usageperiod_start = $this->usageperiod_start;
+            $record->is_paid = $this->is_paid;
+            $record->in = $this->in;
+            $record->out = $this->out;
+            $record->location_mailing_number = $this->location_mailing_number;
+            $record->location_mailing_country = $this->location_mailing_country;
+            $record->location_name = $this->location_name;
+            $record->location_mailing_postalcode = $this->location_mailing_postalcode;
+            $record->location_mailing_city = $this->location_mailing_city;
+            $record->location_mailing_street = $this->location_mailing_street;
+            $record->external_referenc = $this->external_referenc;
+            $record->remark = $this->remark;
+            $record->planperiod_end = $this->planperiod_end;
+            $record->planperiod_start = $this->planperiod_start;
+            $record->price = $this->price;
+            $record->dateOrdered = $this->dateOrdered;
+            $record->dateSubmitted = $this->dateSubmitted;
+
+            $record->save(false);
         }
 
         parent::afterSave($isNew);

@@ -7,9 +7,13 @@ use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
+use craft\events\RegisterCpNavItemsEvent;
 use craft\services\Elements;
 use craft\web\UrlManager;
 use craft\web\twig\variables\CraftVariable;
+use craft\web\twig\variables\Cp;
+
+use yii\base\Event;
 
 use furbo\rentmanforcraft\elements\Category;
 use furbo\rentmanforcraft\elements\Product;
@@ -17,7 +21,6 @@ use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\models\Settings;
 use furbo\rentmanforcraft\services\RentmanService;
 use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
-use yii\base\Event;
 
 /**
  * Rentman for Craft plugin
@@ -33,6 +36,7 @@ class RentmanForCraft extends Plugin
 {
     public string $schemaVersion = '1.0.0';
     public bool $hasCpSettings = true;
+    public bool $hasCpSection = true;
 
     public static function config(): array
     {
@@ -48,8 +52,25 @@ class RentmanForCraft extends Plugin
         // Defer most setup tasks until Craft is fully initialized
         Craft::$app->onInit(function() {
             $this->attachEventHandlers();
-            // ...
         });
+    }
+
+    public function getCpNavItem(): ?array
+    {
+
+        $cpNavItem = [];
+
+        $settings = $this->getSettings();
+
+        $cpNavItem['label'] = $settings['cpTitle'];
+        $cpNavItem['url'] = 'rentman-for-craft';
+
+        $cpNavItem['subnav'] = [];
+        $cpNavItem['subnav']['products'] = ['label' => Craft::t('rentman-for-craft', 'Products'), 'url' => 'rentman-for-craft/products'];
+        $cpNavItem['subnav']['categories'] = ['label' => Craft::t('rentman-for-craft', 'Categories'), 'url' => 'rentman-for-craft/categories'];
+        $cpNavItem['subnav']['projects'] = ['label' => Craft::t('rentman-for-craft', 'Projects'), 'url' => 'rentman-for-craft/projects'];
+
+        return $cpNavItem;
     }
 
     protected function createSettingsModel(): ?Model
@@ -65,31 +86,38 @@ class RentmanForCraft extends Plugin
         ]);
     }
 
+    protected function getCpRoutes(): array
+    {
+        return [
+            'rentman-for-craft' => [ 'template' => 'rentman-for-craft/products/_index.twig' ],
+            'rentman-for-craft/products' => ['template' => 'rentman-for-craft/products/_index.twig'],
+            'rentman-for-craft/products/<elementId:\\d+>' => 'elements/edit',
+            'rentman-for-craft/categories' => ['template' => 'rentman-for-craft/categories/_index.twig'],
+            'rentman-for-craft/categories/<elementId:\\d+>' => 'elements/edit',
+            'rentman-for-craft/projects' => ['template' => 'rentman-for-craft/projects/_index.twig'],
+            'rentman-for-craft/projects/<elementId:\\d+>' => 'elements/edit',
+            
+        ];
+    }
+
     private function attachEventHandlers(): void
     {
+
         // Register event handlers here ...
         // (see https://craftcms.com/docs/4.x/extend/events.html to get started)
         Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function (RegisterComponentTypesEvent $event) {
             $event->types[] = Product::class;
         });
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function (RegisterUrlRulesEvent $event) {
-            $event->rules['products'] = ['template' => 'rentman-for-craft/products/_index.twig'];
-            $event->rules['products/<elementId:\\d+>'] = 'elements/edit';
+            $event->rules = array_merge($event->rules, $this->getCpRoutes());
         });
         Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function (RegisterComponentTypesEvent $event) {
             $event->types[] = Project::class;
         });
-        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function (RegisterUrlRulesEvent $event) {
-            $event->rules['projects'] = ['template' => 'rentman-for-craft/projects/_index.twig'];
-            $event->rules['projects/<elementId:\\d+>'] = 'elements/edit';
-        });
         Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function (RegisterComponentTypesEvent $event) {
             $event->types[] = Category::class;
         });
-        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function (RegisterUrlRulesEvent $event) {
-            $event->rules['categories'] = ['template' => 'rentman-for-craft/categories/_index.twig'];
-            $event->rules['categories/<elementId:\\d+>'] = 'elements/edit';
-        });
+       
 
 
         // Executed after settings are saved
@@ -99,18 +127,12 @@ class RentmanForCraft extends Plugin
             function (Event $event) {
                 if ($event->sender::class == "furbo\\rentmanforcraft\\RentmanForCraft") {
                     
-                    dd($_POST);
-
                     //save field layout
                     $fieldsService = Craft::$app->getFields();
                     
                     $fieldLayout1 = $fieldsService->assembleLayoutFromPost('settings');
                     $fieldLayout1->type = Product::class;
                     $fieldsService->saveLayout($fieldLayout1);
-
-                    $fieldLayout2 = $fieldsService->assembleLayoutFromPost('settings');
-                    $fieldLayout2->type = Category::class;
-                    $fieldsService->saveLayout($fieldLayout2);
                     
                 }
             }
@@ -126,5 +148,6 @@ class RentmanForCraft extends Plugin
                 $variable->set('rentman', RentmanForCraftVariable::class);
             }
         );
+
     }
 }
