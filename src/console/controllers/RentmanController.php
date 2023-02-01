@@ -4,20 +4,21 @@ namespace furbo\rentmanforcraft\console\controllers;
 
 use Craft;
 use craft\console\Controller;
+use furbo\rentmanforcraft\RentmanForCraft;
 use yii\console\ExitCode;
 
 /**
  * Import Products controller
  */
-class ImportProductsController extends Controller
+class RentmanController extends Controller
 {
-    public $defaultAction = 'index';
+    public $defaultAction = 'update-products';
 
     public function options($actionID): array
     {
         $options = parent::options($actionID);
         switch ($actionID) {
-            case 'index':
+            case 'update-products':
                 // $options[] = '...';
                 break;
         }
@@ -27,9 +28,10 @@ class ImportProductsController extends Controller
     /**
      * rentman-for-craft/import-products command
      */
-    public function actionIndex(): int
+    public function actionUpdateProducts(): int
     {
-        // ...
+        $rentmanService = RentmanForCraft::getInstance()->rentmanService;
+        $rentmanService->updateProducts();
         return ExitCode::OK;
     }
 }

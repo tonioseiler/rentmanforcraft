@@ -86,7 +86,7 @@ class Install extends Migration
                 'ledger' => $this->string()->null(),
                 'defaultValuegroup' => $this->string()->null(),
                 'qrcodes' => $this->string()->null(),
-                'qrcodes_of_serial_numbers' => $this->string()->null(),
+                'qrcodes_of_serial_numbers' => $this->text()->null(),
                 'dateCreated' => $this->dateTime()->notNull(),
                 'dateUpdated' => $this->dateTime()->notNull(),
                 'uid' => $this->uid()

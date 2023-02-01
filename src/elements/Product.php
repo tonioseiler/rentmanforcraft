@@ -12,6 +12,7 @@ use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
 use furbo\rentmanforcraft\elements\conditions\ProductCondition;
+use furbo\rentmanforcraft\elements\db\ProductQuery;
 use furbo\rentmanforcraft\records\Product as ProductRecord;
 
 /**
@@ -19,6 +20,50 @@ use furbo\rentmanforcraft\records\Product as ProductRecord;
  */
 class Product extends Element
 {
+
+    public $rentmanId;
+    public $custom;
+    public $displayname;
+    public $categoryId;
+    public $code;
+    public $internal_remark;
+    public $external_remark;
+    public $location_in_warehouse;
+    public $unit;
+    public $in_shop;
+    public $surface_article;
+    public $shop_description_short;
+    public $shop_description_long;
+    public $shop_seo_title;
+    public $shop_seo_keyword;
+    public $shop_seo_description;
+    public $shop_featured;
+    public $price;
+    public $subrental_costs;
+    public $critical_stock_level;
+    public $type;
+    public $rental_sales;
+    public $temporary;
+    public $in_planner;
+    public $in_archive;
+    public $stock_management;
+    public $taxclass;
+    public $list_price;
+    public $volume;
+    public $packed_per;
+    public $height;
+    public $width;
+    public $length;
+    public $weight;
+    public $power;
+    public $current;
+    public $images;
+    public $files;
+    public $ledger;
+    public $defaultValuegroup;
+    public $qrcodes;
+    public $qrcodes_of_serial_numbers;
+
     public static function displayName(): string
     {
         return Craft::t('rentman-for-craft', 'Product');
@@ -72,6 +117,14 @@ class Product extends Element
     public static function hasStatuses(): bool
     {
         return true;
+    }
+
+    public function getStatus(): ?string
+    {
+        if ($this->in_shop) {
+            return self::STATUS_ENABLED;
+        }
+        return self::STATUS_DISABLED;
     }
 
     public static function find(): ElementQueryInterface
@@ -142,6 +195,7 @@ class Product extends Element
             'uid' => ['label' => Craft::t('app', 'UID')],
             'dateCreated' => ['label' => Craft::t('app', 'Date Created')],
             'dateUpdated' => ['label' => Craft::t('app', 'Date Updated')],
+            'in_shop' => ['label' => 'in shop'],
             // ...
         ];
     }

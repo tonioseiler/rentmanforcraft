@@ -12,6 +12,7 @@ use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
 use furbo\rentmanforcraft\elements\conditions\ProjectCondition;
+use furbo\rentmanforcraft\elements\db\ProjectQuery;
 use furbo\rentmanforcraft\records\Project as ProjectRecord;
 
 /**

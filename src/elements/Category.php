@@ -12,6 +12,7 @@ use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
 use furbo\rentmanforcraft\elements\conditions\CategoryCondition;
+use furbo\rentmanforcraft\elements\db\CategoryQuery;
 use furbo\rentmanforcraft\records\Category as CategoryRecord;
 
 /**

@@ -3,6 +3,7 @@
 namespace furbo\rentmanforcraft\elements\db;
 
 use Craft;
+use craft\base\Element;
 use craft\elements\db\ElementQuery;
 
 /**
@@ -32,6 +33,11 @@ class ProductQuery extends ElementQuery
     {
         $this->joinElementTable('rentman-for-craft_products');
 
+        // select the collection id column
+        $this->query->select([
+            'rentman-for-craft_products.*'
+        ]);
+
         if ($this->categoryId) {
             $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.category_id', $this->categoryId));
         }
@@ -43,4 +49,20 @@ class ProductQuery extends ElementQuery
         return parent::beforePrepare();
 
     }
+
+    protected function statusCondition(string $status): mixed
+    {
+        return match ($status) {
+            Element::STATUS_ENABLED => [
+                'rentman-for-craft_products.in_shop' => true
+            ],
+            Element::STATUS_DISABLED => [
+                'rentman-for-craft_products.in_shop' => false
+            ],
+            default => false,
+        };
+    }
+
+    
+
 }

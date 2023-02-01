@@ -3,6 +3,9 @@
 namespace furbo\rentmanforcraft\services;
 
 use Craft;
+use furbo\rentmanforcraft\elements\Category;
+use furbo\rentmanforcraft\elements\Product;
+use furbo\rentmanforcraft\RentmanForCraft;
 use yii\base\Component;
 
 use GuzzleHttp\Client;
@@ -14,13 +17,17 @@ class RentmanService extends Component
 {
 
     var $apiUrl = '';
+    var $apiKey = '';
     var $client = null;
     var $requestHeaders = [];
 
-    private function init() {
+    public function init() {
 
-        $this->apiKey = Setting::get('RENTMAN_API_KEY', '');
-        $this->apiUrl = Setting::get('RENTMAN_API_URL', 'https://api.rentman.net/');
+        $plugin = RentmanForCraft::getInstance();
+        $settings = $plugin->getSettings();
+
+        $this->apiKey = $settings['apiKey'];
+        $this->apiUrl = $settings['apiUrl'];
 
         $this->requestHeaders = [
             'Authorization' => 'Bearer ' . $this->apiKey,
@@ -35,13 +42,11 @@ class RentmanService extends Component
 
     public function updateProducts() {
 
-        Cache::flush();
-
         //start with root category (id = 0)
         if (empty($this->client)) {
             $this->init();
         }
-        try {
+        //try {
 
             $hasMoreResults = true;
             $limit = 100;
@@ -50,7 +55,7 @@ class RentmanService extends Component
 
             while ($hasMoreResults) {
 
-                Log::info("getting products (offset=".$offset.", limit=".$limit.")\n");
+                Craft::info("getting products (offset=".$offset.", limit=".$limit.")", 'rentman-for-craft');
 
                 $response = $this->client->request('GET', $this->apiUrl.'equipment', [
                     'headers' => $this->requestHeaders,
@@ -63,7 +68,7 @@ class RentmanService extends Component
                 $jsonResponse = json_decode($response->getBody()->getContents(), true);
 
                 $offset = $offset + $limit;
-                Log::info($jsonResponse['itemCount']." products found\n");
+                Craft::info($jsonResponse['itemCount']." products found", 'rentman-for-craft');
                 if ($jsonResponse['itemCount'] < $limit) {
                     $hasMoreResults = false;
                 }
@@ -73,73 +78,50 @@ class RentmanService extends Component
                 //loop over products
                 foreach ($rentmanProducts as $rentmanProduct) {
 
-                    //Product
-                    $productData = [];
-                    $productData['type'] = $rentmanProduct['type'];
-                    $productData['temporary'] = $rentmanProduct['temporary'];
-                    $productData['name'] = html_entity_decode(strip_tags($rentmanProduct['name']));
-                    $productData['code'] = $rentmanProduct['code'];
-                    $productData['barcode'] = $rentmanProduct['qrcodes'];
-                    $productData['location'] = $rentmanProduct['location_in_warehouse'];
-                    $productData['description'] = $rentmanProduct['shop_description_long'];
-                    $productData['rental_price'] = $rentmanProduct['price'];
-                    $productData['tax_code'] = $rentmanProduct['taxclass'];
-                    $productData['price_new'] = $rentmanProduct['list_price'];
-                    $productData['weight'] = $rentmanProduct['weight'];
-                    $productData['volume'] = $rentmanProduct['volume'];
-                    $productData['length'] = $rentmanProduct['length'];
-                    $productData['width'] = $rentmanProduct['width'];
-                    $productData['height'] = $rentmanProduct['height'];
-                    $productData['power'] = $rentmanProduct['power'];
-                    $productData['current'] = $rentmanProduct['current'];
-                    $productData['unit'] = $rentmanProduct['unit'];
-                    $productData['in_shop'] = $rentmanProduct['in_shop'];
-                    $productData['shop_description_short'] = html_entity_decode(strip_tags($rentmanProduct['shop_description_short']));
-                    $productData['shop_description_long'] = $rentmanProduct['shop_description_long'];
-                    $productData['rentmanId'] = $rentmanProduct['id'];
-                    $productData['rentman_modified'] = $rentmanProduct['modified'];
-                    $productData['rentman_created'] = $rentmanProduct['created'];
-                    $productData['displayname'] = $rentmanProduct['displayname'];
-                    $productData['seo_title'] = $rentmanProduct['shop_seo_title'];
-                    $productData['seo_keyword'] = $rentmanProduct['shop_seo_keyword'];
-                    $productData['seo_description'] = $rentmanProduct['shop_seo_description'];
-                    $productData['featured'] = $rentmanProduct['shop_featured'];
-                    $productData['is_rental'] = $rentmanProduct['rental_sales'] == 'Rental';
+                    $rentmanId = $rentmanProduct['id'];
 
+                    $product = Product::find()
+                        ->where(['rentmanId' => $rentmanId])
+                        ->one();
+            
+                    if (empty($product)) {
+                        //create new
+                        $product = new Product();
+                    }
+                    //update
+                    $product->title = $rentmanProduct['name'];
+                    $product->rentmanId = $rentmanId;
+                    unset($rentmanProduct['id']);
+                    foreach($rentmanProduct as $key => $value) {
+                        if (property_exists($product, $key)) {
+                            $product->{$key} = $value;
+                        }
+                    }
+                    $success = Craft::$app->elements->saveElement($product);
+                    
                     //for sets, custom_13 field is filled as weight, so use this as weight
-                    if ($productData['type'] == 'set' && !empty($rentmanProduct['custom']['custom_13'])) {
+                    /*if ($productData['type'] == 'set' && !empty($rentmanProduct['custom']['custom_13'])) {
                         echo 's';
                         $productData['weight'] = floatval($rentmanProduct['custom']['custom_13']);
-                    }
+                    }*/
 
+                    //assign category
                     $tmp = explode('/', $rentmanProduct['folder']);
                     if (!empty($tmp)) {
                         $tmpId = array_pop($tmp);
-                        $category = Category::where('rentmanId', '=', $tmpId)->withTrashed();
+                        $category = Category::find()
+                            ->where(['rentmanId' => $rentmanId])
+                            ->one();
 
-                        if ($category->exists()) {
-                            $productData['category_id'] = $category->first()->id;
+                        if ($category) {
+                            $product->categoryId = $category->id;
                         } else {
-                            $productData['category_id'] = 0;
+                            $product->categoryId = 0;
                         }
                     } else {
-                        $productData['category_id'] = 0;
+                        $product->categoryId = 0;
                     }
-
-                    $product = Product::where('rentmanId', '=', $productData['rentmanId'])->withTrashed();
-
-                    if ($product->exists()) {
-
-                        $product = $product->first();
-
-                        if ($product->trashed()) {
-                            $product->restore();
-                        }
-                        $product->update($productData);
-                    } else {
-                        $product = Product::create($productData);
-                        $product->save();
-                    }
+                    $success = Craft::$app->elements->saveElement($product);
 
                     //get files
                     //https://api.rentman.net/equipment/4566/files
@@ -148,35 +130,45 @@ class RentmanService extends Component
                     ]);
 
                     $jsonResponse = json_decode($response->getBody()->getContents(), true);
-                    $files = $jsonResponse['data'];
-                    if (!empty($files))
-                        echo 'f';
+                    $allFiles = $jsonResponse['data'];
 
+                    $files = array_filter($allFiles, function($v, $k) {
+                            return !$v['image'];
+                        }, ARRAY_FILTER_USE_BOTH);
+
+                    $images = array_filter($allFiles, function($v, $k) {
+                        return $v['image'];
+                        }, ARRAY_FILTER_USE_BOTH);
+
+                    
                     $product->files = json_encode($files);
-                    $product->save();
+                    $product->images = json_encode($images);
+                    $success = Craft::$app->elements->saveElement($product);
 
+                    //remeber this for later
+                    $rentmanProductIds[] = $product->rentmanId;
                     echo '.';
 
                 }
-                $rentmanProductIds = array_merge($rentmanProductIds, Arr::pluck($rentmanProducts, 'id'));
             }
 
             //check if products were deleted
-            $products = Product::select('id', 'rentmanId')->whereNull('deleted_at')->get();
+            $products = Product::find()->select(['id', 'rentmanId'])->all();
+            
             foreach ($products as $product) {
                 if (in_array($product->rentmanId, $rentmanProductIds) === false) {
-                    $product->delete();
+                    $success = Craft::$app->elements->deleteElement($product);
                 }
             }
 
-        } catch (RequestException $e) {
+        /*} catch (RequestException $e) {
             Log::info($e->getRequest() . "\n");
             if ($e->hasResponse()) {
                 Log::info($e->getResponse() . "\n");
             }
         } catch (\Exception $e) {
             Log::info($e->getMessage());
-        }
+        } */
 
     }
 

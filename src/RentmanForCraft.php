@@ -8,6 +8,7 @@ use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterCpNavItemsEvent;
+use craft\log\MonologTarget;
 use craft\services\Elements;
 use craft\web\UrlManager;
 use craft\web\twig\variables\CraftVariable;
@@ -21,6 +22,8 @@ use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\models\Settings;
 use furbo\rentmanforcraft\services\RentmanService;
 use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
+use Monolog\Formatter\LineFormatter;
+use Psr\Log\LogLevel;
 
 /**
  * Rentman for Craft plugin
@@ -52,6 +55,7 @@ class RentmanForCraft extends Plugin
         // Defer most setup tasks until Craft is fully initialized
         Craft::$app->onInit(function() {
             $this->attachEventHandlers();
+            $this->registerLogger();
         });
     }
 
@@ -71,6 +75,21 @@ class RentmanForCraft extends Plugin
         $cpNavItem['subnav']['projects'] = ['label' => Craft::t('rentman-for-craft', 'Projects'), 'url' => 'rentman-for-craft/projects'];
 
         return $cpNavItem;
+    }
+
+    protected function registerLogger() {
+        // Register a custom log target, keeping the format as simple as possible.
+        Craft::getLogger()->dispatcher->targets[] = new MonologTarget([
+            'name' => 'rentman-for-craft',
+            'categories' => ['rentman-for-craft'],
+            'level' => LogLevel::INFO,
+            'logContext' => false,
+            'allowLineBreaks' => false,
+            'formatter' => new LineFormatter(
+                format: "%datetime% %message%\n",
+                dateFormat: 'Y-m-d H:i:s',
+            ),
+        ]);
     }
 
     protected function createSettingsModel(): ?Model
@@ -107,18 +126,13 @@ class RentmanForCraft extends Plugin
         // (see https://craftcms.com/docs/4.x/extend/events.html to get started)
         Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function (RegisterComponentTypesEvent $event) {
             $event->types[] = Product::class;
+            $event->types[] = Project::class;
+            $event->types[] = Category::class;
         });
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function (RegisterUrlRulesEvent $event) {
             $event->rules = array_merge($event->rules, $this->getCpRoutes());
         });
-        Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function (RegisterComponentTypesEvent $event) {
-            $event->types[] = Project::class;
-        });
-        Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function (RegisterComponentTypesEvent $event) {
-            $event->types[] = Category::class;
-        });
-       
-
+        
 
         // Executed after settings are saved
         Event::on(
