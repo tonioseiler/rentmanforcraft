@@ -374,4 +374,33 @@ class Product extends Element
     {
         return \Craft::$app->fields->getLayoutByType(Product::class);
     }
+
+    public function getIsEditable(): bool
+    {
+        return true;
+    }
+
+    public function getEditorHtml(): string
+    {
+        
+        $html = \Craft::$app->getView()->renderTemplateMacro('_includes/forms.twig', 'textField', [
+            [
+                'label' => \Craft::t('app', 'Title'),
+                'siteId' => $this->siteId,
+                'id' => 'title',
+                'name' => 'title',
+                'value' => $this->title,
+                'errors' => $this->getErrors('title'),
+                'first' => true,
+                'autofocus' => true,
+                'required' => true
+            ]
+        ]);
+
+        $html .= parent::getEditorHtml();
+
+        return $html;
+    }
+
+
 }
