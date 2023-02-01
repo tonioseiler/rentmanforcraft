@@ -4,6 +4,8 @@ namespace furbo\rentmanforcraft\console\controllers;
 
 use Craft;
 use craft\console\Controller;
+use craft\queue\jobs\ResaveElements;
+use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\RentmanForCraft;
 use yii\console\ExitCode;
 
@@ -32,6 +34,19 @@ class RentmanController extends Controller
     {
         $rentmanService = RentmanForCraft::getInstance()->rentmanService;
         $rentmanService->updateProducts();
+        return ExitCode::OK;
+    }
+
+    public function actionResaveProducts(): int
+    {
+        Craft::$app->getQueue()->push(new ResaveElements([
+            'elementType' => Product::class,
+            'criteria' => [
+                'siteId' => '*',
+                'unique' => true,
+                'status' => null,
+            ],
+        ]));
         return ExitCode::OK;
     }
 }

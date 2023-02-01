@@ -14,6 +14,7 @@ use yii\web\Response;
 use furbo\rentmanforcraft\elements\conditions\ProductCondition;
 use furbo\rentmanforcraft\elements\db\ProductQuery;
 use furbo\rentmanforcraft\records\Product as ProductRecord;
+use furbo\rentmanforcraft\RentmanForCraft;
 
 /**
  * Product element type
@@ -194,8 +195,7 @@ class Product extends Element
             'id' => ['label' => Craft::t('app', 'ID')],
             'uid' => ['label' => Craft::t('app', 'UID')],
             'dateCreated' => ['label' => Craft::t('app', 'Date Created')],
-            'dateUpdated' => ['label' => Craft::t('app', 'Date Updated')],
-            'in_shop' => ['label' => 'in shop'],
+            'dateUpdated' => ['label' => Craft::t('app', 'Date Updated')]
             // ...
         ];
     }
@@ -216,10 +216,9 @@ class Product extends Element
         ]);
     }
 
-    public function getUriFormat(): ?string
-    {
-        // If products should have URLs, define their URI format here
-        return null;
+    public function getUriFormat(): ?string {
+        $settings = RentmanForCraft::getInstance()->getSettings()->productRoutes;
+        return $settings[$this->site->handle]['uriFormat'];
     }
 
     protected function previewTargets(): array
@@ -239,13 +238,14 @@ class Product extends Element
 
     protected function route(): array|string|null
     {
-        // Define how products should be routed when their URLs are requested
+        $productRoutes = RentmanForCraft::getInstance()->getSettings()->productRoutes;
         return [
-            'templates/render',
-            [
-                'template' => 'site/template/path',
-                'variables' => ['product' => $this],
-            ]
+            'templates/render', [
+                'template' => $productRoutes[$this->site->handle]['template'],
+                'variables' => [
+                    'product' => $this,
+                ],
+            ],
         ];
     }
 
@@ -292,12 +292,12 @@ class Product extends Element
 
     protected function cpEditUrl(): ?string
     {
-        return sprintf('products/%s', $this->getCanonicalId());
+        return UrlHelper::cpUrl('rentman-for-craft/products/' . $this->id);
     }
 
     public function getPostEditUrl(): ?string
     {
-        UrlHelper::cpUrl('products');
+        return UrlHelper::cpUrl('rentman-for-craf/products');
     }
 
     public function prepareEditScreen(Response $response, string $containerId): void

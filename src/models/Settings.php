@@ -22,6 +22,8 @@ class Settings extends Model
 
     public $apiKey = '';
 
-    public $sites = [];
+    public $productRoutes = [];
+
+    public $categoryRoutes = [];
 
 }

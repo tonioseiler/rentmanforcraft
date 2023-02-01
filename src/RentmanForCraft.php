@@ -3,27 +3,26 @@
 namespace furbo\rentmanforcraft;
 
 use Craft;
+use Monolog\Formatter\LineFormatter;
+use Psr\Log\LogLevel;
 use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
-use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterCpNavItemsEvent;
+use craft\events\RegisterUrlRulesEvent;
 use craft\log\MonologTarget;
 use craft\services\Elements;
 use craft\web\UrlManager;
-use craft\web\twig\variables\CraftVariable;
 use craft\web\twig\variables\Cp;
-
-use yii\base\Event;
-
+use craft\web\twig\variables\CraftVariable;
 use furbo\rentmanforcraft\elements\Category;
 use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\elements\Project;
+use furbo\rentmanforcraft\elements\TestCarlos;
 use furbo\rentmanforcraft\models\Settings;
 use furbo\rentmanforcraft\services\RentmanService;
 use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
-use Monolog\Formatter\LineFormatter;
-use Psr\Log\LogLevel;
+use yii\base\Event;
 
 /**
  * Rentman for Craft plugin
@@ -162,6 +161,6 @@ class RentmanForCraft extends Plugin
                 $variable->set('rentman', RentmanForCraftVariable::class);
             }
         );
-
+        
     }
 }
