@@ -46,7 +46,7 @@ class RentmanService extends Component
         if (empty($this->client)) {
             $this->init();
         }
-        //try {
+        try {
 
             $hasMoreResults = true;
             $limit = 100;
@@ -80,7 +80,9 @@ class RentmanService extends Component
 
                     $rentmanId = $rentmanProduct['id'];
 
+                    
                     $product = Product::find()
+                        ->anyStatus()
                         ->where(['rentmanId' => $rentmanId])
                         ->one();
             
@@ -110,7 +112,7 @@ class RentmanService extends Component
                     if (!empty($tmp)) {
                         $tmpId = array_pop($tmp);
                         $category = Category::find()
-                            ->where(['rentmanId' => $rentmanId])
+                            ->where(['rentmanId' => $tmpId])
                             ->one();
 
                         if ($category) {
@@ -153,22 +155,20 @@ class RentmanService extends Component
             }
 
             //check if products were deleted
-            $products = Product::find()->select(['id', 'rentmanId'])->all();
+            $products = Product::find()->anyStatus()->select(['id', 'rentmanId'])->all();
             
             foreach ($products as $product) {
                 if (in_array($product->rentmanId, $rentmanProductIds) === false) {
                     $success = Craft::$app->elements->deleteElement($product);
+                    echo 'x';
                 }
             }
 
-        /*} catch (RequestException $e) {
-            Log::info($e->getRequest() . "\n");
-            if ($e->hasResponse()) {
-                Log::info($e->getResponse() . "\n");
-            }
+        } catch (RequestException $e) {
+            Craft::error($e->getResponse(), 'rentman-for-craft');
         } catch (\Exception $e) {
-            Log::info($e->getMessage());
-        } */
+            Craft::error($e->getMessage(), 'rentman-for-craft');
+        }
 
     }
 

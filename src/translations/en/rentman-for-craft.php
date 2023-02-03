@@ -16,6 +16,8 @@ return [
     'Products' => 'Products',
     'Categories' => 'Categories',
     'Projects' => 'Projects',
+    'product.title' => 'Productname',
+    'product.title.instructions' => '-',
     'product.rentmanId' => 'Rentman ID',
     'product.rentmanId.instructions' => '-',
     'product.custom' => 'Custom values',

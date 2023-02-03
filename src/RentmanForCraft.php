@@ -9,6 +9,7 @@ use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterCpNavItemsEvent;
+use craft\events\RegisterTemplateRootsEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\TemplateEvent;
 use craft\log\MonologTarget;
@@ -177,6 +178,6 @@ class RentmanForCraft extends Plugin
                 }
             }
         );
-        
+
     }
 }

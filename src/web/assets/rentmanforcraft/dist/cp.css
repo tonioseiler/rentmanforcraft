@@ -9,3 +9,18 @@ input:read-only {
     width: 30%;
     height: auto;;
 }
+
+.details .meta > .data {
+    font-size: 0.8rem;
+    line-height: 1rem;
+}
+
+.details .meta > .data > .heading {
+    flex: 0 0 136px;
+    line-height: 16px;
+}
+
+.details .meta > .data > .value {
+    width: calc(100% - 144px);
+    line-height: 16px;
+}

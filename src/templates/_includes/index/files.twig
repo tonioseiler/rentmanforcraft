@@ -1,0 +1,11 @@
+{% if files is empty %}
+    -
+{% elseif files is iterable %}
+    <ul class="files">
+    {% for v in files %}
+        <li class="file"><a href="{{v.url}}" />{{v.displayname}}</a> </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <a href="{{files.url}}" />2</a> 
+{% endif %}

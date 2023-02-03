@@ -1,0 +1,13 @@
+<div class="product-thumb">
+    {% if images is empty %}
+        -
+    {% elseif images is iterable %}
+        <ul class="images flex">
+        {% for v in images %}
+            <li class="image"><img src="{{v.url}}" /> </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <img class="image" src="{{images.url}}" />
+    {% endif %}
+</div>
