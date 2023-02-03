@@ -45,4 +45,12 @@ class RentmanController extends Controller
         return ExitCode::OK;
     }
 
+    public function actionUpdateAll(): int
+    {
+        $rentmanService = RentmanForCraft::getInstance()->rentmanService;
+        $rentmanService->updateCategories();
+        $rentmanService->updateProducts();
+        return ExitCode::OK;
+    }
+
 }

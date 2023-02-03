@@ -24,7 +24,7 @@ return [
     'product.custom.instructions' => '-',
     'product.displayname' => 'Displayname',
     'product.displayname.instructions' => '-',
-    'product.categoryId' => 'categoryId',
+    'product.categoryId' => 'Category',
     'product.categoryId.instructions' => '-',
     'product.code' => 'Code',
     'product.code.instructions' => '-',
@@ -108,4 +108,6 @@ return [
     'category.rentmanId.instructions' => '-',
     'category.displayname' => 'Displayname',
     'category.displayname.instructions' => '-',
+    'category.order' => 'Order',
+    'category.order.instructions' => '-',
 ];

@@ -11,8 +11,7 @@ input:read-only {
 }
 
 .details .meta > .data {
-    font-size: 0.8rem;
-    line-height: 1rem;
+
 }
 
 .details .meta > .data > .heading {

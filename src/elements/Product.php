@@ -406,7 +406,8 @@ class Product extends RentmanElement
         $layoutElements[] = $this->createImportedValueLayoutElement('displayname', Craft::t('rentman-for-craft', 'product.displayname'), $this->displayname);
         $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/_includes/show/images', ['label' => Craft::t('rentman-for-craft', 'product.images'), 'images' => $this->getImages(), 'id' => 'images']);
         $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/_includes/show/files', ['label' => Craft::t('rentman-for-craft', 'product.files'), 'files' => $this->getFiles(), 'id' => 'files']);
-        $layoutElements[] = $this->createImportedValueLayoutElement('categoryId', Craft::t('rentman-for-craft', 'product.categoryId'), $this->categoryId);
+        $category = $this->getCategory();
+        $layoutElements[] = $this->createImportedValueLayoutElement('categoryId', Craft::t('rentman-for-craft', 'product.categoryId'), $category->title ?? '–');
         $layoutElements[] = $this->createImportedValueLayoutElement('internal_remark', Craft::t('rentman-for-craft', 'product.internal_remark'), $this->internal_remark);
         $layoutElements[] = $this->createImportedValueLayoutElement('external_remark', Craft::t('rentman-for-craft', 'product.external_remark'), $this->external_remark);
         $layoutElements[] = $this->createImportedValueLayoutElement('location_in_warehouse', Craft::t('rentman-for-craft', 'product.location_in_warehouse'), $this->location_in_warehouse);
@@ -507,6 +508,13 @@ class Product extends RentmanElement
         return array_filter($tmp, function($file) {
             return $file['in_webshop'] && $file['public'];
         });
+    }
+
+    public function getCategory() {
+        $cat = Category::find()->anyStatus()
+                        ->id($this->categoryId)
+                        ->one();
+        return $cat;
     }
 
 }
