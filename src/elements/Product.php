@@ -4,10 +4,18 @@ namespace furbo\rentmanforcraft\elements;
 
 use Craft;
 use craft\base\Element;
+use craft\base\FieldLayoutElement;
 use craft\elements\User;
 use craft\elements\conditions\ElementConditionInterface;
 use craft\elements\db\ElementQueryInterface;
+use craft\fieldlayoutelements\Html;
+use craft\fieldlayoutelements\Template;
+use craft\fieldlayoutelements\TextareaField;
+use craft\fieldlayoutelements\TextField;
+use craft\fieldlayoutelements\TitleField;
 use craft\helpers\UrlHelper;
+use craft\models\FieldLayout;
+use craft\models\FieldLayoutTab;
 use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
@@ -15,13 +23,13 @@ use furbo\rentmanforcraft\elements\conditions\ProductCondition;
 use furbo\rentmanforcraft\elements\db\ProductQuery;
 use furbo\rentmanforcraft\records\Product as ProductRecord;
 use furbo\rentmanforcraft\RentmanForCraft;
+use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Product element type
  */
 class Product extends Element
 {
-
     public $rentmanId;
     public $custom;
     public $displayname;
@@ -372,7 +380,79 @@ class Product extends Element
 
     public function getFieldLayout(): ?craft\models\FieldLayout
     {
-        return \Craft::$app->fields->getLayoutByType(Product::class);
+
+        //possible elements
+        // https://docs.craftcms.com/api/v4/craft-base-fieldlayoutelement.html
+        
+        $layoutElements = [];
+        
+        $layoutElements[] = $this->createImportedValueLayoutElement('displayname', Craft::t('rentman-for-craft', 'product.displayname'), $this->displayname);
+        $layoutElements[] = $this->createImportedValueLayoutElement('rentmanId', Craft::t('rentman-for-craft', 'product.rentmanId'), $this->rentmanId);
+        $layoutElements[] = $this->createImportedValueLayoutElement('code', Craft::t('rentman-for-craft', 'product.code'), $this->code);
+        $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/_includes/images', ['label' => Craft::t('rentman-for-craft', 'product.images'), 'images' => $this->getImages(), 'id' => 'images']);
+        $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/_includes/files', ['label' => Craft::t('rentman-for-craft', 'product.files'), 'files' => $this->getFiles(), 'id' => 'files']);
+        $layoutElements[] = $this->createImportedValueLayoutElement('in_shop', Craft::t('rentman-for-craft', 'product.in_shop'), $this->in_shop);
+        $layoutElements[] = $this->createImportedValueLayoutElement('categoryId', Craft::t('rentman-for-craft', 'product.categoryId'), $this->categoryId);
+        $layoutElements[] = $this->createImportedValueLayoutElement('internal_remark', Craft::t('rentman-for-craft', 'product.internal_remark'), $this->internal_remark);
+        $layoutElements[] = $this->createImportedValueLayoutElement('external_remark', Craft::t('rentman-for-craft', 'product.external_remark'), $this->external_remark);
+        $layoutElements[] = $this->createImportedValueLayoutElement('location_in_warehouse', Craft::t('rentman-for-craft', 'product.location_in_warehouse'), $this->location_in_warehouse);
+        $layoutElements[] = $this->createImportedValueLayoutElement('unit', Craft::t('rentman-for-craft', 'product.unit'), $this->unit);
+        $layoutElements[] = $this->createImportedValueLayoutElement('surface_article', Craft::t('rentman-for-craft', 'product.surface_article'), $this->surface_article);
+        $layoutElements[] = $this->createImportedValueLayoutElement('shop_description_short', Craft::t('rentman-for-craft', 'product.shop_description_short'), $this->shop_description_short);
+        $layoutElements[] = $this->createImportedValueLayoutElement('shop_description_long', Craft::t('rentman-for-craft', 'product.shop_description_long'), $this->shop_description_long);
+        $layoutElements[] = $this->createImportedValueLayoutElement('shop_seo_title', Craft::t('rentman-for-craft', 'product.shop_seo_title'), $this->shop_seo_title);
+        $layoutElements[] = $this->createImportedValueLayoutElement('shop_seo_keyword', Craft::t('rentman-for-craft', 'product.shop_seo_keyword'), $this->shop_seo_keyword);
+        $layoutElements[] = $this->createImportedValueLayoutElement('shop_seo_description', Craft::t('rentman-for-craft', 'product.shop_seo_description'), $this->shop_seo_description);
+        $layoutElements[] = $this->createImportedValueLayoutElement('shop_featured', Craft::t('rentman-for-craft', 'product.shop_featured'), $this->shop_featured);
+        $layoutElements[] = $this->createImportedValueLayoutElement('price', Craft::t('rentman-for-craft', 'product.price'), $this->price);
+        $layoutElements[] = $this->createImportedValueLayoutElement('subrental_costs', Craft::t('rentman-for-craft', 'product.subrental_costs'), $this->subrental_costs);
+        $layoutElements[] = $this->createImportedValueLayoutElement('critical_stock_level', Craft::t('rentman-for-craft', 'product.critical_stock_level'), $this->critical_stock_level);
+        $layoutElements[] = $this->createImportedValueLayoutElement('type', Craft::t('rentman-for-craft', 'product.type'), $this->type);
+        $layoutElements[] = $this->createImportedValueLayoutElement('rental_sales', Craft::t('rentman-for-craft', 'product.rental_sales'), $this->rental_sales);
+        $layoutElements[] = $this->createImportedValueLayoutElement('temporary', Craft::t('rentman-for-craft', 'product.temporary'), $this->temporary);
+        $layoutElements[] = $this->createImportedValueLayoutElement('in_planner', Craft::t('rentman-for-craft', 'product.in_planner'), $this->in_planner);
+        $layoutElements[] = $this->createImportedValueLayoutElement('in_archive', Craft::t('rentman-for-craft', 'product.in_archive'), $this->in_archive);
+        $layoutElements[] = $this->createImportedValueLayoutElement('stock_management', Craft::t('rentman-for-craft', 'product.stock_management'), $this->stock_management);
+        $layoutElements[] = $this->createImportedValueLayoutElement('taxclass', Craft::t('rentman-for-craft', 'product.taxclass'), $this->taxclass);
+        $layoutElements[] = $this->createImportedValueLayoutElement('list_price', Craft::t('rentman-for-craft', 'product.list_price'), $this->list_price);
+        $layoutElements[] = $this->createImportedValueLayoutElement('volume', Craft::t('rentman-for-craft', 'product.volume'), $this->volume);
+        $layoutElements[] = $this->createImportedValueLayoutElement('packed_per', Craft::t('rentman-for-craft', 'product.packed_per'), $this->packed_per);
+        $layoutElements[] = $this->createImportedValueLayoutElement('height', Craft::t('rentman-for-craft', 'product.height'), $this->height);
+        $layoutElements[] = $this->createImportedValueLayoutElement('width', Craft::t('rentman-for-craft', 'product.width'), $this->width);
+        $layoutElements[] = $this->createImportedValueLayoutElement('length', Craft::t('rentman-for-craft', 'product.length'), $this->length);
+        $layoutElements[] = $this->createImportedValueLayoutElement('weight', Craft::t('rentman-for-craft', 'product.weight'), $this->weight);
+        $layoutElements[] = $this->createImportedValueLayoutElement('power', Craft::t('rentman-for-craft', 'product.power'), $this->power);
+        $layoutElements[] = $this->createImportedValueLayoutElement('current', Craft::t('rentman-for-craft', 'product.current'), $this->current);
+        $layoutElements[] = $this->createImportedValueLayoutElement('ledger', Craft::t('rentman-for-craft', 'product.ledger'), $this->ledger);
+        $layoutElements[] = $this->createImportedValueLayoutElement('defaultValuegroup', Craft::t('rentman-for-craft', 'product.defaultValuegroup'), $this->defaultValuegroup);
+        $layoutElements[] = $this->createImportedValueLayoutElement('qrcodes', Craft::t('rentman-for-craft', 'product.qrcodes'), $this->qrcodes);
+        $layoutElements[] = $this->createImportedValueLayoutElement('qrcodes_of_serial_numbers', Craft::t('rentman-for-craft', 'product.qrcodes_of_serial_numbers'), $this->qrcodes_of_serial_numbers);
+        $layoutElements[] = $this->createImportedValueLayoutElement('custom', Craft::t('rentman-for-craft', 'product.custom'), json_decode($this->custom));
+        
+        $fieldLayout = new FieldLayout();
+    
+        $tab = new FieldLayoutTab();
+        $tab->name = Craft::t('rentman-for-craft', 'Products');
+        $tab->setLayout($fieldLayout);
+        $tab->setElements($layoutElements);
+
+        $customElementFieldLayout = \Craft::$app->fields->getLayoutByType(Product::class);
+        $tabs = $customElementFieldLayout->getTabs();
+
+        array_unshift($tabs, $tab);
+
+        $fieldLayout->setTabs($tabs);
+    
+        return $fieldLayout;
+        
+    }
+
+    protected function createImportedValueLayoutElement($id, $label, $value): FieldLayoutElement {
+        return $this->createHtmlLayoutElement('rentman-for-craft/_includes/imported-value', compact('id', 'label', 'value'));
+    }
+
+    protected function createHtmlLayoutElement($template, $vars): FieldLayoutElement {
+        return new Html(Craft::$app->view->renderTemplate($template, $vars));
     }
 
     public function getIsEditable(): bool
@@ -380,27 +460,13 @@ class Product extends Element
         return true;
     }
 
-    public function getEditorHtml(): string
-    {
-        
-        $html = \Craft::$app->getView()->renderTemplateMacro('_includes/forms.twig', 'textField', [
-            [
-                'label' => \Craft::t('app', 'Title'),
-                'siteId' => $this->siteId,
-                'id' => 'title',
-                'name' => 'title',
-                'value' => $this->title,
-                'errors' => $this->getErrors('title'),
-                'first' => true,
-                'autofocus' => true,
-                'required' => true
-            ]
-        ]);
 
-        $html .= parent::getEditorHtml();
-
-        return $html;
+    public function getImages(): Array {
+        return json_decode($this->images, true);
     }
 
+    public function getFiles(): Array {
+        return json_decode($this->files, true);
+    }
 
 }

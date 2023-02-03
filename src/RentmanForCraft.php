@@ -10,18 +10,20 @@ use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterCpNavItemsEvent;
 use craft\events\RegisterUrlRulesEvent;
+use craft\events\TemplateEvent;
 use craft\log\MonologTarget;
 use craft\services\Elements;
 use craft\web\UrlManager;
 use craft\web\twig\variables\Cp;
 use craft\web\twig\variables\CraftVariable;
+use craft\web\View;
 use furbo\rentmanforcraft\elements\Category;
 use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\elements\Project;
-use furbo\rentmanforcraft\elements\TestCarlos;
 use furbo\rentmanforcraft\models\Settings;
 use furbo\rentmanforcraft\services\RentmanService;
 use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
+use furbo\rentmanforcraft\web\assets\rentmanforcraft\RentmanForCraftCPAsset;
 use yii\base\Event;
 
 /**
@@ -159,6 +161,20 @@ class RentmanForCraft extends Plugin
                 /** @var CraftVariable $variable */
                 $variable = $event->sender;
                 $variable->set('rentman', RentmanForCraftVariable::class);
+            }
+        );
+
+        // before render template
+        Event::on(
+            View::class,
+            View::EVENT_BEFORE_RENDER_TEMPLATE,
+            function (TemplateEvent $event) {
+                $request = Craft::$app->request;
+                if ($request->isCpRequest) {
+                    $urlSegments = $request->segments;
+                    if (count($urlSegments) > 0 && $urlSegments[0] == 'rentman-for-craft')
+                        Craft::$app->getView()->registerAssetBundle(RentmanForCraftCPAsset::class);
+                }
             }
         );
         

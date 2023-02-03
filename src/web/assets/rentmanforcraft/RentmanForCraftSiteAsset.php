@@ -6,12 +6,12 @@ use Craft;
 use craft\web\AssetBundle;
 
 /**
- * Rentman For Craft asset bundle
+ * Rentman For Craft Site asset bundle
  */
-class RentmanForCraftAsset extends AssetBundle
+class RentmanForCraftSiteAsset extends AssetBundle
 {
     public $sourcePath = __DIR__ . '/dist';
     public $depends = [];
-    public $js = [];
-    public $css = [];
+    public $js = ['site.js'];
+    public $css = ['site.css'];
 }

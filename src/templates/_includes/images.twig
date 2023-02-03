@@ -1,0 +1,18 @@
+<div id="{{id}}-field" class="field width-100" data-attribute="{{id}}" data-layout-element="">
+    <div class="heading">
+        <label id="{{id}}-label" for="{{id}}">{{label}}</label>
+    </div>
+    <div class="input ltr">
+        {% if images is empty %}
+            -
+        {% elseif images is iterable %}
+            <ul class="images flex">
+            {% for v in images %}
+                <li class="image"><img src="{{v.url}}" /> </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <img class="image" src="{{images.url}}" />
+        {% endif %}
+    </div>
+</div>

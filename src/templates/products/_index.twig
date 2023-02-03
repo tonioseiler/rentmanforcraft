@@ -2,3 +2,6 @@
 {% set title = 'Products'|t('app') %}
 {% set elementType = 'furbo\\rentmanforcraft\\elements\\Product' %}
 {% set canHaveDrafts = true %}
+
+{% do view.registerAssetBundle("furbo\\rentmanforcraft\\web\\assets\\rentmanforcraft\\RentmanForCraftCPAsset") %}
+

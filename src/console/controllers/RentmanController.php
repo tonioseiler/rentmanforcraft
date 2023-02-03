@@ -28,7 +28,7 @@ class RentmanController extends Controller
     }
 
     /**
-     * rentman-for-craft/import-products command
+     * rentman-for-craft/update-products command
      */
     public function actionUpdateProducts(): int
     {
