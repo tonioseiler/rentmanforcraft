@@ -9,6 +9,7 @@ use furbo\rentmanforcraft\RentmanForCraft;
 use yii\base\Component;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * Rentman Service service
@@ -174,13 +175,11 @@ class RentmanService extends Component
 
     public function updateCategories() {
 
-        Cache::flush();
-
         //start with root category (id = 0)
         if (empty($this->client)) {
             $this->init();
         }
-        try {
+        //try {
 
             $response = $this->client->request('GET', $this->apiUrl.'folders?itemtype=equipment', [
                 'headers' => $this->requestHeaders
@@ -189,7 +188,7 @@ class RentmanService extends Component
             $jsonResponse = json_decode($response->getBody()->getContents(), true);
 
             $rentmanCategories = $jsonResponse['data'];
-
+            $rentmanCategoryIds = [];
 
             //loop over folders / categories
             foreach ($rentmanCategories as $id => $rentmanCat) {
@@ -197,12 +196,9 @@ class RentmanService extends Component
                 //Category
                 $categoryData = [
                      'rentmanId' => $rentmanCat['id'],
-                     'sort' => $rentmanCat['order'],
-                     'in_shop' => true,
-                     'rentman_created' =>  $rentmanCat['created'],
-                     'rentman_modified' =>  $rentmanCat['modified'],
-                     'name' => Str::title($rentmanCat['displayname']),
-                     'slug' => Str::slug($rentmanCat['displayname'])
+                     'order' => $rentmanCat['order'],
+                     'displayname' => $rentmanCat['displayname'],
+                     'itemtype' => $rentmanCat['itemtype']
                 ];
 
                 if (empty($rentmanCat['parent'])) {
@@ -211,61 +207,53 @@ class RentmanService extends Component
                     $tmp = explode('/', $rentmanCat['parent']);
                     $tmpId = array_pop($tmp);
 
-                    $parent = Category::where('rentmanId', '=', $tmpId)->withTrashed();
+                    $parent = Category::find()
+                        ->anyStatus()
+                        ->where(['rentmanId' => $tmpId])
+                        ->one();
 
-                    if ($parent->exists()) {
-                        $categoryData['parentId'] = $parent->first()->id;
+                    if ($parent) {
+                        $categoryData['parentId'] = $parent->id;
                     } else {
                         $categoryData['parentId'] = 0;
                     }
                 }
 
-                $category = Category::where('rentmanId', '=', $categoryData['rentmanId'])->withTrashed();
-                if ($category->exists()) {
-                    $category = $category->first();
+                $category = $parent = Category::find()
+                    ->anyStatus()
+                    ->where(['rentmanId' => $rentmanCat['id']])
+                    ->one();
 
-                    if ($category->trashed()) {
-                        $category->restore();
-                    }
-
-                    $category->update($categoryData);
-
-                } else {
-
-                    $category = Category::create($categoryData);
-                    $category->save();
-
-                    //check if category with the same slug already exists
-                    $slug = Str::slug($category->name);
-                    $count = 1;
-                    $tmp = $this->getCategoryBySlug($slug);
-                    while (!empty($tmp)) {
-                        $slug = $slug.'-'.$count;
-                        $count++;
-                        $tmp = $this->getCategoryBySlug($slug);
-                    }
-
-                    $category->slug = $slug;
-                    $category->save();
+                if (empty($category)) {
+                    $category = new Category();
                 }
+                $category->title = $rentmanCat['displayname'];
+                foreach($categoryData as $key => $value) {
+                    if (property_exists($category, $key)) {
+                        $category->{$key} = $value;
+                    }
+                }
+                $success = Craft::$app->elements->saveElement($category);
 
+                $rentmanCategoryIds[] = $category->rentmanId;
+                echo '.';
+                
             }
             //check if categories were deleted
-            $rentmanCategoryIds = Arr::pluck($rentmanCategories, 'id');
-            $categories = Category::select('id', 'rentmanId')->whereNull('deleted_at')->get();
+            $categories = Category::find()->anyStatus()->select(['id', 'rentmanId'])->all();
+            
             foreach ($categories as $category) {
                 if (in_array($category->rentmanId, $rentmanCategoryIds) === false) {
-                    $category->delete();
+                    $success = Craft::$app->elements->deleteElement($category);
+                    echo 'x';
                 }
             }
-        } catch (RequestException $e) {
+        /*} catch (RequestException $e) {
             Log::info($e->getRequest() . "\n");
             if ($e->hasResponse()) {
                 Log::info($e->getResponse() . "\n");
             }
-        }
-
-        Cache::flush();
+        }*/
 
     }
 

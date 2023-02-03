@@ -8,18 +8,28 @@ use craft\elements\User;
 use craft\elements\conditions\ElementConditionInterface;
 use craft\elements\db\ElementQueryInterface;
 use craft\helpers\UrlHelper;
+use craft\models\FieldLayout;
+use craft\models\FieldLayoutTab;
 use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
 use furbo\rentmanforcraft\elements\conditions\CategoryCondition;
 use furbo\rentmanforcraft\elements\db\CategoryQuery;
 use furbo\rentmanforcraft\records\Category as CategoryRecord;
+use furbo\rentmanforcraft\RentmanForCraft;
 
 /**
  * Category element type
  */
-class Category extends Element
+class Category extends RentmanElement
 {
+
+    public $rentmanId;
+    public $parentId;
+    public $displayname;
+    public $order;
+    public $itemtype;
+    
     public static function displayName(): string
     {
         return Craft::t('rentman-for-craft', 'Category');
@@ -123,13 +133,7 @@ class Category extends Element
                 'orderBy' => 'elements.dateUpdated',
                 'attribute' => 'dateUpdated',
                 'defaultDir' => 'desc',
-            ],
-            [
-                'label' => Craft::t('app', 'ID'),
-                'orderBy' => 'elements.id',
-                'attribute' => 'id',
-            ],
-            // ...
+            ]
         ];
     }
 
@@ -137,10 +141,9 @@ class Category extends Element
     {
         return [
             'slug' => ['label' => Craft::t('app', 'Slug')],
-            'uri' => ['label' => Craft::t('app', 'URI')],
             'link' => ['label' => Craft::t('app', 'Link'), 'icon' => 'world'],
             'id' => ['label' => Craft::t('app', 'ID')],
-            'uid' => ['label' => Craft::t('app', 'UID')],
+            'rentmanId' => ['label' => Craft::t('rentman-for-craft', 'category.rentmanId')],
             'dateCreated' => ['label' => Craft::t('app', 'Date Created')],
             'dateUpdated' => ['label' => Craft::t('app', 'Date Updated')],
             // ...
@@ -150,6 +153,7 @@ class Category extends Element
     protected static function defineDefaultTableAttributes(string $source): array
     {
         return [
+            'rentmanId',
             'link',
             'dateCreated',
             // ...
@@ -165,8 +169,8 @@ class Category extends Element
 
     public function getUriFormat(): ?string
     {
-        // If categories should have URLs, define their URI format here
-        return null;
+        $settings = RentmanForCraft::getInstance()->getSettings()->categoryRoutes;
+        return $settings[$this->site->handle]['uriFormat'];
     }
 
     protected function previewTargets(): array
@@ -186,13 +190,14 @@ class Category extends Element
 
     protected function route(): array|string|null
     {
-        // Define how categories should be routed when their URLs are requested
+        $categoryRoutes = RentmanForCraft::getInstance()->getSettings()->categoryRoutes;
         return [
-            'templates/render',
-            [
-                'template' => 'site/template/path',
-                'variables' => ['category' => $this],
-            ]
+            'templates/render', [
+                'template' => $categoryRoutes[$this->site->handle]['template'],
+                'variables' => [
+                    'category' => $this,
+                ],
+            ],
         ];
     }
 
@@ -239,12 +244,12 @@ class Category extends Element
 
     protected function cpEditUrl(): ?string
     {
-        return sprintf('categories/%s', $this->getCanonicalId());
+        return UrlHelper::cpUrl('rentman-for-craft/categories/' . $this->id);
     }
 
     public function getPostEditUrl(): ?string
     {
-        UrlHelper::cpUrl('categories');
+        return UrlHelper::cpUrl('rentman-for-craft/categories');
     }
 
     public function prepareEditScreen(Response $response, string $containerId): void
@@ -283,7 +288,42 @@ class Category extends Element
 
     public function getFieldLayout(): ?craft\models\FieldLayout
     {
-        return \Craft::$app->fields->getLayoutByType(Category::class);
+        //possible elements
+        // https://docs.craftcms.com/api/v4/craft-base-fieldlayoutelement.html
+        
+        $layoutElements = [];
+        
+        $layoutElements[] = $this->createImportedValueLayoutElement('title', Craft::t('rentman-for-craft', 'category.title'), $this->title);
+        $layoutElements[] = $this->createImportedValueLayoutElement('displayname', Craft::t('rentman-for-craft', 'category.displayname'), $this->displayname);
+        
+        $fieldLayout = new FieldLayout();
+    
+        $tab = new FieldLayoutTab();
+        $tab->name = Craft::t('rentman-for-craft', 'Products');
+        $tab->setLayout($fieldLayout);
+        $tab->setElements($layoutElements);
+
+        $fieldLayout->setTabs([$tab]);
+    
+        return $fieldLayout;
+    }
+
+    public function getMetadata(): array {
+        $parent = parent::getMetadata();
+        $data = [];
+        $data['ID'] = $this->id;
+        $data['Rentman ID'] = $this->rentmanId;
+        $data['Parent ID'] = $this->parentId;
+        $data['Order'] = $this->order;
+        
+        $data = array_merge($data, $parent);
+
+        return $data;
+    }
+
+    public function getIsEditable(): bool
+    {
+        return true;
     }
 
 }

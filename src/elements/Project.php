@@ -3,7 +3,6 @@
 namespace furbo\rentmanforcraft\elements;
 
 use Craft;
-use craft\base\Element;
 use craft\elements\User;
 use craft\elements\conditions\ElementConditionInterface;
 use craft\elements\db\ElementQueryInterface;
@@ -18,7 +17,7 @@ use furbo\rentmanforcraft\records\Project as ProjectRecord;
 /**
  * Project element type
  */
-class Project extends Element
+class Project extends RentmanElement
 {
     public static function displayName(): string
     {

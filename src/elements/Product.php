@@ -29,7 +29,7 @@ use phpDocumentor\Reflection\Types\Array_;
 /**
  * Product element type
  */
-class Product extends Element
+class Product extends RentmanElement
 {
     public $rentmanId;
     public $custom;
@@ -121,7 +121,7 @@ class Product extends Element
 
     public static function isLocalized(): bool
     {
-        return false;
+        return true;
     }
 
     public static function hasStatuses(): bool
@@ -165,7 +165,7 @@ class Product extends Element
 
     protected static function includeSetStatusAction(): bool
     {
-        return true;
+        return false;
     }
 
     protected static function defineSortOptions(): array
@@ -207,11 +207,11 @@ class Product extends Element
     protected static function defineDefaultTableAttributes(string $source): array
     {
         return [
-            'images' => ['label' => Craft::t('rentman-for-craft', 'product.images')],
-            'rentmanId' => ['label' => Craft::t('rentman-for-craft', 'product.rentmanId')],
+            'images',
+            'rentmanId',
             'link',
-            'files' => ['label' => Craft::t('rentman-for-craft', 'product.files')],
-            'dateUpdated' => ['label' => Craft::t('app', 'Date Updated')]
+            'files',
+            'dateUpdated'
             // ...
         ];
     }
@@ -486,13 +486,6 @@ class Product extends Element
         return $data;
     }
 
-    protected function createImportedValueLayoutElement($id, $label, $value): FieldLayoutElement {
-        return $this->createHtmlLayoutElement('rentman-for-craft/_includes/show/imported-value', compact('id', 'label', 'value'));
-    }
-
-    protected function createHtmlLayoutElement($template, $vars): FieldLayoutElement {
-        return new Html(Craft::$app->view->renderTemplate($template, $vars, View::TEMPLATE_MODE_CP));
-    }
 
     public function getIsEditable(): bool
     {

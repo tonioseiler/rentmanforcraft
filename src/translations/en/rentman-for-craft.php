@@ -101,5 +101,11 @@ return [
     'product.qrcodes' => 'QR Codes',
     'product.qrcodes.instructions' => '-',
     'product.qrcodes_of_serial_numbers' => 'QR Codes of serial numbers',
-    'product.qrcodes_of_serial_numbers.instructions' => '-'
+    'product.qrcodes_of_serial_numbers.instructions' => '-',
+    'category.title' => 'Category name',
+    'category.title.instructions' => '-',
+    'category.rentmanId' => 'Rentman ID',
+    'category.rentmanId.instructions' => '-',
+    'category.displayname' => 'Displayname',
+    'category.displayname.instructions' => '-',
 ];

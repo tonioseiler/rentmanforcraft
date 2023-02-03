@@ -32,6 +32,10 @@ class CategoryQuery extends ElementQuery
         // join in the items table
         $this->joinElementTable('rentman-for-craft_categories');
 
+        $this->query->select([
+            'rentman-for-craft_categories.*'
+        ]);
+
         if ($this->parentId) {
             $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.parentId', $this->parentId));
         }
