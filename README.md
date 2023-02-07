@@ -28,3 +28,21 @@ composer require furbo/rentman-for-craft
 # tell Craft to install the plugin
 ./craft plugin/install rentman-for-craft
 ```
+
+
+## Code Examples
+
+{% set product = craft.rentman.getProductById(2550) %}
+{{product.displayname}}
+
+<hr />
+
+{% for product in craft.rentman.getProductsByCategory(3207) %}
+    {{product.displayname}}
+{% endfor %}
+
+<hr />
+
+{% for product in craft.rentman.getAllProducts() %}
+    {{product.displayname}}
+{% endfor %}
