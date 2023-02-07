@@ -37,4 +37,42 @@ class RentmanForCraftVariable
         return $settings['cpTitle'];
     }
 
+    public function getProductById($id)
+    {
+       
+    }
+
+    public function getProductsByCategory($categoryId)
+    {
+       
+    }
+
+    public function getAllProducts()
+    {
+       
+    }
+
+    public function getCategoryTree()
+    {
+       
+    }
+
+    public function printCategoryTree($activeCategoryId)
+    {
+       
+    }
+
+
+    public function getSetContent($productId)
+    {
+       
+    }
+
+    public function getProductAccesories($productId)
+    {
+       
+    }
+
+
+
 }
