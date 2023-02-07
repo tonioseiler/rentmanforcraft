@@ -37,20 +37,25 @@ class RentmanForCraftVariable
         return $settings['cpTitle'];
     }
 
+    public function getAllProducts()
+    {
+        $productsService = RentmanForCraft::getInstance()->productsService;
+        return $productsService->getAllProducts();
+    }
+
     public function getProductById($id)
     {
-       
+        $productsService = RentmanForCraft::getInstance()->productsService;
+        return $productsService->getProductById($id);
     }
 
     public function getProductsByCategory($categoryId)
     {
-       
+        $productsService = RentmanForCraft::getInstance()->productsService;
+        return $productsService->getProductsByCategory($categoryId);
     }
 
-    public function getAllProducts()
-    {
-       
-    }
+    
 
     public function getCategoryTree()
     {

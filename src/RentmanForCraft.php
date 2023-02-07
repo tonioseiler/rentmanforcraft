@@ -15,13 +15,14 @@ use craft\events\TemplateEvent;
 use craft\log\MonologTarget;
 use craft\services\Elements;
 use craft\web\UrlManager;
+use craft\web\View;
 use craft\web\twig\variables\Cp;
 use craft\web\twig\variables\CraftVariable;
-use craft\web\View;
 use furbo\rentmanforcraft\elements\Category;
 use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\models\Settings;
+use furbo\rentmanforcraft\services\ProductsService;
 use furbo\rentmanforcraft\services\RentmanService;
 use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
 use furbo\rentmanforcraft\web\assets\rentmanforcraft\RentmanForCraftCPAsset;
@@ -36,6 +37,7 @@ use yii\base\Event;
  * @copyright Furbo GmbH
  * @license https://craftcms.github.io/license/ Craft License
  * @property-read RentmanService $rentmanService
+ * @property-read ProductsService $productsService
  */
 class RentmanForCraft extends Plugin
 {
@@ -46,7 +48,10 @@ class RentmanForCraft extends Plugin
     public static function config(): array
     {
         return [
-            'components' => ['rentmanService' => RentmanService::class],
+            'components' => [
+                        'rentmanService' => RentmanService::class, 
+                        'productsService' => ProductsService::class
+            ],
         ];
     }
 

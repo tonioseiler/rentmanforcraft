@@ -28,7 +28,14 @@ class ApiController extends Controller
      */
     public function actionProducts(): Response
     {
-        //TODO: implement
+        $productsService = RentmanForCraft::getInstance()->productsService;
+        return $productsService->getAllProducts();
+    }
+
+    public function actionProduct($id): Response
+    {
+        $productsService = RentmanForCraft::getInstance()->productsService;
+        return $productsService->getProductById($id);
     }
 
     /**

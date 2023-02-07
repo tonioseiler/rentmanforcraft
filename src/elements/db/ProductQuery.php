@@ -5,6 +5,7 @@ namespace furbo\rentmanforcraft\elements\db;
 use Craft;
 use craft\base\Element;
 use craft\elements\db\ElementQuery;
+use craft\helpers\Db;
 
 /**
  * Product query
@@ -39,11 +40,11 @@ class ProductQuery extends ElementQuery
         ]);
 
         if ($this->categoryId) {
-            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.category_id', $this->categoryId));
+            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_products.categoryId', $this->categoryId));
         }
 
         if ($this->rentmanId) {
-            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.rentmanId', $this->rentmanId));
+            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_products.rentmanId', $this->rentmanId));
         }
 
         return parent::beforePrepare();
