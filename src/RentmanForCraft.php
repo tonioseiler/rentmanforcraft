@@ -22,6 +22,7 @@ use furbo\rentmanforcraft\elements\Category;
 use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\models\Settings;
+use furbo\rentmanforcraft\services\CategoriesService;
 use furbo\rentmanforcraft\services\ProductsService;
 use furbo\rentmanforcraft\services\RentmanService;
 use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
@@ -38,6 +39,7 @@ use yii\base\Event;
  * @license https://craftcms.github.io/license/ Craft License
  * @property-read RentmanService $rentmanService
  * @property-read ProductsService $productsService
+ * @property-read CategoriesService $categoriesService
  */
 class RentmanForCraft extends Plugin
 {
@@ -50,7 +52,8 @@ class RentmanForCraft extends Plugin
         return [
             'components' => [
                         'rentmanService' => RentmanService::class, 
-                        'productsService' => ProductsService::class
+                        'productsService' => ProductsService::class,
+                        'categoriesService' => CategoriesService::class
             ],
         ];
     }

@@ -17,6 +17,7 @@ use furbo\rentmanforcraft\elements\conditions\CategoryCondition;
 use furbo\rentmanforcraft\elements\db\CategoryQuery;
 use furbo\rentmanforcraft\records\Category as CategoryRecord;
 use furbo\rentmanforcraft\RentmanForCraft;
+use Illuminate\Support\Collection;
 
 /**
  * Category element type
@@ -29,7 +30,7 @@ class Category extends RentmanElement
     public $displayname;
     public $order;
     public $itemtype;
-    
+
     public static function displayName(): string
     {
         return Craft::t('rentman-for-craft', 'Category');
@@ -325,5 +326,37 @@ class Category extends RentmanElement
     {
         return true;
     }
+
+    public function getChildren(): ElementQueryInterface|Collection
+    {
+        return self::find()
+                ->parentId($this->id);
+    }
+
+    public function hasChildren(): bool
+    {
+        return $this->getChildren()->count() > 0;
+    }
+
+    public function getParent(): ?Category
+    {
+        return self::find()
+                ->id($this->parentId)
+                ->one();
+    }
+
+    public function isMainCategory():bool
+    {
+        return $this->parentId == 0;
+    }
+
+    public function getRecord() {
+        if (empty($this->record)) {
+            $this->record = CategoryRecord::findOne($this->id);
+        }
+        return $this->record;
+    }
+
+    
 
 }

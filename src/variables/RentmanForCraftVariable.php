@@ -5,6 +5,7 @@ namespace furbo\rentmanforcraft\variables;
 use furbo\rentmanforcraft\RentmanForCraft;
 
 use Craft;
+use furbo\rentmanforcraft\elements\Category;
 
 /**
  * Rentman for Craft Variable
@@ -57,14 +58,59 @@ class RentmanForCraftVariable
 
     
 
-    public function getCategoryTree()
+    public function getCategories($parentId = 0)
     {
-       
+        $categoriesService = RentmanForCraft::getInstance()->categoriesService;
+        return $categoriesService->getCategories($parentId);
     }
 
-    public function printCategoryTree($activeCategoryId)
+    public function printCategoryTree($fullTree = false, $parentId = 0, $activeCategoryId = 0)
     {
-       
+        $ret = '';
+
+        $activeCatIds = [];
+        if (!empty($activeCategoryId)) {
+            $tmp = Category::find()->id($activeCategoryId)->one();
+            while (!$tmp->isMainCategory()) {
+                $activeCatIds[] = $tmp->id;
+                $tmp = $tmp->getParent();
+            }
+            $activeCatIds[] = $tmp->id;
+        }
+
+        if ($fullTree) {
+            $categories = $this->getCategories($parentId);
+            foreach($categories as $cat) {
+                $ret .= '<li class="'.(in_array($cat->id, $activeCatIds) ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a></li>';
+                if ($cat->hasChildren()) {
+                    $ret .= '<ul>';
+                    $ret .= $this->printCategoryTree(true, $cat->id, $activeCategoryId);
+                    $ret .= '</ul>';
+                }
+            }
+        } else {
+            if (empty($activeCategoryId)) {
+                //just print the main cats
+                $categories = $this->getCategories($parentId);
+                foreach($categories as $cat) {
+                    $ret .= '<li><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a></li>';
+                }
+            } else {
+                $categories = $this->getCategories($parentId);
+                foreach($categories as $cat) {
+                    $isActive = in_array($cat->id, $activeCatIds);
+                    $ret .= '<li class="'.($isActive  ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a></li>';
+                    if ($cat->hasChildren() && $isActive) {
+                        $ret .= '<ul>';
+                        $ret .= $this->printCategoryTree(false, $cat->id, $activeCategoryId);
+                        $ret .= '</ul>';
+                    }
+                }
+            }
+        }
+        
+        if (!empty($ret) && $parentId == 0) $ret = '<ul>'.$ret.'</ul>';
+        return $ret;
     }
 
 

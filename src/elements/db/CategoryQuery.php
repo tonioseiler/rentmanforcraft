@@ -4,6 +4,7 @@ namespace furbo\rentmanforcraft\elements\db;
 
 use Craft;
 use craft\elements\db\ElementQuery;
+use craft\helpers\Db;
 
 /**
  * Category query
@@ -36,11 +37,11 @@ class CategoryQuery extends ElementQuery
             'rentman-for-craft_categories.*'
         ]);
 
-        if ($this->parentId) {
+        if (isset($this->parentId)) {
             $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.parentId', $this->parentId));
         }
-
-        if ($this->rentmanId) {
+        
+        if (isset($this->rentmanId)) {
             $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_categories.rentmanId', $this->rentmanId));
         }
 

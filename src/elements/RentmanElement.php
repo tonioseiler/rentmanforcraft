@@ -7,11 +7,19 @@ use craft\base\Element;
 use craft\base\FieldLayoutElement;
 use craft\fieldlayoutelements\Html;
 use craft\web\View;
+
+use Illuminate\Support\Collection;
+
 /**
  * RentmanElement element type
  */
 abstract class RentmanElement extends Element
 {
+
+    private $record = null;
+
+    public abstract function getRecord();
+
     protected function createImportedValueLayoutElement($id, $label, $value): FieldLayoutElement {
         return $this->createHtmlLayoutElement('rentman-for-craft/_includes/show/imported-value', compact('id', 'label', 'value'));
     }

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <title>Furbo Rentman for Craft Examples</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="referrer" content="origin-when-cross-origin" />
+
+</head>
+<body>
+
+<h1>How to access rentamn data from twig</h1>
+
+<h2>Get a single product</h2>
+{% set product = craft.rentman.getProductById(2550) %}
+<p>{{product.displayname}}</p>
+
+<hr />
+
+<h2>Get products by category</h2>
+<ul>
+{% for product in craft.rentman.getProductsByCategory(3207) %}
+    <li><a href="{{product.getUrl()}}">{{product.displayname}}</a></li>
+{% endfor %}
+</ul>
+
+<hr />
+
+<h2>Get all products</h2>
+<ul>
+{% for product in craft.rentman.getAllProducts() %}
+    <li><a href="{{product.getUrl()}}">{{product.displayname}}</a></li>
+{% endfor %}
+</ul>
+
+<hr />
+
+<h2>Get main categories</h2>
+<ul>
+{% for mainCategory in craft.rentman.getCategories() %}
+    <li><a href="{{mainCategory.getUrl()}}">{{mainCategory.displayname}}</a></li>
+{% endfor %}
+</ul>
+
+<hr />
+
+<h2>Get categories first two levels</h2>
+<ul>
+{% for mainCategory in craft.rentman.getCategories() %}
+    <li><a href="{{mainCategory.getUrl()}}">{{mainCategory.displayname}}</a></li>
+    {% if mainCategory.hasChildren() %}
+        <ul>
+        {% for child in mainCategory.getChildren().all() %}
+            <li><a href="{{child.getUrl()}}">{{child.displayname}}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endfor %}
+</ul>
+
+<hr />
+
+<h2>Print full categories tree</h2>
+
+{{craft.rentman.printCategoryTree(true)|raw}}
+
+<hr />
+
+<h2>Print full categories tree with active category</h2>
+
+{{craft.rentman.printCategoryTree(true, 0, 3162)|raw}}
+
+<hr />
+
+<h2>Print partial categories tree with active category</h2>
+
+{{craft.rentman.printCategoryTree(false, 0, 3193)|raw}}
+
+</body>
+</html>

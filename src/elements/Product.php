@@ -517,4 +517,11 @@ class Product extends RentmanElement
         return $cat;
     }
 
+    public function getRecord() {
+        if (empty($this->record)) {
+            $this->record = ProductRecord::findOne($this->id);
+        }
+        return $this->record;
+    }
+
 }

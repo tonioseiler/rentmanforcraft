@@ -304,4 +304,11 @@ class Project extends RentmanElement
 
         parent::afterSave($isNew);
     }
+
+    public function getRecord() {
+        if (empty($this->record)) {
+            $this->record = ProjectRecord::findOne($this->id);
+        }
+        return $this->record;
+    }
 }
