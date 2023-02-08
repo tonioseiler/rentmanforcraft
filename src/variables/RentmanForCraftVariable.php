@@ -64,7 +64,7 @@ class RentmanForCraftVariable
         return $categoriesService->getCategories($parentId);
     }
 
-    public function printCategoryTree($fullTree = false, $parentId = 0, $activeCategoryId = 0)
+    public function printCategoryTree($fullTree = false, $activeCategoryId = 0, $parentId = 0)
     {
         $ret = '';
 
@@ -84,7 +84,7 @@ class RentmanForCraftVariable
                 $ret .= '<li class="'.(in_array($cat->id, $activeCatIds) ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a></li>';
                 if ($cat->hasChildren()) {
                     $ret .= '<ul>';
-                    $ret .= $this->printCategoryTree(true, $cat->id, $activeCategoryId);
+                    $ret .= $this->printCategoryTree(true, $activeCategoryId, $cat->id);
                     $ret .= '</ul>';
                 }
             }
@@ -102,7 +102,7 @@ class RentmanForCraftVariable
                     $ret .= '<li class="'.($isActive  ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a></li>';
                     if ($cat->hasChildren() && $isActive) {
                         $ret .= '<ul>';
-                        $ret .= $this->printCategoryTree(false, $cat->id, $activeCategoryId);
+                        $ret .= $this->printCategoryTree(false, $activeCategoryId, $cat->id);
                         $ret .= '</ul>';
                     }
                 }

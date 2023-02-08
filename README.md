@@ -99,11 +99,11 @@ composer require furbo/rentman-for-craft
 
 ## Print full categories tree with active category
 ```
-{{craft.rentman.printCategoryTree(true, 0, 3162)|raw}}
+{{craft.rentman.printCategoryTree(true, 3162)|raw}}
 ```
 <hr />
 
 ## Print partial categories tree with active category
 ```
-{{craft.rentman.printCategoryTree(false, 0, 3193)|raw}}
+{{craft.rentman.printCategoryTree(false, 3193)|raw}}
 ```
