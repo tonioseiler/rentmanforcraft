@@ -99,12 +99,13 @@ class RentmanForCraftVariable
                 $categories = $this->getCategories($parentId);
                 foreach($categories as $cat) {
                     $isActive = in_array($cat->id, $activeCatIds);
-                    $ret .= '<li class="'.($isActive  ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a></li>';
+                    $ret .= '<li class="'.($isActive  ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a>';
                     if ($cat->hasChildren() && $isActive) {
                         $ret .= '<ul>';
                         $ret .= $this->printCategoryTree(false, $activeCategoryId, $cat->id);
                         $ret .= '</ul>';
                     }
+                    $ret .= '</li>';
                 }
             }
         }
