@@ -79,12 +79,14 @@ class RentmanForCraftVariable
         if ($fullTree) {
             $categories = $this->getCategories($parentId);
             foreach($categories as $cat) {
-                $ret .= '<li class="'.(in_array($cat->id, $activeCatIds) ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a></li>';
+                $ret .= '<li class="'.(in_array($cat->id, $activeCatIds) ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a>';
                 if ($cat->hasChildren()) {
                     $ret .= '<ul>';
                     $ret .= $this->printCategoryTree(true, $activeCategoryId, $cat->id);
                     $ret .= '</ul>';
                 }
+                $ret .= '</li>';
+
             }
         } else {
             if (empty($activeCategoryId)) {
@@ -97,12 +99,13 @@ class RentmanForCraftVariable
                 $categories = $this->getCategories($parentId);
                 foreach($categories as $cat) {
                     $isActive = in_array($cat->id, $activeCatIds);
-                    $ret .= '<li class="'.($isActive  ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a></li>';
+                    $ret .= '<li class="'.($isActive  ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a>';
                     if ($cat->hasChildren() && $isActive) {
                         $ret .= '<ul>';
                         $ret .= $this->printCategoryTree(false, $activeCategoryId, $cat->id);
                         $ret .= '</ul>';
                     }
+                    $ret .= '</li>';
                 }
             }
         }
