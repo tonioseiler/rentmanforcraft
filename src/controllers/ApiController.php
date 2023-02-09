@@ -5,6 +5,8 @@ namespace furbo\rentmanforcraft\controllers;
 use Craft;
 use craft\helpers\App;
 use craft\web\Controller;
+use craft\web\Request;
+use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\RentmanForCraft;
 use yii\web\Response;
 
@@ -15,7 +17,7 @@ class ApiController extends Controller
 {
     public $defaultAction = 'index';
 
-    protected array|int|bool $allowAnonymous = ['api', 'products', 'categories'];
+    protected array|int|bool $allowAnonymous = ['api', 'products', 'categories', 'add-product-to-project'];
 
     /**
      * rentman-for-craft/api action
@@ -83,10 +85,40 @@ class ApiController extends Controller
 
     /**
      * rentman-for-craft/api/add-product-to-project action
+     * 
+     * Should be a post request with csrf token
+     * params: projectId, productId, amount (optional)
+     * 
      */
     public function actionAddProductToProject(): Response
     {
-        //TODO: implement
+        
+        $this->requirePostRequest();
+        $request = Craft::$app->getRequest();
+        $params = $request->getBodyParams();
+
+        //TODO: implement its just a dummy implementation
+        $product = null;
+        if (isset($params['productId'])) {
+            $product = Product::find()
+                ->id($params['productId'])
+                ->one();
+        }
+        
+        $project = new \stdClass();
+        $project->id = 1;
+        $project->title = "Its a project";
+
+        $amount = 1;
+        if (isset($params['amount'])) {
+            $amount = $params['amount'];
+        }
+
+        return $this->asJson([
+            'project' => $project,
+            'product' => $product,
+            'amount' => $amount
+        ]);
     }
 
     /**
@@ -94,7 +126,27 @@ class ApiController extends Controller
      */
     public function actionRemoveProductFromProject(): Response
     {
-        //TODO: implement
+        $this->requirePostRequest();
+        $request = Craft::$app->getRequest();
+        $params = $request->getBodyParams();
+
+        //TODO: implement its just a dummy implementation
+        $product = null;
+        if (isset($params['productId'])) {
+            $product = Product::find()
+                ->id($params['productId'])
+                ->one();
+        }
+        
+        $project = new \stdClass();
+        $project->id = 1;
+        $project->title = "Its a project";
+
+
+        return $this->asJson([
+            'project' => $project,
+            'product' => $product
+        ]);
     }
 
     /**
@@ -103,6 +155,8 @@ class ApiController extends Controller
     public function actionSubmitProject(): Response
     {
         //TODO: implement
+        $rentmanService = RentmanForCraft::getInstance()->rentmanService;
+        return $this->asJson($rentmanService->submitOrder());
     }
 
     /**
