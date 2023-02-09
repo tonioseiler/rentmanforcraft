@@ -4,6 +4,7 @@ namespace furbo\rentmanforcraft\controllers;
 
 use Craft;
 use craft\web\Controller;
+use furbo\rentmanforcraft\RentmanForCraft;
 use yii\web\Response;
 
 /**
@@ -108,6 +109,10 @@ class ApiController extends Controller
     public function actionDeleteProject(): Response
     {
         //TODO: implement
+    }
+
+    public function addProductToProject() {
+        
     }
 
 }
