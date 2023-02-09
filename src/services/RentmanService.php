@@ -5,6 +5,7 @@ namespace furbo\rentmanforcraft\services;
 use Craft;
 use furbo\rentmanforcraft\elements\Category;
 use furbo\rentmanforcraft\elements\Product;
+use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\RentmanForCraft;
 use yii\base\Component;
 
@@ -444,56 +445,56 @@ class RentmanService extends Component
     }
 
 
-    public function transmitOrder($order, $clientId = null) {
+    public function submitProject(Project $project) {
         if (empty($this->client)) {
             $this->init();
         }
         try {
 
             $remark = "Created on Website";
-            if (!empty($order->comment)) {
-                $remark .= "<br />".$order->comment;
+            if (!empty($project->comment)) {
+                $remark .= "<br />".$project->comment;
             }
 
-            if (!empty($order->shooting_days)) {
-                $remark .= "<br />".__('app.cart.project.shooting_days').': '.$order->shooting_days;
+            if (!empty($project->shooting_days)) {
+                $remark .= "<br />".__('app.cart.project.shooting_days').': '.$project->shooting_days;
             }
 
-            if (!empty($order->shooting_locations)) {
-                $remark .= "<br />".__('app.cart.project.shooting_locations').': '.$order->shooting_locations;
+            if (!empty($project->shooting_locations)) {
+                $remark .= "<br />".__('app.cart.project.shooting_locations').': '.$project->shooting_locations;
             }
 
-            if (!empty($order->required_transport)) {
-                $remark .= "<br />Fahrzeug: ".$order->required_transport;
+            if (!empty($project->required_transport)) {
+                $remark .= "<br />Fahrzeug: ".$project->required_transport;
             }
 
             $data = [
-                'contact_mailing_number' => $order->delivery_phone,
+                'contact_mailing_number' => $project->delivery_phone,
                 'contact_mailing_country' => 'CH',
-                'contact_name' => $order->delivery_firstname.' '.$order->delivery_lastname,
-                'contact_mailing_postalcode' => $order->billing_zip,
-                'contact_mailing_city' => $order->billing_city,
-                'contact_mailing_street' => $order->billing_street.' '.$order->billing_street_nr,
-                'contact_person_lastname' => $order->delivery_lastname,
-                'contact_person_email' => $order->delivery_email,
+                'contact_name' => $project->delivery_firstname.' '.$project->delivery_lastname,
+                'contact_mailing_postalcode' => $project->billing_zip,
+                'contact_mailing_city' => $project->billing_city,
+                'contact_mailing_street' => $project->billing_street.' '.$project->billing_street_nr,
+                'contact_person_lastname' => $project->delivery_lastname,
+                'contact_person_email' => $project->delivery_email,
                 'contact_person_middle_name' => '',
-                'contact_person_first_name' => $order->delivery_firstname,
-                'usageperiod_end' => $this->formatDateTime($order->return_date),
-                'usageperiod_start' => $this->formatDateTime($order->pickup_date),
-                'in' => $this->formatDateTime($order->return_date),
-                'out' => $this->formatDateTime($order->pickup_date),
-                'location_mailing_number' => '',//$order->billing_phone,
-                'location_mailing_country' => '',//$order->billing_country,
-                'location_name' => '',//$order->billing_firstname.' '.$order->billing_lastname,
-                'location_mailing_postalcode' => '',//$order->billing_zip,
-                'location_mailing_city' => '',//$order->billing_city,
-                'location_mailing_street' => '',//$order->billing_street.' '.$order->billing_street_nr,
-                'name' => $order->title,
-                'external_reference' => $order->id,
+                'contact_person_first_name' => $project->delivery_firstname,
+                'usageperiod_end' => $this->formatDateTime($project->return_date),
+                'usageperiod_start' => $this->formatDateTime($project->pickup_date),
+                'in' => $this->formatDateTime($project->return_date),
+                'out' => $this->formatDateTime($project->pickup_date),
+                'location_mailing_number' => '',//$project->billing_phone,
+                'location_mailing_country' => '',//$project->billing_country,
+                'location_name' => '',//$project->billing_firstname.' '.$project->billing_lastname,
+                'location_mailing_postalcode' => '',//$project->billing_zip,
+                'location_mailing_city' => '',//$project->billing_city,
+                'location_mailing_street' => '',//$project->billing_street.' '.$project->billing_street_nr,
+                'name' => $project->title,
+                'external_reference' => $project->id,
                 'remark' => $remark,
-                'planperiod_end' => $this->formatDateTime($order->to),
-                'planperiod_start' => $this->formatDateTime($order->from),
-                'price' => $order->amount
+                'planperiod_end' => $this->formatDateTime($project->to),
+                'planperiod_start' => $this->formatDateTime($project->from),
+                'price' => $project->amount
             ];
 
             $response = $this->client->request('POST', $this->apiUrl.'projectrequests', [
@@ -506,7 +507,7 @@ class RentmanService extends Component
             $projectId = $jsonResponse['data']['id'];
 
             $count = 0;
-            foreach ($order->orderItemsByCategory() as $oi) {
+            foreach ($project->orderItemsByCategory() as $oi) {
                 $data = [
                     "quantity" => intval($oi->quantity),
                     "quantity_total" => intval($oi->quantity),
@@ -528,8 +529,8 @@ class RentmanService extends Component
                 ]);
             }
 
-            $order->state = Order::TRANSMITTED;
-            $order->save();
+            $project->state = Order::TRANSMITTED;
+            $project->save();
 
 
         } catch (\Exception $e) {
