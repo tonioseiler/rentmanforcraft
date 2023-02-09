@@ -17,4 +17,11 @@ class CategoriesService extends Component
             ->parentId($parentId);
         return $query->all();
     }
+
+    public function getCategoryById($id)
+    {
+        return Category::find()
+            ->id($id)
+            ->one();  
+    }
 }

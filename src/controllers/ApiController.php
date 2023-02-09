@@ -3,6 +3,7 @@
 namespace furbo\rentmanforcraft\controllers;
 
 use Craft;
+use craft\helpers\App;
 use craft\web\Controller;
 use furbo\rentmanforcraft\RentmanForCraft;
 use yii\web\Response;
@@ -25,26 +26,51 @@ class ApiController extends Controller
     }
 
     /**
+     * return all products
      * rentman-for-craft/api/products action
+     * 
+     * return all products of a category
+     * /actions/rentman-for-craft/api/products?categoryId=167
+     * 
+     * return single product
+     * /actions/rentman-for-craft/api/products?id=167
+     * 
      */
-    public function actionProducts(): Response
+    public function actionProducts(?int $categoryId = null, ?int $id = null): Response
     {
-        $productsService = RentmanForCraft::getInstance()->productsService;
-        return $productsService->getAllProducts();
-    }
-
-    public function actionProduct($id): Response
-    {
-        $productsService = RentmanForCraft::getInstance()->productsService;
-        return $productsService->getProductById($id);
+        if (!empty($id)) {
+            $productsService = RentmanForCraft::getInstance()->productsService;
+            return $this->asJson($productsService->getProductById($id));
+        } else if (!empty($categoryId)) {
+            $productsService = RentmanForCraft::getInstance()->productsService;
+            return $this->asJson($productsService->getProductsByCategory($categoryId));
+        } else {
+            App::maxPowerCaptain();
+            $productsService = RentmanForCraft::getInstance()->productsService;
+            return $this->asJson($productsService->getAllProducts());
+        }
     }
 
     /**
-     * rentman-for-craft/api/categories action
+     * Return all main categories
+     * rentman-for-craft/api/categories
+     * 
+     * Return all subcategories
+     * /actions/rentman-for-craft/api/categories?parentId=183
+     * 
+     * Return a single category
+     * /actions/rentman-for-craft/api/categories?id=183
+     * 
      */
-    public function actionCategories(): Response
+    public function actionCategories(?int $parentId = 0, ?int $id = null): Response
     {
-        //TODO: implement
+        if (!empty($id)) {
+            $categoriesService = RentmanForCraft::getInstance()->categoriesService;
+            return $this->asJson($categoriesService->getCategoryById($id));
+        } else {
+            $categoriesService = RentmanForCraft::getInstance()->categoriesService;
+            return $this->asJson($categoriesService->getCategories($parentId));
+        }
     }
 
     /**
@@ -112,7 +138,7 @@ class ApiController extends Controller
     }
 
     public function addProductToProject() {
-        
+
     }
 
 }
