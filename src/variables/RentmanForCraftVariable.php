@@ -56,8 +56,6 @@ class RentmanForCraftVariable
         return $productsService->getProductsByCategory($categoryId);
     }
 
-    
-
     public function getCategories($parentId = 0)
     {
         $categoriesService = RentmanForCraft::getInstance()->categoriesService;
