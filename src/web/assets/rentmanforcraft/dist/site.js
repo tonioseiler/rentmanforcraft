@@ -8,8 +8,9 @@ window.rentman = {
 
     listeners: {},
 
-    addProductToProject: function() {
-        alert('hello word');
+    addProductToProject: function(receivedDataArray) {
+        console.log('rentan plugin - addProductToProject()');
+        console.log(receivedDataArray);
     },
 
 }
