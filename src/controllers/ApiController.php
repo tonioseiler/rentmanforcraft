@@ -84,6 +84,22 @@ class ApiController extends Controller
     }
 
     /**
+     * rentman-for-craft/api/get-active-project action
+     */
+    public function actionGetActiveProject(): Response
+    {
+        //TODO: implement
+    }
+
+    /**
+     * rentman-for-craft/api/set-active-project action
+     */
+    public function actionSetActiveProject(): Response
+    {
+        //TODO: implement
+    }
+
+    /**
      * rentman-for-craft/api/add-product-to-project action
      * 
      * Should be a post request with csrf token
@@ -191,8 +207,5 @@ class ApiController extends Controller
         //TODO: implement
     }
 
-    public function addProductToProject() {
-
-    }
 
 }
