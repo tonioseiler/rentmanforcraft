@@ -35,6 +35,16 @@ window.rentman = {
         }
     },
 
+     /*
+     * create a new project
+     */
+     createProject: function(callback) {
+        if (callback) {
+            callback();
+        }
+
+    },
+
     /*
      * adds a product to the active project
      */
@@ -47,7 +57,7 @@ window.rentman = {
     /*
      * removes a product to the project, if the projectId is null, adds it to the current project
      */
-    removeProductFromProject: function(callback) {
+    removeProductFromProject: function(productId, callback) {
         if (callback) {
             callback();
         }
@@ -78,16 +88,6 @@ window.rentman = {
         if (callback) {
             callback();
         }
-    },
-
-    /*
-     * create a new project
-     */
-    createProject: function(callback) {
-        if (callback) {
-            callback();
-        }
-
     },
 
     /*
