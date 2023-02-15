@@ -49,10 +49,9 @@ window.rentman = {
     * get the current active project's quantity, return null if user dies not have a project
     */
     getActiveProjectQuantity: function(projectId) {
-        console.log('rentman.getActiveProjectQuantity()');
+        // here ajax call, on result return the quantiy of products in this project
         let newQuantity = Math.floor(Math.random() * 100);
         return newQuantity;
-
     },
 
     /*
@@ -60,14 +59,17 @@ window.rentman = {
      */
     //addProductToProject: function(projectId,productId, quantity,callback) {
     addProductToProject: function(args) {
-        console.log('rentman.addProductToProject()');
-        console.log('productId:');
-        console.log(args.productId);
-        console.log('callback:');
-        console.log(args.callback);
-        let nameOfCallbackFunction = args.callback;
-        if (nameOfCallbackFunction) {
-            return  window["rentman"][nameOfCallbackFunction]();
+        /*
+        args:
+            projectId
+            productId
+            quantity
+            callback
+         */
+
+        // here ajax call, on result execute and return the callback if set
+        if (args.callback) {
+            return  window["rentman"][args.callback](args.projectId);
         }
     },
 
