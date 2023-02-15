@@ -60,9 +60,10 @@ window.rentman = {
      */
     addProductToProject: function(projectId,productId, quantity,callback) {
         console.log('rentman.addProductToProject()');
+        console.log('callback:');
+        console.log(callback);
         if (callback) {
-            console.log('callback:');
-            console.log(callback);
+
             return callback();
         }
     },
