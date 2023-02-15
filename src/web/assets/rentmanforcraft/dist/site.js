@@ -65,8 +65,9 @@ window.rentman = {
         console.log(args.productId);
         console.log('callback:');
         console.log(args.callback);
-        if (args.callback) {
-            return args.callback();
+        let nameOfCallbackFuntion = args.callback;
+        if (nameOfCallbackFuntion) {
+            return nameOfCallbackFuntion();
         }
     },
 
