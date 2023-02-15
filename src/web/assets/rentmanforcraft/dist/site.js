@@ -50,7 +50,8 @@ window.rentman = {
     */
     getActiveProjectQuantity: function(projectId) {
         console.log('rentman.getActiveProjectQuantity()');
-        return
+        let newQuantity = Math.floor(Math.random() * 100);
+        return newQuantity;
 
     },
 
@@ -59,7 +60,9 @@ window.rentman = {
      */
     addProductToProject: function(projectId,productId, quantity,callback) {
         console.log('rentman.addProductToProject()');
-        return getRandomInt(100);
+        if (callback) {
+            return callback();
+        }
     },
 
     /*
