@@ -103,7 +103,7 @@ class ApiController extends Controller
      * rentman-for-craft/api/add-product-to-project action
      * 
      * Should be a post request with csrf token
-     * params: projectId, productId, amount (optional)
+     * params: projectId, productId, quantity (optional)
      * 
      */
     public function actionAddProductToProject(): Response
@@ -125,15 +125,15 @@ class ApiController extends Controller
         $project->id = 1;
         $project->title = "Its a project";
 
-        $amount = 1;
-        if (isset($params['amount'])) {
-            $amount = $params['amount'];
+        $quantity = 1;
+        if (isset($params['quantity'])) {
+            $quantity = $params['quantity'];
         }
 
         return $this->asJson([
             'project' => $project,
             'product' => $product,
-            'amount' => $amount
+            'quantity' => $quantity
         ]);
     }
 

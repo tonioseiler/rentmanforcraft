@@ -46,13 +46,20 @@ window.rentman = {
     },
 
     /*
+    * get the current active project's quantity, return null if user dies not have a project
+    */
+    getActiveProjectQuantity: function(projectId) {
+        console.log('rentman.getActiveProjectQuantity()');
+        return
+
+    },
+
+    /*
      * adds a product to the active project
      */
-    addProductToProject: function(productId, callback) {
-        console.log('addProductToProject');
-        if (callback) {
-            callback();
-        }
+    addProductToProject: function(projectId,productId, quantity,callback) {
+        console.log('rentman.addProductToProject()');
+        return getRandomInt(100);
     },
 
     /*
