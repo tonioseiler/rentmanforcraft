@@ -67,7 +67,7 @@ window.rentman = {
         console.log(args.callback);
         let nameOfCallbackFuntion = args.callback;
         if (nameOfCallbackFuntion) {
-            return nameOfCallbackFuntion();
+            return  window[nameOfCallbackFuntion]();
         }
     },
 
