@@ -49,6 +49,7 @@ window.rentman = {
      * adds a product to the active project
      */
     addProductToProject: function(productId, callback) {
+        console.log('addProductToProject');
         if (callback) {
             callback();
         }
