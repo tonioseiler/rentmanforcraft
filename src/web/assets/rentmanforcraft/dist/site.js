@@ -98,22 +98,19 @@ window.rentman = {
 
     /*
      * adds a product to the active project
+     * if callback is a string, we assume the namespace for the callback method is "app"
+     * if callback is an array, the first element is used as the namespace and the second for the callback method
      */
-    //addProductToProject: function(projectId,productId, quantity,callback) {
-    addProductToProject: function (args) {
-        /*
-        args:
-            projectId
-            productId
-            quantity
-            callbackNamespace
-            callback
-         */
-
+    addProductToProject: function (projectId, productId, quantity, callback) {
         // here ajax call, on result execute and return the callback if set
-        if ((args.callback) && (args.callbackNamespace)) {
-            return window[args.callbackNamespace][args.callback](args.projectId);
-            //return window["rentman"][args.callback](args.projectId);
+        if (callback) {
+            if (Array.isArray(callback)) {
+                console.log('addProductToProject callback has namespace');
+                return window[callback[0]][callback[1]](projectId);
+            } else {
+                console.log('addProductToProject callback does not have a namespace');
+                return window['app'][callback](projectId);
+            }
         }
     },
 
