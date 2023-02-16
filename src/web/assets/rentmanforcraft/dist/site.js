@@ -50,14 +50,16 @@ window.rentman = {
      * get the current active project, return null if user dies not have a project
      */
     getActiveProject: function (callback) {
-        currentProjectId = Math.floor(Math.random() * 10);
-        currentProjectTitle = "My project title";
+        let currentProjectId = Math.floor(Math.random() * 10);
+        let currentProjectTitle = "My project title " + currentProjectId;
+        let currentProjectQuantity = 88;
         if (callback) {
             callback();
         } else {
             let currentProject = {
                 projectId: currentProjectId,
                 projectTitle: currentProjectTitle,
+                projectQuantity: currentProjectQuantity,
             }
             return currentProject;
         }
@@ -67,9 +69,11 @@ window.rentman = {
      * set the currenty active project
      */
     setActiveProject: function (projectId, callback) {
-
+        // here do ajax call, when done:
+        console.log('rentman.setActiveProject()');
         if (callback) {
-            callback();
+            window['app'][callback](projectId);
+            //callback(projectId);
         }
     },
 
@@ -107,7 +111,7 @@ window.rentman = {
          */
 
         // here ajax call, on result execute and return the callback if set
-        if ((args.callback)&&(args.callbackNamespace)) {
+        if ((args.callback) && (args.callbackNamespace)) {
             return window[args.callbackNamespace][args.callback](args.projectId);
             //return window["rentman"][args.callback](args.projectId);
         }
