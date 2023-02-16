@@ -125,6 +125,17 @@ class RentmanForCraftVariable
        
     }
 
+    public function getUserProjectsJson()
+    {
+        $projects = array (
+            '1' => 'First Project',
+            '44' => 'Second Project',
+            '77' => 'Third Project',
+            '88' => 'Last Project',
+        );
+        return json_encode($projects);
+
+    }
 
 
 }
