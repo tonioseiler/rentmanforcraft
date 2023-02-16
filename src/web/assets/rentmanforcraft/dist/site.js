@@ -50,7 +50,7 @@ window.rentman = {
      * get the current active project, return null if user dies not have a project
      */
     getActiveProject: function (callback) {
-        let currentProjectId = Math.floor(Math.random() * 10);
+        let currentProjectId = Math.floor(Math.random() * 100);
         let currentProjectTitle = "My project title " + currentProjectId;
         let currentProjectQuantity = 88;
         if (callback) {
