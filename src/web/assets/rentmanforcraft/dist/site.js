@@ -78,14 +78,11 @@ window.rentman = {
      */
     setActiveProject: function (projectId, callback) {
         // here do ajax call, when done:
-        console.log('rentman.setActiveProject '+ projectId + ' '+callback);
+        //console.log('rentman.setActiveProject ' + projectId + ' ' + callback);
         if (callback) {
             if (Array.isArray(callback)) {
-                console.log('is array');
                 return window[callback[0]][callback[1]](projectId);
             } else {
-                console.log('NOT array');
-
                 return window['app'][callback](projectId);
             }
         }
