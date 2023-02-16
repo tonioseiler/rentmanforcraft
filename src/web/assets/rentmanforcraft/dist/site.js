@@ -105,10 +105,8 @@ window.rentman = {
         // here ajax call, on result execute and return the callback if set
         if (callback) {
             if (Array.isArray(callback)) {
-                console.log('addProductToProject callback has namespace');
                 return window[callback[0]][callback[1]](projectId);
             } else {
-                console.log('addProductToProject callback does not have a namespace');
                 return window['app'][callback](projectId);
             }
         }
