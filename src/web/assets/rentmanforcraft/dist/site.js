@@ -91,6 +91,8 @@ window.rentman = {
     * create a new project
     */
     createProject: function (callback) {
+        // here ajax call, on result return the new id
+        return 99;
         if (callback) {
             callback();
         }
