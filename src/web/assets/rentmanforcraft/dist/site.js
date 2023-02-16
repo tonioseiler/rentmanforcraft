@@ -48,13 +48,19 @@ window.rentman = {
 
     /*
      * get the current active project, return null if user dies not have a project
+     * if callback is a string, we assume the namespace for the callback method is "app"
+     * if callback is an array, the first element is used as the namespace and the second for the callback method
      */
     getActiveProject: function (callback) {
         let currentProjectId = Math.floor(Math.random() * 100);
         let currentProjectTitle = "My project title " + currentProjectId;
         let currentProjectQuantity = 88;
         if (callback) {
-            callback();
+            if (Array.isArray(callback)) {
+                return window[callback[0]][callback[1]](currentProjectId);
+            } else {
+                return window['app'][callback](currentProjectId);
+            }
         } else {
             let currentProject = {
                 projectId: currentProjectId,
@@ -67,13 +73,17 @@ window.rentman = {
 
     /*
      * set the currenty active project
+     * if callback is a string, we assume the namespace for the callback method is "app"
+     * if callback is an array, the first element is used as the namespace and the second for the callback method
      */
     setActiveProject: function (projectId, callback) {
         // here do ajax call, when done:
-        console.log('rentman.setActiveProject()');
         if (callback) {
-            window['app'][callback](projectId);
-            //callback(projectId);
+            if (Array.isArray(callback)) {
+                return window[callback[0]][callback[1]](projectId);
+            } else {
+                return window['app'][callback](projectId);
+            }
         }
     },
 
