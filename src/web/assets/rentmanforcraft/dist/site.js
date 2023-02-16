@@ -102,12 +102,14 @@ window.rentman = {
             projectId
             productId
             quantity
+            callbackNamespace
             callback
          */
 
         // here ajax call, on result execute and return the callback if set
-        if (args.callback) {
-            return window["rentman"][args.callback](args.projectId);
+        if ((args.callback)&&(args.callbackNamespace)) {
+            return window[args.callbackNamespace][args.callback](args.projectId);
+            //return window["rentman"][args.callback](args.projectId);
         }
     },
 
