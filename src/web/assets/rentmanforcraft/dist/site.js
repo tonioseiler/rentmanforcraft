@@ -41,7 +41,8 @@ window.rentman = {
         if (callback) {
             callback();
         } else {
-            return JSON.stringify(projects);
+            //return JSON.stringify(projects);
+            return projects;
 
         }
     },
