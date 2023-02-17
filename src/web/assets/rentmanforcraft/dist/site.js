@@ -53,7 +53,7 @@ window.rentman = {
      */
     getActiveProject: function (callback) {
         let currentProjectId = Math.floor(Math.random() * 100);
-        let currentProjectTitle = "My project title " + currentProjectId;
+        let currentProjectTitle = "New project " + currentProjectId;
         let currentProjectQuantity = 88;
         if (callback) {
             if (Array.isArray(callback)) {
