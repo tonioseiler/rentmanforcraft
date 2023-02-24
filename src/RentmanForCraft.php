@@ -24,6 +24,7 @@ use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\models\Settings;
 use furbo\rentmanforcraft\services\CategoriesService;
 use furbo\rentmanforcraft\services\ProductsService;
+use furbo\rentmanforcraft\services\ProjectsService;
 use furbo\rentmanforcraft\services\RentmanService;
 use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
 use furbo\rentmanforcraft\web\assets\rentmanforcraft\RentmanForCraftCPAsset;
@@ -40,6 +41,7 @@ use yii\base\Event;
  * @property-read RentmanService $rentmanService
  * @property-read ProductsService $productsService
  * @property-read CategoriesService $categoriesService
+ * @property-read ProjectsService $projectsService
  */
 class RentmanForCraft extends Plugin
 {
@@ -51,9 +53,10 @@ class RentmanForCraft extends Plugin
     {
         return [
             'components' => [
-                        'rentmanService' => RentmanService::class, 
-                        'productsService' => ProductsService::class,
-                        'categoriesService' => CategoriesService::class
+                'rentmanService' => RentmanService::class, 
+                'productsService' => ProductsService::class,
+                'categoriesService' => CategoriesService::class,
+                'projectsService' => ProjectsService::class
             ],
         ];
     }

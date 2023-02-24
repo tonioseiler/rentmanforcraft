@@ -6,6 +6,7 @@ use furbo\rentmanforcraft\RentmanForCraft;
 
 use Craft;
 use furbo\rentmanforcraft\elements\Category;
+use furbo\rentmanforcraft\elements\Project;
 
 /**
  * Rentman for Craft Variable
@@ -141,6 +142,14 @@ class RentmanForCraftVariable
         $projects[3]['projectId'] = 44;
         $projects[3]['projectTitle'] = 'Lat Project';
         return json_encode($projects);
+    }
+
+    
+    public function getActiveProject(): ?Project
+    {
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+        $project = $projectService->getActiveProject();
+        return $project;
     }
 
 

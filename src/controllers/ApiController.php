@@ -3,10 +3,13 @@
 namespace furbo\rentmanforcraft\controllers;
 
 use Craft;
+use craft\elements\User;
 use craft\helpers\App;
+use craft\helpers\Session;
 use craft\web\Controller;
 use craft\web\Request;
 use furbo\rentmanforcraft\elements\Product;
+use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\RentmanForCraft;
 use yii\web\Response;
 
@@ -17,7 +20,15 @@ class ApiController extends Controller
 {
     public $defaultAction = 'index';
 
-    protected array|int|bool $allowAnonymous = ['api', 'products', 'categories', 'add-product-to-project'];
+    protected array|int|bool $allowAnonymous = [
+        'api',
+        'products',
+        'categories',
+        'add-product-to-project',
+        'get-active-project',
+        'set-active-project',
+        'create-project'
+    ];
 
     /**
      * rentman-for-craft/api action
@@ -88,7 +99,9 @@ class ApiController extends Controller
      */
     public function actionGetActiveProject(): Response
     {
-        //TODO: implement
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+        $project = $projectService->getActiveProject();
+        return $this->asJson($project);
     }
 
     /**
@@ -96,7 +109,16 @@ class ApiController extends Controller
      */
     public function actionSetActiveProject(): Response
     {
-        //TODO: implement
+
+        $this->requirePostRequest();
+        $request = Craft::$app->getRequest();
+        $params = $request->getBodyParams();
+
+        Session::set('ACTIVE_PROJECT_ID', $params['projectId']);
+
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+        $project = $projectService->getActiveProject();
+        return $this->asJson($project);
     }
 
     /**
@@ -196,7 +218,18 @@ class ApiController extends Controller
      */
     public function actionCreateProject(): Response
     {
-        //TODO: implement
+
+        $user = $this->getCurrentUser();
+
+        $project = new Project();
+        $project->userId = 0;
+        $project->title = 'new Project  ';
+        if (!empty($user)) {
+            $project->userId = $user->id;
+            //TODO: Inherit fields from last order
+        }
+        $success = Craft::$app->elements->saveElement($project);
+        return $this->asJson($project);
     }
 
     /**
@@ -205,6 +238,10 @@ class ApiController extends Controller
     public function actionDeleteProject(): Response
     {
         //TODO: implement
+    }
+
+    private function getCurrentUser(): ?User {
+        return Craft::$app->getUser()->getIdentity();
     }
 
 

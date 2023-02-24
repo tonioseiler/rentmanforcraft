@@ -1,7 +1,24 @@
 window.rentman = {
+
+    activeProject: null,
+
     init: function () {
         rentman.initEventListeners(document);
+        rentman.initAjaxRequests();
     },
+
+    initAjaxRequests: function() {
+        let tokenName = window.csrfTokenName;
+        let tokenValue = window.csrfTokenValue;
+        let data = {};
+        data[tokenName] = tokenValue;
+        $.ajaxSetup({
+            data: data,
+            dataType: "json",
+            cache: false
+        });
+    },
+
     initEventListeners: function (context) {
 
     },
@@ -53,6 +70,16 @@ window.rentman = {
      * if callback is an array, the first element is used as the namespace and the second for the callback method
      */
     getActiveProject: function (callback) {
+        $.get('/actions/rentman-for-craft/api/get-active-project', function(response) {
+            rentman.activeProject = response;
+            if (callback) {
+                callback(
+                    {data:response}
+                );
+            }
+        });
+        
+        return;
         let currentProjectId = Math.floor(Math.random() * 100);
         let currentProjectTitle = "New project " + currentProjectId;
         let currentProjectQuantity = 88;
@@ -78,30 +105,29 @@ window.rentman = {
      * if callback is an array, the first element is used as the namespace and the second for the callback method
      */
     setActiveProject: function (projectId, callback) {
-        // here do ajax call, when done:
-        //console.log('rentman.setActiveProject ' + projectId + ' ' + callback);
-        if (callback) {
-            if (Array.isArray(callback)) {
-                return window[callback[0]][callback[1]](projectId);
-            } else {
-                return window['app'][callback](projectId);
+        $.post('/actions/rentman-for-craft/api/set-active-project', {projectId:projectId}, function(response) {
+            console.log(response);
+            rentman.activeProject = response;
+            if (callback) {
+                callback(
+                    {data:response  }
+                );
             }
-        }
+        });
     },
 
     /*
     * create a new project
     */
     createProject: function (callback) {
-        // here ajax call the will create a new project record, named "Neues Projekt" on result return the new id
-        let projectId = 99;
-        return projectId;
-        /*
-        if (callback) {
-            callback();
-        }
-         */
-
+        $.post('/actions/rentman-for-craft/api/create-project', {}, function(response) {
+            console.log(response);
+            if (callback) {
+                callback(
+                    {data:response}
+                );
+            }
+        });
     },
 
     /*
@@ -179,5 +205,6 @@ window.rentman = {
 document.addEventListener('DOMContentLoaded', function (event) {
     rentman.init();
 });
+
 
 

@@ -19,6 +19,38 @@ use furbo\rentmanforcraft\records\Project as ProjectRecord;
  */
 class Project extends RentmanElement
 {
+
+    public $sessionId;
+    public $userId;
+    public $contact_mailing_number;
+    public $contact_mailing_country;
+    public $contact_name;
+    public $contact_mailing_postalcode;
+    public $contact_mailing_city;
+    public $contact_mailing_street;
+    public $contact_person_lastname;
+    public $contact_person_email;
+    public $contact_person_middle_name;
+    public $contact_person_first_name;
+    public $usageperiod_end;
+    public $usageperiod_start;
+    public $is_paid;
+    public $in;
+    public $out;
+    public $location_mailing_number;
+    public $location_mailing_country;
+    public $location_name;
+    public $location_mailing_postalcode;
+    public $location_mailing_city;
+    public $location_mailing_street;
+    public $external_referenc;
+    public $remark;
+    public $planperiod_end;
+    public $planperiod_start;
+    public $price;
+    public $dateOrdered;
+    public $dateSubmitted;
+
     public static function displayName(): string
     {
         return Craft::t('rentman-for-craft', 'Project');

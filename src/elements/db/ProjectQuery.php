@@ -28,7 +28,7 @@ class ProjectQuery extends ElementQuery
 
     protected function beforePrepare(): bool
     {
-        $this->joinElementTable('rentman-for-craft_products');
+        $this->joinElementTable('rentman-for-craft_projects');
 
         if ($this->sessionId) {
             $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_projects.session_id', $this->sessionId));

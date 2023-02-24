@@ -49,4 +49,8 @@ class Project extends ActiveRecord
     {
         return '{{%rentman-for-craft_projects}}';
     }
+
+    public function getItems() {
+        return $this->hasMany(ProjectItem::className(), ['projectId' => 'id']);
+    }
 }

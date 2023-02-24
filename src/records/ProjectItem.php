@@ -14,4 +14,12 @@ class ProjectItem extends ActiveRecord
     {
         return '{{%rentman-for-craft_projectitems}}';
     }
+
+    public function getProject() {
+        return $this->hasOne(Project::className(), ['id' => 'projectId']);
+    }
+
+    public function getProduct() {
+        return $this->hasOne(Product::className(), ['id' => 'productId']);
+    }
 }

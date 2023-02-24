@@ -138,8 +138,8 @@ class Install extends Migration
                 'planperiod_end' => $this->dateTime()->null(),
                 'planperiod_start' => $this->dateTime()->null(),
                 'price' => $this->double()->defaultValue(0),
-                'dateOrdered' => $this->dateTime()->notNull(),
-                'dateSubmitted' => $this->dateTime()->notNull(),
+                'dateOrdered' => $this->dateTime()->null(),
+                'dateSubmitted' => $this->dateTime()->null(),
                 'dateCreated' => $this->dateTime()->notNull(),
                 'dateUpdated' => $this->dateTime()->notNull(),
                 'uid' => $this->uid()
