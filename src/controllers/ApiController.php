@@ -10,6 +10,8 @@ use craft\web\Controller;
 use craft\web\Request;
 use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\elements\Project;
+use furbo\rentmanforcraft\records\Project as ProjectRecord;
+use furbo\rentmanforcraft\records\ProjectItem;
 use furbo\rentmanforcraft\RentmanForCraft;
 use yii\web\Response;
 
@@ -24,10 +26,10 @@ class ApiController extends Controller
         'api',
         'products',
         'categories',
-        'add-product-to-project',
         'get-active-project',
         'set-active-project',
-        'create-project'
+        'create-project',
+        'set-project-product-quantity'
     ];
 
     /**
@@ -89,9 +91,12 @@ class ApiController extends Controller
     /**
      * rentman-for-craft/api/projects action
      */
-    public function actionProjects(): Response
+    public function actionGetUserProjects(): Response
     {
-        //TODO: implement
+        $user = Craft::$app->getUser()->getIdentity();
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+        $projects = $projectService->getUserProjects($user);
+        return $this->asJson($projects);
     }
 
     /**
@@ -101,7 +106,10 @@ class ApiController extends Controller
     {
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $project = $projectService->getActiveProject();
-        return $this->asJson($project);
+        return $this->asJson([
+            'totals' => $this->getProjectTotals($project),
+            'project' => $project,
+        ]);
     }
 
     /**
@@ -118,73 +126,76 @@ class ApiController extends Controller
 
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $project = $projectService->getActiveProject();
-        return $this->asJson($project);
+        return $this->asJson([
+            'totals' => $this->getProjectTotals($project),
+            'project' => $project,
+        ]);
     }
 
     /**
-     * rentman-for-craft/api/add-product-to-project action
+     * rentman-for-craft/api/set-project-product-quantity action
      * 
      * Should be a post request with csrf token
-     * params: projectId, productId, quantity (optional)
+     * params: productId, quantity (optional)
      * 
      */
-    public function actionAddProductToProject(): Response
+    public function actionSetProjectProductQuantity(): Response
     {
         
+        //TODO: check user
+
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
         $params = $request->getBodyParams();
 
-        //TODO: implement its just a dummy implementation
         $product = null;
         if (isset($params['productId'])) {
             $product = Product::find()
                 ->id($params['productId'])
                 ->one();
         }
-        
-        $project = new \stdClass();
-        $project->id = 1;
-        $project->title = "Its a project";
 
+        $projectId = Session::get('ACTIVE_PROJECT_ID', 0);
+        
         $quantity = 1;
         if (isset($params['quantity'])) {
             $quantity = $params['quantity'];
         }
 
-        return $this->asJson([
-            'project' => $project,
-            'product' => $product,
-            'quantity' => $quantity
-        ]);
-    }
-
-    /**
-     * rentman-for-craft/api/remove-product-from-project action
-     */
-    public function actionRemoveProductFromProject(): Response
-    {
-        $this->requirePostRequest();
-        $request = Craft::$app->getRequest();
-        $params = $request->getBodyParams();
-
-        //TODO: implement its just a dummy implementation
-        $product = null;
-        if (isset($params['productId'])) {
-            $product = Product::find()
-                ->id($params['productId'])
-                ->one();
+        //check if item exists
+        $item = ProjectItem::find()->where(['productId' => $product->id, 'projectId' => $projectId])->one();
+        if (empty($item)) {
+            $item = new ProjectItem();
+            $item->id = 0;
+            $item->projectId = $projectId;
+            $item->productId = $product->id;
+            $item->save();
         }
+        $item->quantity = $quantity;
+        $item->itemtype = $product->type;
+        $item->unit_price = $product->price;
+        $item->price = $product->price * $quantity;
+        $item->update();
         
-        $project = new \stdClass();
-        $project->id = 1;
-        $project->title = "Its a project";
+        $project = $item->getProject();
+        $product = $item->getProduct();
 
-
-        return $this->asJson([
-            'project' => $project,
-            'product' => $product
-        ]);
+        if ($quantity > 0) {
+            return $this->asJson([
+                'project' => $project,
+                'product' => $product,
+                'item' => $item,
+                'totals' => $this->getProjectTotals($project),
+            ]);
+        } else {
+            $ret = [
+                'project' => $item->getProject(),
+                'product' => $item->getProduct(),
+                'totals' => $this->getProjectTotals($project),
+            ];
+            $item->delete();
+            return $this->asJson($ret);
+        }
     }
 
     /**
@@ -242,6 +253,15 @@ class ApiController extends Controller
 
     private function getCurrentUser(): ?User {
         return Craft::$app->getUser()->getIdentity();
+    }
+
+    private function getProjectTotals($project) {
+        return [
+            'totalQuantity' => $project->getTotalQuantity(),
+            'totalPrice' => $project->getTotalPrice(),
+            'totalWeight' => $project->getTotalWeight()
+        ];
+        
     }
 
 

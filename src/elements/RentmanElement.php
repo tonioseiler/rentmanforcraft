@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
 abstract class RentmanElement extends Element
 {
 
-    private $record = null;
+    protected $record = null;
 
     public abstract function getRecord();
 

@@ -152,5 +152,11 @@ class RentmanForCraftVariable
         return $project;
     }
 
+    public function getProjectProductQuantity($productId): int {
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+        $project = $projectService->getActiveProject();
+        return $projectService->getProjectProductQuantity($productId, $project->id);
+    }
+
 
 }

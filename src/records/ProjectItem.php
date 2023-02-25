@@ -16,10 +16,10 @@ class ProjectItem extends ActiveRecord
     }
 
     public function getProject() {
-        return $this->hasOne(Project::className(), ['id' => 'projectId']);
+        return $this->hasOne(Project::class, ['id' => 'projectId'])->one();
     }
 
     public function getProduct() {
-        return $this->hasOne(Product::className(), ['id' => 'productId']);
+        return $this->hasOne(Product::class, ['id' => 'productId'])->one();
     }
 }

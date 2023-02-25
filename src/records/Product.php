@@ -4,6 +4,7 @@ namespace furbo\rentmanforcraft\records;
 
 use Craft;
 use craft\db\ActiveRecord;
+use furbo\rentmanforcraft\elements\Product as ProductElement;
 
 /**
  * Product record
@@ -55,10 +56,17 @@ use craft\db\ActiveRecord;
  * @property string $dateUpdated Date updated
  * @property string $uid Uid
  */
-class Product extends ActiveRecord
+class Product extends ElementRecord
 {
     public static function tableName()
     {
         return '{{%rentman-for-craft_products}}';
+    }
+
+    public function getElement() {
+        if (empty($this->element)) {
+            $this->element = ProductElement::findOne($this->id);
+        }
+        return $this->element;
     }
 }

@@ -93,7 +93,7 @@ class Project extends RentmanElement
 
     public static function hasUris(): bool
     {
-        return true;
+        return false;
     }
 
     public static function isLocalized(): bool
@@ -342,5 +342,25 @@ class Project extends RentmanElement
             $this->record = ProjectRecord::findOne($this->id);
         }
         return $this->record;
+    }
+
+    public function getItems() {
+        $record = $this->getRecord();
+        return $record->getItems();
+    }
+
+    public function getTotalQuantity() {
+        $record = $this->getRecord();
+        return $record->getTotalQuantity();
+    }
+
+    public function getTotalPrice() {
+        $record = $this->getRecord();
+        return $record->getTotalPrice();
+    }
+
+    public function getTotalWeight() {
+        $record = $this->getRecord();
+        return $record->getTotalWeight();
     }
 }

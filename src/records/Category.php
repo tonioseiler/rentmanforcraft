@@ -4,6 +4,7 @@ namespace furbo\rentmanforcraft\records;
 
 use Craft;
 use craft\db\ActiveRecord;
+use furbo\rentmanforcraft\elements\Category as CategoryElement;
 
 /**
  * Category record
@@ -18,10 +19,17 @@ use craft\db\ActiveRecord;
  * @property string $dateUpdated Date updated
  * @property string $uid Uid
  */
-class Category extends ActiveRecord
+class Category extends ElementRecord
 {
     public static function tableName()
     {
         return '{{%rentman-for-craft_categories}}';
+    }
+
+    public function getElement() {
+        if (empty($this->element)) {
+            $this->element = CategoryElement::findOne($this->id);
+        }
+        return $this->element;
     }
 }

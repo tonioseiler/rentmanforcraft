@@ -51,6 +51,33 @@ class Project extends ActiveRecord
     }
 
     public function getItems() {
-        return $this->hasMany(ProjectItem::className(), ['projectId' => 'id']);
+        return $this->hasMany(ProjectItem::class, ['projectId' => 'id'])->all();
+    }
+
+    public function getTotalQuantity() {
+        $items = $this->getItems();
+        $ret = 0;
+        foreach($items as $item) {
+            $ret += $item->quantity;
+        }
+        return $ret;
+    }
+
+    public function getTotalPrice() {
+        $items = $this->getItems();
+        $ret = 0;
+        foreach($items as $item) {
+            $ret += $item->price;
+        }
+        return $ret;
+    }
+
+    public function getTotalWeight() {
+        $items = $this->getItems();
+        $ret = 0;
+        foreach($items as $item) {
+            $ret += $item->getProduct()->weight * $item->quantity;
+        }
+        return round($ret, 1);
     }
 }
