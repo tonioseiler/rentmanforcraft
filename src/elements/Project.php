@@ -13,6 +13,7 @@ use yii\web\Response;
 use furbo\rentmanforcraft\elements\conditions\ProjectCondition;
 use furbo\rentmanforcraft\elements\db\ProjectQuery;
 use furbo\rentmanforcraft\records\Project as ProjectRecord;
+use furbo\rentmanforcraft\RentmanForCraft;
 
 /**
  * Project element type
@@ -93,7 +94,7 @@ class Project extends RentmanElement
 
     public static function hasUris(): bool
     {
-        return false;
+        return true;
     }
 
     public static function isLocalized(): bool
@@ -194,10 +195,9 @@ class Project extends RentmanElement
         ]);
     }
 
-    public function getUriFormat(): ?string
-    {
-        // If projects should have URLs, define their URI format here
-        return null;
+    public function getUriFormat(): ?string {
+        $settings = RentmanForCraft::getInstance()->getSettings()->projectRoutes;
+        return $settings[$this->site->handle]['uriFormat'];
     }
 
     protected function previewTargets(): array
@@ -217,13 +217,14 @@ class Project extends RentmanElement
 
     protected function route(): array|string|null
     {
-        // Define how projects should be routed when their URLs are requested
+        $projectRoutes = RentmanForCraft::getInstance()->getSettings()->projectRoutes;
         return [
-            'templates/render',
-            [
-                'template' => 'site/template/path',
-                'variables' => ['project' => $this],
-            ]
+            'templates/render', [
+                'template' => $projectRoutes[$this->site->handle]['template'],
+                'variables' => [
+                    'product' => $this,
+                ],
+            ],
         ];
     }
 

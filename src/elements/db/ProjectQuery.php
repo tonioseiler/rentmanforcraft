@@ -4,6 +4,7 @@ namespace furbo\rentmanforcraft\elements\db;
 
 use Craft;
 use craft\elements\db\ElementQuery;
+use craft\helpers\Db;
 
 /**
  * Project query

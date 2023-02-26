@@ -26,4 +26,6 @@ class Settings extends Model
 
     public $categoryRoutes = [];
 
+    public $projectRoutes = [];
+
 }
