@@ -126,22 +126,12 @@ class RentmanForCraftVariable
        
     }
 
-    public function getUserProjectsJson()
+    public function getUserProjects(): array
     {
-        $projects = array();
-        $projects[0] = array();
-        $projects[0]['projectId'] = 1;
-        $projects[0]['projectTitle'] = 'First Project';
-        $projects[1] = array();
-        $projects[1]['projectId'] = 22;
-        $projects[1]['projectTitle'] = 'Second Project';
-        $projects[2] = array();
-        $projects[2]['projectId'] = 33;
-        $projects[2]['projectTitle'] = 'Third Project';
-        $projects[3] = array();
-        $projects[3]['projectId'] = 44;
-        $projects[3]['projectTitle'] = 'Lat Project';
-        return json_encode($projects);
+        $user = Craft::$app->getUser()->getIdentity();
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+        $projects = $projectService->getUserProjects($user);
+        return $projects;
     }
 
     

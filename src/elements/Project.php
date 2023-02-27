@@ -123,7 +123,7 @@ class Project extends RentmanElement
         else if (!empty($this->dateOrdered))
             return '1';
         else
-            return 0;
+            return '0';
     }
 
 
