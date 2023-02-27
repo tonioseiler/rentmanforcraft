@@ -203,9 +203,9 @@ class ApiController extends Controller
      */
     public function actionSubmitProject(): Response
     {
-        //TODO: implement
+        //TODO: implement, theis shoudl just return a redirect to the thank you page
         $rentmanService = RentmanForCraft::getInstance()->rentmanService;
-        return $this->asJson($rentmanService->submitOrder());
+        return redirect;
     }
 
     /**
@@ -213,7 +213,9 @@ class ApiController extends Controller
      */
     public function actionUpdateProject(): Response
     {
-        //TODO: implement
+        //TODO: implement, theis shoudl just return a redirect
+        $rentmanService = RentmanForCraft::getInstance()->rentmanService;
+        return redirect;
     }
 
     /**
