@@ -27,6 +27,19 @@ class ProjectQuery extends ElementQuery
         return $this;
     }
 
+    protected function statusCondition(string $status): mixed
+    {
+        switch ($status) {
+            case '2':
+                return ['not', ['dateSubmitted' => null]];
+            case '1':
+                return ['not', ['dateOrdered' => null]];
+            default:
+                return parent::statusCondition($status);
+        }
+    }
+
+
     protected function beforePrepare(): bool
     {
         $this->joinElementTable('rentman-for-craft_projects');

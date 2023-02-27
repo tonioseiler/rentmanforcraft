@@ -107,6 +107,27 @@ class Project extends RentmanElement
         return true;
     }
 
+    public static function statuses(): array
+    {
+        return [
+            '0' => ['label' => \Craft::t('rentman-for-craft', 'Draft'), 'color' => 'dddddd'],
+            '1' => ['label' => \Craft::t('rentman-for-craft', 'Ordered'), 'color' => '90EE90'],
+            '2' => ['label' => \Craft::t('rentman-for-craft', 'Submitted'), 'color' => '27AB1F'],
+        ];
+    }
+
+    public function getStatus(): ?string
+    {
+        if (!empty($this->dateSubmitted))
+            return '2';
+        else if (!empty($this->dateOrdered))
+            return '1';
+        else
+            return 0;
+    }
+
+
+
     public static function find(): ElementQueryInterface
     {
         return Craft::createObject(ProjectQuery::class, [static::class]);
@@ -331,8 +352,8 @@ class Project extends RentmanElement
             $record->price = $this->price;
             $record->dateOrdered = $this->dateOrdered;
             $record->dateSubmitted = $this->dateSubmitted;
-
-            $record->save(false);
+            
+            $tmp = $record->save(false);
         }
 
         parent::afterSave($isNew);

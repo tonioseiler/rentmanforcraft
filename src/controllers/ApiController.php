@@ -234,13 +234,16 @@ class ApiController extends Controller
 
         $project = new Project();
         $project->userId = 0;
-        $project->title = 'new Project  ';
+        $project->title = 'new Project';
         if (!empty($user)) {
             $project->userId = $user->id;
             //TODO: Inherit fields from last order
         }
         $success = Craft::$app->elements->saveElement($project);
-        return $this->asJson($project);
+        return $this->asJson([
+            'totals' => $this->getProjectTotals($project),
+            'project' => $project,
+        ]);
     }
 
     /**
@@ -257,9 +260,9 @@ class ApiController extends Controller
 
     private function getProjectTotals($project) {
         return [
-            'totalQuantity' => $project->getTotalQuantity(),
-            'totalPrice' => $project->getTotalPrice(),
-            'totalWeight' => $project->getTotalWeight()
+            'totalQuantity' => !empty($project) ? $project->getTotalQuantity() : 0,
+            'totalPrice' => !empty($project) ? $project->getTotalPrice() : 0,
+            'totalWeight' => !empty($project) ? $project->getTotalWeight() : 0
         ];
         
     }

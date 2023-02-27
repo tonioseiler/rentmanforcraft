@@ -113,6 +113,7 @@ window.rentman = {
 
     /*
      * update the active project
+     * probably not used at the moment
      */
     updateProject: function (callback) {
         if (callback) {
