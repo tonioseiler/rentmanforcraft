@@ -215,7 +215,9 @@ class ApiController extends Controller
     {
         //TODO: implement, theis shoudl just return a redirect
         $rentmanService = RentmanForCraft::getInstance()->rentmanService;
-        return redirect;
+        return $this->redirectToPostedUrl();
+        //return redirect;
+
     }
 
     /**
