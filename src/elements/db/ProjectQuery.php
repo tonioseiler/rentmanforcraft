@@ -44,6 +44,10 @@ class ProjectQuery extends ElementQuery
     {
         $this->joinElementTable('rentman-for-craft_projects');
 
+        $this->query->select([
+            'rentman-for-craft_projects.*'
+        ]);
+
         if ($this->sessionId) {
             $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_projects.session_id', $this->sessionId));
         }

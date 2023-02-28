@@ -205,7 +205,7 @@ class ApiController extends Controller
     {
         //TODO: implement, theis shoudl just return a redirect to the thank you page
         $rentmanService = RentmanForCraft::getInstance()->rentmanService;
-        return redirect;
+        return $this->redirectToPostedUrl();
     }
 
     /**
@@ -213,11 +213,36 @@ class ApiController extends Controller
      */
     public function actionUpdateProject(): Response
     {
-        //TODO: implement, theis shoudl just return a redirect
-        $rentmanService = RentmanForCraft::getInstance()->rentmanService;
-        return $this->redirectToPostedUrl();
-        //return redirect;
+     
+        $this->requirePostRequest();
+        $request = Craft::$app->getRequest();
+        $params = $request->getBodyParams();
+        
+        $user = Craft::$app->getUser()->getIdentity();
+        
+        if (empty($user)) {
+            $project = Project::find()
+                ->userId(0)
+                ->id($params['projectId'])
+                ->one();
+        } else {
+            $project = Project::find()
+                ->userId($user->id)
+                ->id($params['projectId'])
+                ->one();
+        }
 
+        unset($params['id']);
+
+        foreach($params as $key => $value) {
+            if (property_exists($project, $key)) {
+                $project->{$key} = $value;
+            }
+        }
+        $success = Craft::$app->elements->saveElement($project);
+                    
+        return $this->redirectToPostedUrl();
+        
     }
 
     /**
@@ -236,6 +261,7 @@ class ApiController extends Controller
 
         $user = $this->getCurrentUser();
 
+        
         $project = new Project();
         $project->userId = 0;
         $project->title = 'new Project';
