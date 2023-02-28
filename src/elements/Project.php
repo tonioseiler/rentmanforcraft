@@ -243,7 +243,7 @@ class Project extends RentmanElement
             'templates/render', [
                 'template' => $projectRoutes[$this->site->handle]['template'],
                 'variables' => [
-                    'product' => $this,
+                    'project' => $this
                 ],
             ],
         ];
