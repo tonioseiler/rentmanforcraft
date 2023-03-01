@@ -75,8 +75,8 @@ class RentmanForCraft extends Plugin
         });
 
         Event::on(
-            Sessions::class,
-            Sessions::EVENT_AFTER_VALIDATE_SESSION,
+            Session::class,
+            Session::EVENT_AFTER_VALIDATE_SESSION,
             function(SessionValidateEvent $event) {
                 // Check if the user is logged in
                 if (!Craft::$app->getUser()->getIdentity()) {
