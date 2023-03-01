@@ -30,8 +30,6 @@ use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
 use furbo\rentmanforcraft\web\assets\rentmanforcraft\RentmanForCraftCPAsset;
 use yii\base\Event;
 
-use craft\services\UserSessionService; // added by paolo to keep the guest session id after logging in
-
 /**
  * Rentman for Craft plugin
  *
@@ -71,9 +69,6 @@ class RentmanForCraft extends Plugin
         Craft::$app->onInit(function() {
             $this->attachEventHandlers();
             $this->registerLogger();
-        });
-        Event::on(UserSessionService::class, UserSessionService::EVENT_BEFORE_LOGIN, function($event) {
-            $event->loginAttributes['setCookies'] = false;
         });
     }
 
