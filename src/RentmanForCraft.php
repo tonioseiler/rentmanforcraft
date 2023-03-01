@@ -68,18 +68,12 @@ class RentmanForCraft extends Plugin
     {
         parent::init();
 
-        Event::on(User::class, User::EVENT_AFTER_LOGIN, function(Event $event) {
-            // Get the current session
-            $session = Craft::$app->getSession();
-            // Get the current session ID
-            $sessionId = $session->getId();
-            // Set the session ID as a cookie
-            setcookie('CraftSessionId', $sessionId, 0, '/');
-        });
+
         // Defer most setup tasks until Craft is fully initialized
         Craft::$app->onInit(function() {
             $this->attachEventHandlers();
             $this->registerLogger();
+
         });
 
 
@@ -204,6 +198,19 @@ class RentmanForCraft extends Plugin
                 }
             }
         );
+
+
+        Event::on(User::class, User::EVENT_AFTER_LOGIN, function(Event $event) {
+            // Get the current session
+            $session = Craft::$app->getSession();
+            // Get the current session ID
+            $sessionId = $session->getId();
+            // Set the session ID as a cookie
+            setcookie('CraftSessionId', $sessionId, 0, '/');
+        });
+
+
+
 
     }
 }
