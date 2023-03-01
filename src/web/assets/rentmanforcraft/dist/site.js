@@ -76,15 +76,6 @@ window.rentman = {
     },
 
     /*
-    * get the current active project's quantity, return null if user dies not have a project
-    */
-    getActiveProjectQuantity: function (projectId) {
-        // here ajax call, on result return the quantiy of products in this project
-        let newQuantity = Math.floor(Math.random() * 100);
-        return newQuantity;
-    },
-
-    /*
      * adds a product to the active project
      * if callback is a string, we assume the namespace for the callback method is "app"
      * if callback is an array, the first element is used as the namespace and the second for the callback method
