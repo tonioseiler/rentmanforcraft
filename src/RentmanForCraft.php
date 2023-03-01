@@ -30,7 +30,8 @@ use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
 use furbo\rentmanforcraft\web\assets\rentmanforcraft\RentmanForCraftCPAsset;
 use yii\base\Event;
 
-
+use craft\web\User;
+use craft\web\Session;
 
 /**
  * Rentman for Craft plugin
@@ -72,6 +73,17 @@ class RentmanForCraft extends Plugin
             $this->attachEventHandlers();
             $this->registerLogger();
         });
+
+        Event::on(User::class, User::EVENT_AFTER_LOGIN, function(Event $event) {
+            // Get the current session
+            $session = Craft::$app->getSession();
+            // Get the current session ID
+            $sessionId = $session->getId();
+            // Set the session ID as a cookie
+            setcookie('CraftSessionId', $sessionId, 0, '/');
+        });
+
+
     }
 
     public function getCpNavItem(): ?array
