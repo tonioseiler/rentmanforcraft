@@ -30,7 +30,7 @@ use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
 use furbo\rentmanforcraft\web\assets\rentmanforcraft\RentmanForCraftCPAsset;
 use yii\base\Event;
 
-use craft\web\Sessions; // added by paolo to keep the guest session id after logging in
+use craft\web\Session; // added by paolo to keep the guest session id after logging in
 
 
 /**
