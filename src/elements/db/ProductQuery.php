@@ -33,13 +33,13 @@ class ProductQuery extends ElementQuery
     protected function beforePrepare(): bool
     {
         $this->joinElementTable('rentman-for-craft_products');
-        $this->joinElementTable('rentman-for-craft_categories'); // paolo
+        //$this->joinElementTable('rentman-for-craft_categories'); // paolo
 
 
         // select the collection id column
         $this->query->select([
             'rentman-for-craft_products.*',
-            'rentman-for-craft_categories.displayname'
+            /*'rentman-for-craft_categories.displayname'*/ // paolo
         ]);
 
         if (isset($this->categoryId)) {
