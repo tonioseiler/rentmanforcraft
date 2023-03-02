@@ -38,6 +38,19 @@
                 value: settings['apiKey']})
             }}
 
+            <div class="field">
+                <div class="heading">
+                    <label>Automatically send projects to rentman</label>
+                </div>
+                {{ forms.lightswitch({
+                    label: 'enabled',
+                    instructions: '',
+                    id: 'autoSubmitProjects',
+                    name: 'autoSubmitProjects',
+                    value: settings['autoSubmitProjects']})
+                }}
+            </field>
+
             <hr />
 
             {% set siteRows = [] %}

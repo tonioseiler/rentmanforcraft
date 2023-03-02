@@ -28,4 +28,6 @@ class Settings extends Model
 
     public $projectRoutes = [];
 
+    public $autoSubmitProjects = true;
+
 }

@@ -8,6 +8,7 @@ use craft\helpers\App;
 use craft\helpers\Session;
 use craft\web\Controller;
 use craft\web\Request;
+use DateTime;
 use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\records\Project as ProjectRecord;
@@ -204,8 +205,38 @@ class ApiController extends Controller
      */
     public function actionSubmitProject(): Response
     {
-        //TODO: implement, theis shoudl just return a redirect to the thank you page
+        $settings = RentmanForCraft::getInstance()->getSettings();
         $rentmanService = RentmanForCraft::getInstance()->rentmanService;
+
+        $this->requirePostRequest();
+        $request = Craft::$app->getRequest();
+        $params = $request->getBodyParams();
+        
+        $user = Craft::$app->getUser()->getIdentity();
+        
+        if (empty($user)) {
+            $project = Project::find()
+                ->userId(0)
+                ->id($params['projectId'])
+                ->one();
+        } else {
+            $project = Project::find()
+                ->userId($user->id)
+                ->id($params['projectId'])
+                ->one();
+        }
+
+        if ($project) {
+            $project->dateOrdered = date();
+
+            if ($settings->autoSubmitProjects) {
+                $rentmanService->submitProject($project);
+                $project->dateSubmitted =  date();
+            }
+            $success = Craft::$app->elements->saveElement($project);
+            Session::set('ACTIVE_PROJECT_ID', 0);
+        }
+
         return $this->redirectToPostedUrl();
     }
 
@@ -262,7 +293,6 @@ class ApiController extends Controller
 
         $user = $this->getCurrentUser();
 
-        
         $project = new Project();
         $project->userId = 0;
         $project->title = 'Neues Projekt';
