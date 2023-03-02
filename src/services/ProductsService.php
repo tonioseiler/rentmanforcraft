@@ -29,7 +29,8 @@ class ProductsService extends Component
     {
         return Product::find()
             ->categoryId($categoryId)
-            ->all();  
+            ->orderBy('code')
+            ->all();
     }
 
     public function getSetContent($productId)
