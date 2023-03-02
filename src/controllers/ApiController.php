@@ -29,6 +29,7 @@ class ApiController extends Controller
         'get-active-project',
         'set-active-project',
         'create-project',
+        'update-project',
         'set-project-product-quantity'
     ];
 
