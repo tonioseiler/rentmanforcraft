@@ -12,6 +12,7 @@ use craft\events\RegisterCpNavItemsEvent;
 use craft\events\RegisterTemplateRootsEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\TemplateEvent;
+use craft\helpers\Session;
 use craft\log\MonologTarget;
 use craft\services\Elements;
 use craft\web\UrlManager;
@@ -154,7 +155,6 @@ class RentmanForCraft extends Plugin
             $event->rules = array_merge($event->rules, $this->getCpRoutes());
         });
         
-
         // Executed after settings are saved
         Event::on(
             Plugin::class,
@@ -197,6 +197,32 @@ class RentmanForCraft extends Plugin
                 }
             }
         );
+
+        //executed after user logs in
+        Event::on( \yii\web\User::class,  
+            \yii\web\User::EVENT_AFTER_LOGIN, 
+            function( \yii\web\UserEvent $event) {
+                //check if request has a active prject id, if yes, add it to the new session and set the user id on the project
+                $params = Craft::$app->request->getBodyParams();
+                if (isset($params['activeProjectId'])) {
+                    $projectId = $params['activeProjectId'];
+                    if(!empty($projectId)) {
+                        Session::set('ACTIVE_PROJECT_ID', $projectId);
+
+                        $project = Project::find()
+                            ->userId(0)
+                            ->id($projectId)
+                            ->one();
+
+                        $user = $event->identity;
+                        if ($project) {
+                            $project->userId = $user->id;
+                        }
+                        $success = Craft::$app->elements->saveElement($project);
+                    }
+                }
+            }
+        ); 
 
 
     }
