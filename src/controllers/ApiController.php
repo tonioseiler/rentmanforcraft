@@ -68,6 +68,11 @@ class ApiController extends Controller
         }
     }
 
+    public function actionSearchProducts($query): Response
+    {
+        //TODO: implement
+    }
+
     /**
      * Return all main categories
      * rentman-for-craft/api/categories
@@ -282,7 +287,34 @@ class ApiController extends Controller
      */
     public function actionCopyProject(): Response
     {
-        //TODO: implement
+
+        $this->requirePostRequest();
+        $request = Craft::$app->getRequest();
+        $params = $request->getBodyParams();
+        
+        $user = Craft::$app->getUser()->getIdentity();
+        
+        if (empty($user)) {
+            $project = Project::find()
+                ->userId(0)
+                ->id($params['projectId'])
+                ->one();
+        } else {
+            $project = Project::find()
+                ->userId($user->id)
+                ->id($params['projectId'])
+                ->one();
+        }
+
+        if ($project) {
+            $duplicate = Craft::$app->elements->duplicateElement($project);
+            //TODO: duplicate items
+            $duplicate->dateOrdered = null;
+            $duplicate->dateSubmitted = null;
+            $success = Craft::$app->elements->saveElement($duplicate);
+
+        }
+        return $this->redirectToPostedUrl();
     }
 
     /**
@@ -325,7 +357,6 @@ class ApiController extends Controller
             'totalPrice' => !empty($project) ? $project->getTotalPrice() : 0,
             'totalWeight' => !empty($project) ? $project->getTotalWeight() : 0
         ];
-        
     }
 
 

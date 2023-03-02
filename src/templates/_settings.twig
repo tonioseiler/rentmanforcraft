@@ -212,6 +212,39 @@
 
             <hr />
 
+
+            {{ forms.editableTableField({
+                label: "Shooting Days Factor",
+                instructions: "",
+                id: 'shootingDaysFactor',
+                name: 'shootingDaysFactor',
+                cols: {
+                    days: {
+                        type: 'number',
+                        heading: "Days",
+                        info: "",
+                        placeholder: '',
+                        code: true,
+                        width: 10,
+                        class: ['type-channel', 'type-structure']|filter
+                    },
+                    factor: {
+                        type: 'number',
+                        heading: "Factor",
+                        info: "What factor should be applied to calcualte price for x days",
+                        code: true,
+                        width: 10,
+                    }
+                }|filter,
+                rows: settings['shootingDaysFactor'],
+                fullWidth: false,
+                allowAdd: true,
+                allowDelete: true,
+                allowReorder: true
+            }) }}
+
+            <hr />
+
             {{ forms.fieldLayoutDesignerField({
                 label: "Additional fields for products"|t('app'),
                 id: 'product-fields',
