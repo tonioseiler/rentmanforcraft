@@ -15,7 +15,7 @@ class CategoriesService extends Component
     {
         $query = Category::find()
             ->parentId($parentId);
-        return $query->all();
+        return $query->orderBy('order')->all();
     }
 
     public function getCategoryById($id)
