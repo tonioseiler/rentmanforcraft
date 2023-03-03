@@ -113,10 +113,7 @@ class ApiController extends Controller
     {
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $project = $projectService->getActiveProject();
-        return $this->asJson([
-            'totals' => $projectService->getProjectTotals($project),
-            'project' => $project,
-        ]);
+        return $this->asJson($this->createProjectResponse($project));
     }
 
     /**
@@ -133,10 +130,12 @@ class ApiController extends Controller
 
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $project = $projectService->getActiveProject();
-        return $this->asJson([
-            'totals' => $projectService->getProjectTotals($project),
-            'project' => $project,
-        ]);
+        
+        if ($request->isAjax) {
+            return $this->asJson($this->createProjectResponse($project));
+        } else {
+            return $this->redirectToPostedUrl();
+        }
     }
 
     /**
@@ -188,19 +187,17 @@ class ApiController extends Controller
         $project = $item->getProject();
         $product = $item->getProduct();
 
-        $ret = [
-            'project' => $project,
-            'product' => $product
-        ];
 
-        if ($quantity > 0) {
-            $ret['item'] = $item;
-        } else {
+        if ($quantity <= 0) {
             $item->delete();
         }
         $projectService->updateProjectItemsAndPrice($project);
-        $ret['totals'] = $projectService->getProjectTotals($project);
-        return $this->asJson($ret);
+
+        if ($request->isAjax) {
+            return $this->asJson($this->createProjectResponse($project));
+        } else {
+            return $this->redirectToPostedUrl();
+        }
     }
 
     /**
@@ -228,7 +225,6 @@ class ApiController extends Controller
         }
 
         if ($project) {
-            //$project->dateOrdered = date(); // paolo: ArgumentCountError date() expects at least 1 argument, 0 given
             $project->dateOrdered = date('Y-m-d H:i:s');
 
             if ($settings->autoSubmitProjects) {
@@ -240,8 +236,7 @@ class ApiController extends Controller
         }
 
         if ($request->isAjax) {
-            $message = 'Successfully submitted to rentman';
-            return $this->asJson(compact('project', 'message'));
+            return $this->asJson($this->createProjectResponse($project));
         } else {
             return $this->redirectToPostedUrl();
         }
@@ -274,14 +269,13 @@ class ApiController extends Controller
             
             $rentmanService->submitProject($project);
             $project->dateSubmitted = date('Y-m-d H:i:s');
-            
             $success = Craft::$app->elements->saveElement($project);
-            Session::set('ACTIVE_PROJECT_ID', 0);
         }
 
         if ($request->isAjax) {
-            $message = 'Successfully submitted to rentman';
-            return $this->asJson(compact('project', 'message'));
+            $ret = $this->createProjectResponse($project);
+            $ret['message'] = 'Successfully submitted to rentman';
+            return $this->asJson($ret);
         } else {
             return $this->redirectToPostedUrl();
         }
@@ -326,7 +320,11 @@ class ApiController extends Controller
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $projectService->updateProjectItemsAndPrice($project);
                     
-        return $this->redirectToPostedUrl();
+        if ($request->isAjax) {
+            return $this->asJson($this->createProjectResponse($project));
+        } else {
+            return $this->redirectToPostedUrl();
+        }
         
     }
 
@@ -362,7 +360,11 @@ class ApiController extends Controller
             $success = Craft::$app->elements->saveElement($duplicate);
 
         }
-        return $this->redirectToPostedUrl();
+        if ($request->isAjax) {
+            return $this->asJson($this->createProjectResponse($project));
+        } else {
+            return $this->redirectToPostedUrl();
+        }
     }
 
     /**
@@ -383,10 +385,12 @@ class ApiController extends Controller
             //TODO: Inherit fields from last order
         }
         $success = Craft::$app->elements->saveElement($project);
-        return $this->asJson([
-            'totals' => $projectService->getProjectTotals($project),
-            'project' => $project,
-        ]);
+        
+        if ($request->isAjax) {
+            return $this->asJson($this->createProjectResponse($project));
+        } else {
+            return $this->redirectToPostedUrl();
+        }
     }
 
     /**
@@ -399,5 +403,15 @@ class ApiController extends Controller
 
     private function getCurrentUser(): ?User {
         return Craft::$app->getUser()->getIdentity();
+    }
+
+    private function createProjectResponse($project) {
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+
+        return [
+            'project' => $project,
+            'totals' => $projectService->getProjectTotals($project),
+            'items' => $project->getItems()
+        ];
     }
 }
