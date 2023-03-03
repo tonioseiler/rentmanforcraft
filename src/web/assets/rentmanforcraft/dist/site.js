@@ -86,12 +86,26 @@ window.rentman = {
             quantity: quantity
         };
         $.post('/actions/rentman-for-craft/api/set-project-product-quantity', data, function(response) {
-            console.log(response);
             if (callback) {
                 callback(response);
             }
         });
     },
+
+    /*
+    * updates the shooting days of active project
+    */
+    setProjectShootingDays: function (shooting_days) {
+        let data = {
+            shooting_days: shooting_days,
+        };
+        $.post('/actions/rentman-for-craft/api/set-project-shooting-days', data, function(response) {
+            if (callback) {
+                callback(response);
+            }
+        });
+    },
+
 
     /*
      * submits the active project in checkout, will change the state
