@@ -15,6 +15,7 @@ use craft\helpers\UrlHelper;
 use craft\models\FieldLayout;
 use craft\models\FieldLayoutTab;
 use craft\web\CpScreenResponseBehavior;
+use craft\web\View;
 use yii\web\Response;
 
 use furbo\rentmanforcraft\elements\conditions\ProjectCondition;
@@ -454,8 +455,7 @@ class Project extends RentmanElement
     }
 
     public function getSidebarHtml(bool $static): string {
-        //do not show the status switch
-        return '';
+        return Craft::$app->view->renderTemplate('rentman-for-craft/projects/_submit-button', ['project' => $this], View::TEMPLATE_MODE_CP);
     }
 
     public function getMetadata(): array {
@@ -465,6 +465,8 @@ class Project extends RentmanElement
         $data['Status'] = $parent['Status'];
         $user = $this->getUser();
         $data['User'] =  !empty($user) ? $user->name : 'Guest';
+        $data['Ordered'] =  $this->dateOrdered;
+        $data['Submitted'] =  $this->dateSubmitted;
         $data = array_merge($data, $parent);
 
         return $data;

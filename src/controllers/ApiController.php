@@ -219,12 +219,10 @@ class ApiController extends Controller
         
         if (empty($user)) {
             $project = Project::find()
-                ->userId(0)
                 ->id($params['projectId'])
                 ->one();
         } else {
             $project = Project::find()
-                ->userId($user->id)
                 ->id($params['projectId'])
                 ->one();
         }
@@ -241,8 +239,55 @@ class ApiController extends Controller
             Session::set('ACTIVE_PROJECT_ID', 0);
         }
 
-        return $this->redirectToPostedUrl();
+        if ($request->isAjax) {
+            $message = 'Successfully submitted to rentman';
+            return $this->asJson(compact('project', 'message'));
+        } else {
+            return $this->redirectToPostedUrl();
+        }
+
     }
+
+
+    //thios is to be use from the cp
+
+    /**
+     * rentman-for-craft/api/submit-project-to-rentman action
+     */
+    public function actionSubmitProjectToRentman(): Response
+    {
+
+        //TODO: Check if user has cp access
+
+        $settings = RentmanForCraft::getInstance()->getSettings();
+        $rentmanService = RentmanForCraft::getInstance()->rentmanService;
+
+        $this->requirePostRequest();
+        $request = Craft::$app->getRequest();
+        $params = $request->getBodyParams();
+        
+        $project = Project::find()
+            ->id($params['projectId'])
+            ->one();
+
+        if ($project) {
+            
+            $rentmanService->submitProject($project);
+            $project->dateSubmitted = date('Y-m-d H:i:s');
+            
+            $success = Craft::$app->elements->saveElement($project);
+            Session::set('ACTIVE_PROJECT_ID', 0);
+        }
+
+        if ($request->isAjax) {
+            $message = 'Successfully submitted to rentman';
+            return $this->asJson(compact('project', 'message'));
+        } else {
+            return $this->redirectToPostedUrl();
+        }
+
+    }
+
 
     /**
      * rentman-for-craft/api/update-project action
