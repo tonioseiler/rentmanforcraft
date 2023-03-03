@@ -330,7 +330,7 @@ class Product extends RentmanElement
         $response->crumbs([
             [
                 'label' => self::pluralDisplayName(),
-                'url' => UrlHelper::cpUrl('products'),
+                'url' => UrlHelper::cpUrl('rentman-for-craft/products'),
             ],
         ]);
     }

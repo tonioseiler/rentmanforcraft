@@ -4,6 +4,7 @@ namespace furbo\rentmanforcraft\records;
 
 use Craft;
 use craft\db\ActiveRecord;
+use craft\elements\User;
 
 /**
  * Project record
@@ -54,6 +55,11 @@ class Project extends ActiveRecord
         return $this->hasMany(ProjectItem::class, ['projectId' => 'id'])->all();
     }
 
+    public function getUser() {
+        $user = Craft::$app->users->getUserById($this->userId);
+        return $user;
+    }
+
     public function getTotalQuantity() {
         $items = $this->getItems();
         $ret = 0;
@@ -80,4 +86,6 @@ class Project extends ActiveRecord
         }
         return round($ret, 1);
     }
+
+    
 }

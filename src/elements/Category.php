@@ -259,7 +259,7 @@ class Category extends RentmanElement
         $response->crumbs([
             [
                 'label' => self::pluralDisplayName(),
-                'url' => UrlHelper::cpUrl('categories'),
+                'url' => UrlHelper::cpUrl('rentman-for-craft/categories'),
             ],
         ]);
     }

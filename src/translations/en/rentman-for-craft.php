@@ -110,4 +110,5 @@ return [
     'category.displayname.instructions' => '-',
     'category.order' => 'Order',
     'category.order.instructions' => '-',
+    'project.title' => 'Projekt'
 ];

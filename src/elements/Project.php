@@ -6,7 +6,14 @@ use Craft;
 use craft\elements\User;
 use craft\elements\conditions\ElementConditionInterface;
 use craft\elements\db\ElementQueryInterface;
+use craft\fieldlayoutelements\Html;
+use craft\fieldlayoutelements\TextareaField;
+use craft\fieldlayoutelements\TextField;
+use craft\fieldlayoutelements\TitleField;
+use craft\helpers\Cp;
 use craft\helpers\UrlHelper;
+use craft\models\FieldLayout;
+use craft\models\FieldLayoutTab;
 use craft\web\CpScreenResponseBehavior;
 use yii\web\Response;
 
@@ -290,12 +297,12 @@ class Project extends RentmanElement
 
     protected function cpEditUrl(): ?string
     {
-        return sprintf('projects/%s', $this->getCanonicalId());
+        return UrlHelper::cpUrl('rentman-for-craft/projects/' . $this->id);
     }
 
     public function getPostEditUrl(): ?string
     {
-        UrlHelper::cpUrl('projects');
+        return UrlHelper::cpUrl('rentman-for-craft/projects');
     }
 
     public function prepareEditScreen(Response $response, string $containerId): void
@@ -304,9 +311,163 @@ class Project extends RentmanElement
         $response->crumbs([
             [
                 'label' => self::pluralDisplayName(),
-                'url' => UrlHelper::cpUrl('projects'),
+                'url' => UrlHelper::cpUrl('rentman-for-craft/projects'),
             ],
         ]);
+    }
+
+    public function getFieldLayout(): ?craft\models\FieldLayout
+    {
+
+        //possible elements
+        // https://docs.craftcms.com/api/v4/craft-base-fieldlayoutelement.html
+
+        $fieldLayout = new FieldLayout();
+
+        //
+        $projectTab = new FieldLayoutTab();
+        $projectTab->name = Craft::t('rentman-for-craft', 'Projekt');
+        $projectTab->setLayout($fieldLayout);
+        $layoutElements = [];
+        $layoutElements[] = new TitleField(['label' => Craft::t('rentman-for-craft', 'project.title')]);
+
+        $layoutElements[] = new TextField([
+            'attribute' => 'in',
+            'label' => 'Abholdatum',
+            'readonly' => 'true'
+        ]);
+
+        $layoutElements[] = new TextField([
+            'attribute' => 'out',
+            'label' => 'Rückgabedatum',
+            'readonly' => 'true'
+        ]);
+
+        $layoutElements[] = new TextField([
+            'attribute' => 'planperiod_start',
+            'label' => 'Drehbeginn',
+            'readonly' => 'true'
+        ]);
+
+        $layoutElements[] = new TextField([
+            'attribute' => 'planperiod_end',
+            'label' => 'Drehende',
+            'readonly' => 'true'
+        ]);
+
+        $layoutElements[] = new TextField([
+            'attribute' => 'shooting_days',
+            'label' => 'Drehtage',
+            'readonly' => 'true'
+        ]);
+
+        $layoutElements[] = new TextareaField([
+            'attribute' => 'remark',
+            'label' => 'Bemerkungen'
+        ]);
+        $projectTab->setElements($layoutElements);
+
+        //
+        $itemsTab = new FieldLayoutTab();
+        $itemsTab->name = Craft::t('rentman-for-craft', 'Produkte');
+        $itemsTab->setLayout($fieldLayout);
+        $layoutElements = [];
+        $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/projects/_items', ['label' => Craft::t('rentman-for-craft', 'project.items'), 'project' => $this]);
+        $itemsTab->setElements($layoutElements);
+
+        //
+        $contactTab = new FieldLayoutTab();
+        $contactTab->name = Craft::t('rentman-for-craft', 'Kontakt');
+        $contactTab->setLayout($fieldLayout);
+        $layoutElements = [];
+        $layoutElements[] = new TextField([
+            'attribute' => 'contact_person_first_name',
+            'label' => 'Vorname'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'contact_person_lastname',
+            'label' => 'Nachname'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'contact_person_email',
+            'label' => 'Email'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'contact_mailing_number',
+            'label' => 'Telefon'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'contact_mailing_street',
+            'label' => 'Adresse'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'contact_mailing_postalcode',
+            'label' => 'PLZ'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'contact_mailing_city',
+            'label' => 'Stadt'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'contact_mailing_country',
+            'label' => 'Land'
+        ]);
+        $contactTab->setElements($layoutElements);
+
+
+
+        //
+        $locationTab = new FieldLayoutTab();
+        $locationTab->name = Craft::t('rentman-for-craft', 'Produktion');
+        $locationTab->setLayout($fieldLayout);
+        $layoutElements = [];
+        $layoutElements[] = new TextField([
+            'attribute' => 'location_name',
+            'label' => 'Name'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'location_mailing_number',
+            'label' => 'Telefon'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'location_mailing_street',
+            'label' => 'Adresse'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'location_mailing_postalcode',
+            'label' => 'PLZ'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'location_mailing_city',
+            'label' => 'Stadt'
+        ]);
+        $layoutElements[] = new TextField([
+            'attribute' => 'location_mailing_country',
+            'label' => 'Land'
+        ]);
+        $locationTab->setElements($layoutElements);
+        
+        $fieldLayout->setTabs([$projectTab, $itemsTab, $contactTab, $locationTab]);
+    
+        return $fieldLayout;
+        
+    }
+
+    public function getSidebarHtml(bool $static): string {
+        //do not show the status switch
+        return '';
+    }
+
+    public function getMetadata(): array {
+        $parent = parent::getMetadata();
+        $data = [];
+        $data['ID'] = $this->id;
+        $data['Status'] = $parent['Status'];
+        $user = $this->getUser();
+        $data['User'] =  !empty($user) ? $user->name : 'Guest';
+        $data = array_merge($data, $parent);
+
+        return $data;
     }
 
     public function afterSave(bool $isNew): void
@@ -367,6 +528,11 @@ class Project extends RentmanElement
     public function getItems() {
         $record = $this->getRecord();
         return $record->getItems();
+    }
+
+    public function getUser() {
+        $record = $this->getRecord();
+        return $record->getUser();
     }
 
     public function getTotalQuantity() {
