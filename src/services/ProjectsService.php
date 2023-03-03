@@ -83,7 +83,7 @@ class ProjectsService extends Component
             $this->updateProjectItem($item);
         }
         $project->price = $project->getTotalPrice();
-        $project->getRecord()->update();
+        $project->update();
     }
 
     public function getShootingDaysFactor($days) {
