@@ -22,14 +22,28 @@ class ProjectQuery extends ElementQuery
 
     protected function statusCondition(string $status): mixed
     {
-        switch ($status) {
-            case '2':
-                return ['not', ['dateSubmitted' => null]];
-            case '1':
-                return ['not', ['dateOrdered' => null]];
-            default:
-                return parent::statusCondition($status);
-        }
+
+
+        return match ($status) {
+            'draft' => [
+                'and',
+                [
+                    'rentman-for-craft_projects.dateOrdered' => null,
+                    'rentman-for-craft_projects.dateSubmitted' => null,
+                ]
+            ],
+            'ordered' => [
+                'and',
+                ['rentman-for-craft_projects.dateSubmitted' => null],
+                ['not', ['rentman-for-craft_projects.dateOrdered' => null]]
+            ],
+            'submitted' => [
+                'and',
+                ['not', ['rentman-for-craft_projects.dateSubmitted' => null]],
+                ['not', ['rentman-for-craft_projects.dateOrdered' => null]]
+            ],
+            default => parent::statusCondition($status),
+        };
     }
 
 

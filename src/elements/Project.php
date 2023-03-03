@@ -110,20 +110,21 @@ class Project extends RentmanElement
     public static function statuses(): array
     {
         return [
-            '0' => ['label' => \Craft::t('rentman-for-craft', 'Draft'), 'color' => 'dddddd'],
-            '1' => ['label' => \Craft::t('rentman-for-craft', 'Ordered'), 'color' => '90EE90'],
-            '2' => ['label' => \Craft::t('rentman-for-craft', 'Submitted'), 'color' => '27AB1F'],
+            'draft' => ['label' => \Craft::t('rentman-for-craft', 'Draft'), 'color' => 'project-status-0'],
+            'ordered' => ['label' => \Craft::t('rentman-for-craft', 'Ordered'), 'color' => 'project-status-1'],
+            'submitted' => ['label' => \Craft::t('rentman-for-craft', 'Submitted'), 'color' => 'project-status-2'],
         ];
     }
 
     public function getStatus(): ?string
     {
+        $ret = 'draft';
         if (!empty($this->dateSubmitted))
-            return '2';
-        else if (!empty($this->dateOrdered))
-            return '1';
-        else
-            return '0';
+            $ret = 'submitted';
+        else if (!empty($this->dateOrdered) && empty($this->dateSubmitted))
+            $ret = 'ordered';
+        
+        return $ret;
     }
 
 
@@ -190,13 +191,10 @@ class Project extends RentmanElement
     {
         return [
             'slug' => ['label' => Craft::t('app', 'Slug')],
-            'uri' => ['label' => Craft::t('app', 'URI')],
             'link' => ['label' => Craft::t('app', 'Link'), 'icon' => 'world'],
             'id' => ['label' => Craft::t('app', 'ID')],
-            'uid' => ['label' => Craft::t('app', 'UID')],
             'dateCreated' => ['label' => Craft::t('app', 'Date Created')],
-            'dateUpdated' => ['label' => Craft::t('app', 'Date Updated')],
-            // ...
+            'dateUpdated' => ['label' => Craft::t('app', 'Date Updated')]
         ];
     }
 

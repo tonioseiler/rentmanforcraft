@@ -23,3 +23,15 @@ input:read-only {
     width: calc(100% - 144px);
     line-height: 16px;
 }
+
+.project-status-0 {
+    background-color: rgb(237, 237, 237);;
+}
+
+.project-status-1 {
+    background-color: orange;
+}
+
+.project-status-2 {
+    background-color: rgb(0, 213, 0);
+}
