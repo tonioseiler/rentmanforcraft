@@ -529,6 +529,7 @@ class Project extends RentmanElement
 
     public function getItems() {
         $record = $this->getRecord();
+        if (empty($record)) return [];
         return $record->getItems();
     }
 
