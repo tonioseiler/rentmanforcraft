@@ -372,6 +372,7 @@ class ApiController extends Controller
      */
     public function actionCreateProject(): Response
     {
+        $request = Craft::$app->getRequest();
 
         $projectService = RentmanForCraft::getInstance()->projectsService;
 
