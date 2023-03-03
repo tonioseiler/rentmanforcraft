@@ -147,7 +147,6 @@ class ApiController extends Controller
      */
     public function actionSetProjectProductQuantity(): Response
     {
-        
         $projectService = RentmanForCraft::getInstance()->projectsService;
 
         //TODO: check user
@@ -199,6 +198,48 @@ class ApiController extends Controller
             return $this->redirectToPostedUrl();
         }
     }
+
+    /**
+     * rentman-for-craft/api/set-project-shooting-days action
+     *
+     * Should be a post request with csrf token
+     * params: shooting_days
+     *
+     */
+    public function actionSetProjectShootingDays(): Response
+    {
+        //TODO: check user
+        $this->requirePostRequest();
+        $request = Craft::$app->getRequest();
+        $params = $request->getBodyParams();
+        if (isset($params['shooting_days'])) {
+            $projectId = Session::get('ACTIVE_PROJECT_ID', 0);
+            if (empty($user)) {
+                $project = Project::find()
+                    ->id($params['projectId'])
+                    ->one();
+            } else {
+                $project = Project::find()
+                    ->id($params['projectId'])
+                    ->one();
+            }
+            foreach($params as $key => $value) {
+                if (property_exists($project, $key)) {
+                    $project->{$key} = $value;
+                }
+            }
+            $success = Craft::$app->elements->saveElement($project);
+            //update this just in case factor has changed
+            $projectService = RentmanForCraft::getInstance()->projectsService;
+            $projectService->updateProjectItemsAndPrice($project);
+            if ($request->isAjax) {
+                return $this->asJson($this->createProjectResponse($project));
+            } else {
+                return $this->redirectToPostedUrl();
+            }
+        }
+    }
+
 
     /**
      * rentman-for-craft/api/submit-project action
