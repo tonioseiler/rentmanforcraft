@@ -69,4 +69,8 @@ class Product extends ElementRecord
         }
         return $this->element;
     }
+
+    public function getCategory() {
+        return $this->hasOne(Category::class, ['id' => 'categoryId'])->one();
+    }
 }

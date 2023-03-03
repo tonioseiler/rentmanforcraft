@@ -55,6 +55,20 @@ class Project extends ActiveRecord
         return $this->hasMany(ProjectItem::class, ['projectId' => 'id'])->all();
     }
 
+    public function getItemsGoupedByCategory() {
+        $ret = [];
+        $items = $this->getItems();
+        foreach($items as $item) {
+            $product = $item->getProduct();
+            $category = $product->getCategory();
+            if (!isset($ret[$category->id])) {
+                $ret[$category->id] = [];
+            }
+            $ret[$category->id][] = $item;
+        }
+        return $ret;
+    }
+
     public function getUser() {
         $user = Craft::$app->users->getUserById($this->userId);
         return $user;
