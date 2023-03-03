@@ -215,14 +215,15 @@ class ApiController extends Controller
         if (isset($params['shooting_days'])) {
             $projectId = Session::get('ACTIVE_PROJECT_ID', 0);
             $user = Craft::$app->getUser()->getIdentity();
-
+            // TODO paolo deal with empty($user), but at this point even the guest should have a session and project id....
             if (empty($user)) {
                 $project = Project::find()
-                    ->id($params['projectId'])
+                    /*->id($params['projectId'])*/
+                    ->id($projectId)
                     ->one();
             } else {
                 $project = Project::find()
-                    ->id($params['projectId'])
+                    ->id($projectId)
                     ->one();
             }
             foreach($params as $key => $value) {
