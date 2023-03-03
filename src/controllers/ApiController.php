@@ -237,7 +237,7 @@ class ApiController extends Controller
 
             if ($settings->autoSubmitProjects) {
                 $rentmanService->submitProject($project);
-                $project->dateSubmitted =  date();
+                $project->dateSubmitted = date('Y-m-d H:i:s');
             }
             $success = Craft::$app->elements->saveElement($project);
             Session::set('ACTIVE_PROJECT_ID', 0);
