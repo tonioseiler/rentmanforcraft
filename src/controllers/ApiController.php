@@ -214,6 +214,8 @@ class ApiController extends Controller
         $params = $request->getBodyParams();
         if (isset($params['shooting_days'])) {
             $projectId = Session::get('ACTIVE_PROJECT_ID', 0);
+            $user = Craft::$app->getUser()->getIdentity();
+
             if (empty($user)) {
                 $project = Project::find()
                     ->id($params['projectId'])
