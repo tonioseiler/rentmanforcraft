@@ -21,7 +21,6 @@ use furbo\rentmanforcraft\RentmanForCraft;
 class Project extends RentmanElement
 {
 
-    public $sessionId;
     public $userId;
     public $contact_mailing_number;
     public $contact_mailing_country;
@@ -49,6 +48,7 @@ class Project extends RentmanElement
     public $planperiod_end;
     public $planperiod_start;
     public $price;
+    public $shooting_days;
     public $dateOrdered;
     public $dateSubmitted;
 
@@ -322,7 +322,6 @@ class Project extends RentmanElement
                 $record = ProjectRecord::findOne($this->id);
             }
 
-            $record->sessionId = $this->sessionId;
             $record->userId = $this->userId;
             $record->contact_mailing_number = $this->contact_mailing_number;
             $record->contact_mailing_country = $this->contact_mailing_country;
@@ -350,6 +349,7 @@ class Project extends RentmanElement
             $record->planperiod_end = $this->planperiod_end;
             $record->planperiod_start = $this->planperiod_start;
             $record->price = $this->price;
+            $record->shooting_days = $this->shooting_days;
             $record->dateOrdered = $this->dateOrdered;
             $record->dateSubmitted = $this->dateSubmitted;
             

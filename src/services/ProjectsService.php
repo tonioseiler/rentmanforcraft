@@ -8,6 +8,7 @@ use craft\elements\User as ElementsUser;
 use craft\helpers\Session;
 use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\records\ProjectItem;
+use furbo\rentmanforcraft\RentmanForCraft;
 use yii\base\Component;
 use yii\web\IdentityInterface;
 
@@ -54,6 +55,45 @@ class ProjectsService extends Component
 
         return $item->quantity;
 
+    }
+
+    public function getProjectTotals($project) {
+        return [
+            'totalQuantity' => !empty($project) ? $project->getTotalQuantity() : 0,
+            'totalPrice' => !empty($project) ? $project->getTotalPrice() : 0,
+            'totalWeight' => !empty($project) ? $project->getTotalWeight() : 0
+        ];
+    }
+
+    public function updateProjectItem($item) {
+        $project = $item->getProject();
+        $product = $item->getProduct();
+
+        $factor = $this->getShootingDaysFactor($project->shooting_days);
+
+        $item->unit_price = $product->price;
+        $item->factor = $factor;
+        $item->price = $item->unit_price * $item->quantity * $item->factor;
+        $item->update();
+    }
+
+    public function updateProjectItemsAndPrice($project) {
+        $items = $project->getItems();
+        foreach($items as $item) {
+            $this->updateProjectItem($item);
+        }
+        $project->price = $project->getTotalPrice();
+        $project->update();
+    }
+
+    public function getShootingDaysFactor($days) {
+        $settings = RentmanForCraft::getInstance()->getSettings();
+        foreach($settings->shootingDaysFactor as $tmp) {
+            if ($tmp['days'] == $days) {
+                return $tmp['factor'];
+            }
+        }
+        return 1;
     }
 
 }

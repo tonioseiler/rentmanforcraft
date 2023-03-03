@@ -9,7 +9,6 @@ use craft\db\ActiveRecord;
  * Project record
  *
  * @property int $id ID
- * @property int|null $session_id Session ID
  * @property int|null $userId User ID
  * @property string|null $contact_mailing_number Contact mailing number
  * @property string|null $contact_mailing_country Contact mailing country
@@ -37,6 +36,7 @@ use craft\db\ActiveRecord;
  * @property string|null $planperiod_end Planperiod end
  * @property string|null $planperiod_start Planperiod start
  * @property float|null $price Price
+ * @property int|null $shooting_days Shooting Days
  * @property string $dateOrdered Date ordered
  * @property string $dateSubmitted Date submitted
  * @property string $dateCreated Date created

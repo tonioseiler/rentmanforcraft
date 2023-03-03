@@ -22,4 +22,5 @@ class ProjectItem extends ActiveRecord
     public function getProduct() {
         return $this->hasOne(Product::class, ['id' => 'productId'])->one();
     }
+
 }

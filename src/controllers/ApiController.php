@@ -114,7 +114,7 @@ class ApiController extends Controller
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $project = $projectService->getActiveProject();
         return $this->asJson([
-            'totals' => $this->getProjectTotals($project),
+            'totals' => $projectService->getProjectTotals($project),
             'project' => $project,
         ]);
     }
@@ -134,7 +134,7 @@ class ApiController extends Controller
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $project = $projectService->getActiveProject();
         return $this->asJson([
-            'totals' => $this->getProjectTotals($project),
+            'totals' => $projectService->getProjectTotals($project),
             'project' => $project,
         ]);
     }
@@ -149,6 +149,8 @@ class ApiController extends Controller
     public function actionSetProjectProductQuantity(): Response
     {
         
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+
         //TODO: check user
 
         $this->requirePostRequest();
@@ -181,28 +183,24 @@ class ApiController extends Controller
         $item->quantity = $quantity;
         $item->itemtype = $product->type;
         $item->unit_price = $product->price;
-        $item->price = $product->price * $quantity;
         $item->update();
         
         $project = $item->getProject();
         $product = $item->getProduct();
 
+        $ret = [
+            'project' => $project,
+            'product' => $product
+        ];
+
         if ($quantity > 0) {
-            return $this->asJson([
-                'project' => $project,
-                'product' => $product,
-                'item' => $item,
-                'totals' => $this->getProjectTotals($project),
-            ]);
+            $ret['item'] = $item;
         } else {
-            $ret = [
-                'project' => $item->getProject(),
-                'product' => $item->getProduct(),
-                'totals' => $this->getProjectTotals($project),
-            ];
             $item->delete();
-            return $this->asJson($ret);
         }
+        $projectService->updateProjectItemsAndPrice($project);
+        $ret['totals'] = $projectService->getProjectTotals($project);
+        return $this->asJson($ret);
     }
 
     /**
@@ -277,6 +275,10 @@ class ApiController extends Controller
             }
         }
         $success = Craft::$app->elements->saveElement($project);
+
+        //update this just in case factor has changed
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+        $projectService->updateProjectItemsAndPrice($project);
                     
         return $this->redirectToPostedUrl();
         
@@ -323,6 +325,8 @@ class ApiController extends Controller
     public function actionCreateProject(): Response
     {
 
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+
         $user = $this->getCurrentUser();
 
         $project = new Project();
@@ -334,7 +338,7 @@ class ApiController extends Controller
         }
         $success = Craft::$app->elements->saveElement($project);
         return $this->asJson([
-            'totals' => $this->getProjectTotals($project),
+            'totals' => $projectService->getProjectTotals($project),
             'project' => $project,
         ]);
     }
@@ -350,14 +354,4 @@ class ApiController extends Controller
     private function getCurrentUser(): ?User {
         return Craft::$app->getUser()->getIdentity();
     }
-
-    private function getProjectTotals($project) {
-        return [
-            'totalQuantity' => !empty($project) ? $project->getTotalQuantity() : 0,
-            'totalPrice' => !empty($project) ? $project->getTotalPrice() : 0,
-            'totalWeight' => !empty($project) ? $project->getTotalWeight() : 0
-        ];
-    }
-
-
 }

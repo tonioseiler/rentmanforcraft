@@ -12,14 +12,7 @@ use craft\helpers\Db;
 class ProjectQuery extends ElementQuery
 {
 
-    public $sessionId;
     public $userId;
-
-    public function sessionId($value)
-    {
-        $this->sessionId = $value;
-        return $this;
-    }
 
     public function userId($value)
     {
@@ -47,10 +40,6 @@ class ProjectQuery extends ElementQuery
         $this->query->select([
             'rentman-for-craft_projects.*'
         ]);
-
-        if ($this->sessionId) {
-            $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_projects.session_id', $this->sessionId));
-        }
 
         if ($this->userId) {
             $this->subQuery->andWhere(Db::parseParam('rentman-for-craft_projects.userId', $this->userId));
