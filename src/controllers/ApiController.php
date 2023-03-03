@@ -232,7 +232,6 @@ class ApiController extends Controller
                 }
             }
             $success = Craft::$app->elements->saveElement($project);
-            //update this just in case factor has changed
             $projectService = RentmanForCraft::getInstance()->projectsService;
             $projectService->updateProjectItemsAndPrice($project);
             if ($request->isAjax) {

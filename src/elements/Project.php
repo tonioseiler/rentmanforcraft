@@ -532,6 +532,15 @@ class Project extends RentmanElement
         if (empty($record)) return [];
         return $record->getItems();
     }
+    public function getItemsGoupedByCategory() {
+        $record = $this->getRecord();
+        if (empty($record)) return [];
+        return $record->getItemsGoupedByCategory();
+    }
+
+
+
+
 
     public function getUser() {
         $record = $this->getRecord();
