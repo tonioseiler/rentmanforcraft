@@ -230,11 +230,12 @@ class ApiController extends Controller
         }
 
         if ($project) {
-            $project->dateOrdered = date();
+            //$project->dateOrdered = date(); // paolo: ArgumentCountError date() expects at least 1 argument, 0 given
+            $project->dateOrdered = date('Y-m-d H:i:s');
 
             if ($settings->autoSubmitProjects) {
                 $rentmanService->submitProject($project);
-                $project->dateSubmitted =  date();
+                $project->dateSubmitted = date('Y-m-d H:i:s');
             }
             $success = Craft::$app->elements->saveElement($project);
             Session::set('ACTIVE_PROJECT_ID', 0);
