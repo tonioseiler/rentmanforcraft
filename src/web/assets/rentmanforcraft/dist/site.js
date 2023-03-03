@@ -95,7 +95,7 @@ window.rentman = {
     /*
     * updates the shooting days of active project
     */
-    setProjectShootingDays: function (shooting_days) {
+    setProjectShootingDays: function (shooting_days, callback) {
         let data = {
             shooting_days: shooting_days,
         };
