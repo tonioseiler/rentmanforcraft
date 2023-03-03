@@ -232,7 +232,8 @@ class ApiController extends Controller
         }
 
         if ($project) {
-            $project->dateOrdered = date();
+            //$project->dateOrdered = date(); // paolo: ArgumentCountError date() expects at least 1 argument, 0 given
+            $project->dateOrdered = date('Y-m-d H:i:s');
 
             if ($settings->autoSubmitProjects) {
                 $rentmanService->submitProject($project);
