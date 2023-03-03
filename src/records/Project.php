@@ -55,7 +55,7 @@ class Project extends ActiveRecord
         return $this->hasMany(ProjectItem::class, ['projectId' => 'id'])->all();
     }
 
-    public function getItemsGoupedByCategory() {
+    public function getItemsGroupedByCategory() {
         $ret = [];
         $items = $this->getItems();
         foreach($items as $item) {
