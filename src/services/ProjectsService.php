@@ -85,8 +85,7 @@ class ProjectsService extends Component
         $project->price = $project->getTotalPrice();
         //$project->update();
         $success = Craft::$app->elements->saveElement($project);
-        // TODO paolo both methods above do not work
-
+        // TODO This gives an error
     }
 
     public function getShootingDaysFactor($days) {
