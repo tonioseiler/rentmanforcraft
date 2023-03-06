@@ -43,10 +43,17 @@ window.rentman = {
      */
     getActiveProject: function (callback) {
         $.get('/actions/rentman-for-craft/api/get-active-project', function(response) {
-            rentman.activeProject = response.project;
-            if (callback) {
-                callback(response);
+            if(response) {
+                rentman.activeProject = response.project;
+                if (callback) {
+                    callback(response);
+                }
+            } else {
+                if (callback) {
+                    callback(null);
+                }
             }
+
         });
     },
 
