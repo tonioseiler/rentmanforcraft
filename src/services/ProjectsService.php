@@ -83,9 +83,9 @@ class ProjectsService extends Component
             $this->updateProjectItem($item);
         }
         $project->price = $project->getTotalPrice();
-        //$project->update();
+        $project->update();
         //$success = Craft::$app->elements->saveElement($project);
-        // TODO paolo do we really need to update the project here?
+        // TODO paolo both methods above do not work
 
     }
 
