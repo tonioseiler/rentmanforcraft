@@ -182,14 +182,17 @@ class ApiController extends Controller
         $item->itemtype = $product->type;
         $item->unit_price = $product->price;
         $item->update();
-        
-        //$project = $item->getProject(); paolo: removed
-        $product = $item->getProduct();
+
+        if ($quantity <= 0) {
+            $item->delete();
+        }
+
+        //$project = $item->getProject(); paolo: removed as it's wrong
+        // $product = $item->getProduct(); paolo: removed as it's unused
 
         // paolo: added
         if (empty($user)) {
             $project = Project::find()
-                /*->id($params['projectId'])*/
                 ->id($projectId)
                 ->one();
         } else {
@@ -198,14 +201,8 @@ class ApiController extends Controller
                 ->one();
         }
 
-
-        if ($quantity <= 0) {
-            $item->delete();
-        }
-
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $projectService->updateProjectItemsAndPrice($project);
-
 
         if ($request->isAjax) {
             return $this->asJson($this->createProjectResponse($project));
