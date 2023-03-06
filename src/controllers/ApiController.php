@@ -31,7 +31,8 @@ class ApiController extends Controller
         'set-active-project',
         'create-project',
         'update-project',
-        'set-project-product-quantity'
+        'set-project-product-quantity',
+        'actionSetProjectShootingDays'
     ];
 
     /**
