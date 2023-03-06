@@ -118,7 +118,8 @@ class ApiController extends Controller
             return $this->asJson($this->createProjectResponse($project));
 
         } else {
-            return null;
+            //
+            return $this;
         }
     }
 
