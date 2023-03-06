@@ -84,7 +84,8 @@ class ProjectsService extends Component
         }
         $project->price = $project->getTotalPrice();
         //$project->update();
-        $success = Craft::$app->elements->saveElement($project);
+        //$success = Craft::$app->elements->saveElement($project);
+        // TODO paolo do we really need to update the project here?
 
     }
 
