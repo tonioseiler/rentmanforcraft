@@ -114,7 +114,12 @@ class ApiController extends Controller
     {
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $project = $projectService->getActiveProject();
-        return $this->asJson($this->createProjectResponse($project));
+        if($project) {
+            return $this->asJson($this->createProjectResponse($project));
+
+        } else {
+            return null;
+        }
     }
 
     /**
