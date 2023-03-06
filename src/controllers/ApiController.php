@@ -148,7 +148,6 @@ class ApiController extends Controller
      */
     public function actionSetProjectProductQuantity(): Response
     {
-        $projectService = RentmanForCraft::getInstance()->projectsService;
 
         //TODO: check user
 
@@ -184,13 +183,27 @@ class ApiController extends Controller
         $item->unit_price = $product->price;
         $item->update();
         
-        $project = $item->getProject();
+        //$project = $item->getProject(); paolo: removed
         $product = $item->getProduct();
+
+        // paolo: added
+        if (empty($user)) {
+            $project = Project::find()
+                /*->id($params['projectId'])*/
+                ->id($projectId)
+                ->one();
+        } else {
+            $project = Project::find()
+                ->id($projectId)
+                ->one();
+        }
 
 
         if ($quantity <= 0) {
             $item->delete();
         }
+
+        $projectService = RentmanForCraft::getInstance()->projectsService;
         $projectService->updateProjectItemsAndPrice($project);
 
 
