@@ -62,6 +62,11 @@ class RentmanForCraftVariable
         $categoriesService = RentmanForCraft::getInstance()->categoriesService;
         return $categoriesService->getCategories($parentId);
     }
+ public function getCategoryById($categoryId = 0)
+    {
+        $categoriesService = RentmanForCraft::getInstance()->categoriesService;
+        return $categoriesService->getCategoryById($categoryId);
+    }
 
     public function printCategoryTree($fullTree = false, $activeCategoryId = 0, $parentId = 0)
     {
