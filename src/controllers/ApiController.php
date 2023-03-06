@@ -119,7 +119,7 @@ class ApiController extends Controller
 
         } else {
             //
-            return $this;
+            return $this->asJson(null);
         }
     }
 
