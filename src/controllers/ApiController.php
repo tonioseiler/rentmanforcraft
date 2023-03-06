@@ -193,6 +193,7 @@ class ApiController extends Controller
         }
         $projectService->updateProjectItemsAndPrice($project);
 
+
         if ($request->isAjax) {
             return $this->asJson($this->createProjectResponse($project));
         } else {
