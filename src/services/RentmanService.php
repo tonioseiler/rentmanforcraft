@@ -11,6 +11,7 @@ use yii\base\Component;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Carbon\Carbon;
 
 /**
  * Rentman Service service
@@ -259,6 +260,8 @@ class RentmanService extends Component
     }
 
     public function getAccessoires($productId) {
+        //TODO: Tonio
+        return [];
         return Cache::remember('accessories-'.$productId, 24 * 60, function() use ($productId) {
             if (empty($this->client)) {
                 $this->init();
@@ -294,6 +297,8 @@ class RentmanService extends Component
     }
 
     public function getSetContents($productId) {
+        //TODO: Tonio
+        return [];
         return Cache::remember('set-contents-'.$productId, 24 * 60, function() use ($productId) {
             if (empty($this->client)) {
                 $this->init();
@@ -330,96 +335,88 @@ class RentmanService extends Component
 
 
     public function submitProject(Project $project) {
-        return;
+        
         if (empty($this->client)) {
             $this->init();
         }
-        try {
+       
+        $remark = "Created on Website";
+        if (!empty($project->remark)) {
+            $remark .= "<br />".$project->remark;
+        }
 
-            $remark = "Created on Website";
-            if (!empty($project->comment)) {
-                $remark .= "<br />".$project->comment;
-            }
+        if (!empty($project->shooting_days)) {
+            $remark .= '<br />: Drehtage'.$project->shooting_days;
+        }
 
-            if (!empty($project->shooting_days)) {
-                $remark .= "<br />".__('app.cart.project.shooting_days').': '.$project->shooting_days;
-            }
+        $data = [
+            'contact_mailing_number' => $project->contact_mailing_number,
+            'contact_mailing_country' => $project->contact_mailing_country,
+            'contact_name' => $project->delivery_firstname.' '.$project->delivery_lastname,
+            'contact_mailing_postalcode' => $project->contact_mailing_postalcode,
+            'contact_mailing_city' => $project->contact_mailing_city,
+            'contact_mailing_street' => $project->contact_mailing_street,
+            'contact_person_lastname' => $project->contact_person_lastname,
+            'contact_person_email' => $project->contact_person_email,
+            'contact_person_middle_name' => $project->contact_person_middle_name,
+            'contact_person_first_name' => $project->contact_person_first_name,
+            'usageperiod_end' => $this->formatDateTime($project->usageperiod_end),
+            'usageperiod_start' => $this->formatDateTime($project->usageperiod_start),
+            'in' => $this->formatDateTime($project->in),
+            'out' => $this->formatDateTime($project->out),
+            'location_mailing_number' => $project->location_mailing_number,
+            'location_mailing_country' => $project->location_mailing_country,
+            'location_name' => $project->location_name,
+            'location_mailing_postalcode' => $project->location_mailing_postalcode,
+            'location_mailing_city' => $project->location_mailing_city,
+            'location_mailing_street' => $project->location_mailing_street,
+            'name' => $project->title,
+            'external_reference' => $project->id,
+            'remark' => $remark,
+            'planperiod_end' => $this->formatDateTime($project->planperiod_end),
+            'planperiod_start' => $this->formatDateTime($project->planperiod_start),
+            'price' => $project->price
+        ];
 
-            if (!empty($project->shooting_locations)) {
-                $remark .= "<br />".__('app.cart.project.shooting_locations').': '.$project->shooting_locations;
-            }
+        $response = $this->client->request('POST', $this->apiUrl.'projectrequests', [
+            'headers' => $this->requestHeaders,
+            'body'    => json_encode($data)
+        ]);
 
-            if (!empty($project->required_transport)) {
-                $remark .= "<br />Fahrzeug: ".$project->required_transport;
-            }
+        $jsonResponse = json_decode($response->getBody()->getContents(), true);
 
+        $projectId = $jsonResponse['data']['id'];
+
+        $count = 0;
+        foreach ($project->getItems() as $item) {
+            $product = $item->getProduct();
             $data = [
-                'contact_mailing_number' => $project->delivery_phone,
-                'contact_mailing_country' => 'CH',
-                'contact_name' => $project->delivery_firstname.' '.$project->delivery_lastname,
-                'contact_mailing_postalcode' => $project->billing_zip,
-                'contact_mailing_city' => $project->billing_city,
-                'contact_mailing_street' => $project->billing_street.' '.$project->billing_street_nr,
-                'contact_person_lastname' => $project->delivery_lastname,
-                'contact_person_email' => $project->delivery_email,
-                'contact_person_middle_name' => '',
-                'contact_person_first_name' => $project->delivery_firstname,
-                'usageperiod_end' => $this->formatDateTime($project->return_date),
-                'usageperiod_start' => $this->formatDateTime($project->pickup_date),
-                'in' => $this->formatDateTime($project->return_date),
-                'out' => $this->formatDateTime($project->pickup_date),
-                'location_mailing_number' => '',//$project->billing_phone,
-                'location_mailing_country' => '',//$project->billing_country,
-                'location_name' => '',//$project->billing_firstname.' '.$project->billing_lastname,
-                'location_mailing_postalcode' => '',//$project->billing_zip,
-                'location_mailing_city' => '',//$project->billing_city,
-                'location_mailing_street' => '',//$project->billing_street.' '.$project->billing_street_nr,
-                'name' => $project->title,
-                'external_reference' => $project->id,
-                'remark' => $remark,
-                'planperiod_end' => $this->formatDateTime($project->to),
-                'planperiod_start' => $this->formatDateTime($project->from),
-                'price' => $project->amount
+                "quantity" => intval($item->quantity),
+                "quantity_total" => intval($item->quantity),
+                "is_comment" => false,
+                "is_kit" => true,
+                "discount" => 0,
+                "name" => $product->title,
+                "external_remark" => "",
+                "unit_price" => floatval($item->unit_price),
+                "factor" => $item->factor,
+                "order" => "".$count
             ];
 
-            $response = $this->client->request('POST', $this->apiUrl.'projectrequests', [
+            $count++;
+
+            $response = $this->client->request('POST', $this->apiUrl.'projectrequests/'.$projectId.'/projectrequestequipment', [
                 'headers' => $this->requestHeaders,
                 'body'    => json_encode($data)
             ]);
-
-            $jsonResponse = json_decode($response->getBody()->getContents(), true);
-
-            $projectId = $jsonResponse['data']['id'];
-
-            $count = 0;
-            foreach ($project->orderItemsByCategory() as $oi) {
-                $data = [
-                    "quantity" => intval($oi->quantity),
-                    "quantity_total" => intval($oi->quantity),
-                    "is_comment" => false,
-                    "is_kit" => true,
-                    "discount" => 0,
-                    "name" => $oi->product->name,
-                    "external_remark" => "",
-                    "unit_price" => floatval($oi->product->rental_price),
-                    "factor" => "1",
-                    "order" => "".$count
-                ];
-
-                $count++;
-
-                $response = $this->client->request('POST', $this->apiUrl.'projectrequests/'.$projectId.'/projectrequestequipment', [
-                    'headers' => $this->requestHeaders,
-                    'body'    => json_encode($data)
-                ]);
-            }
-
-            $project->state = Order::TRANSMITTED;
-            $project->save();
-
-
-        } catch (\Exception $e) {
-            Log::info($e->getMessage() . "\n");
         }
+
+        $project->dateSubmitted = date('Y-m-d H:i:s');
+            
+    }
+
+    protected function formatDateTime($dateTimeStr) {
+        $tmp = new Carbon($dateTimeStr);
+        return $tmp->toAtomString();
     }
 }
