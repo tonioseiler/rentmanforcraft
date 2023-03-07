@@ -43,7 +43,10 @@ class ApiController extends Controller
      */
     public function actionIndex(): Response
     {
-        //TODO: show the api version
+        return $this->asJson([
+            'name' => 'Rentman for craft',
+            'version' => '1.0'
+        ]);
     }
 
     /**
@@ -135,9 +138,7 @@ class ApiController extends Controller
         $project = $projectService->getActiveProject();
         if($project) {
             return $this->asJson($this->createProjectResponse($project));
-
         } else {
-            //
             return $this->asJson(null);
         }
     }
@@ -209,9 +210,6 @@ class ApiController extends Controller
         if ($quantity <= 0) {
             $item->delete();
         }
-
-        //$project = $item->getProject(); paolo: removed as it's wrong
-        // $product = $item->getProduct(); paolo: removed as it's unused
 
         // paolo: added
         if (empty($user)) {
@@ -287,19 +285,7 @@ class ApiController extends Controller
 
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
-        $params = $request->getBodyParams();
-        
-        $user = Craft::$app->getUser()->getIdentity();
-        
-        if (empty($user)) {
-            $project = Project::find()
-                ->id($params['projectId'])
-                ->one();
-        } else {
-            $project = Project::find()
-                ->id($params['projectId'])
-                ->one();
-        }
+        $project = $this->getProjectFromRequest($request);
 
         if ($project) {
             $project->dateOrdered = date('Y-m-d H:i:s');
@@ -345,11 +331,7 @@ class ApiController extends Controller
 
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
-        $params = $request->getBodyParams();
-        
-        $project = Project::find()
-            ->id($params['projectId'])
-            ->one();
+        $project = $this->getProjectFromRequest($request);
 
         if ($project) {
             
@@ -377,21 +359,7 @@ class ApiController extends Controller
      
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
-        $params = $request->getBodyParams();
-        
-        $user = Craft::$app->getUser()->getIdentity();
-        
-        if (empty($user)) {
-            $project = Project::find()
-                ->userId(0)
-                ->id($params['projectId'])
-                ->one();
-        } else {
-            $project = Project::find()
-                ->userId($user->id)
-                ->id($params['projectId'])
-                ->one();
-        }
+        $project = $this->getProjectFromRequest($request);
 
         unset($params['id']);
 
@@ -422,21 +390,7 @@ class ApiController extends Controller
 
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
-        $params = $request->getBodyParams();
-        
-        $user = Craft::$app->getUser()->getIdentity();
-        
-        if (empty($user)) {
-            $project = Project::find()
-                ->userId(0)
-                ->id($params['projectId'])
-                ->one();
-        } else {
-            $project = Project::find()
-                ->userId($user->id)
-                ->id($params['projectId'])
-                ->one();
-        }
+        $project = $this->getProjectFromRequest($request);
 
         if ($project) {
             $duplicate = Craft::$app->elements->duplicateElement($project);
@@ -528,21 +482,7 @@ class ApiController extends Controller
     {
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
-        $params = $request->getBodyParams();
-        
-        $user = Craft::$app->getUser()->getIdentity();
-        
-        if (empty($user)) {
-            $project = Project::find()
-                ->userId(0)
-                ->id($params['projectId'])
-                ->one();
-        } else {
-            $project = Project::find()
-                ->userId($user->id)
-                ->id($params['projectId'])
-                ->one();
-        }
+        $project = $this->getProjectFromRequest($request);
 
         if ($project) {
             Craft::$app->elements->deleteElement($project);
@@ -567,5 +507,22 @@ class ApiController extends Controller
             'totals' => $projectService->getProjectTotals($project),
             'items' => $project->getItems()
         ];
+    }
+
+    private function getProjectFromRequest($request) {
+        $params = $request->getBodyParams();
+        $user = Craft::$app->getUser()->getIdentity();
+        
+        if (empty($user)) {
+            return Project::find()
+                ->userId(0)
+                ->id($params['projectId'])
+                ->one();
+        } else {
+            return Project::find()
+                ->userId($user->id)
+                ->id($params['projectId'])
+                ->one();
+        }
     }
 }
