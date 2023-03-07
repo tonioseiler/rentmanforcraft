@@ -35,6 +35,7 @@ class ApiController extends Controller
         'set-project-product-quantity',
         'set-project-shooting-days',
         'submit-project',
+        'search-products',
     ];
 
     /**
