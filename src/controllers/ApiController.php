@@ -243,7 +243,6 @@ class ApiController extends Controller
      */
     public function actionSetProjectShootingDays(): Response
     {
-        //TODO: check user
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
         $params = $request->getBodyParams();
@@ -486,7 +485,32 @@ class ApiController extends Controller
         $project->shooting_days = 1;
         if (!empty($user)) {
             $project->userId = $user->id;
-            //TODO: Inherit fields from last order
+            
+            //inherit data from last project
+            $lastProject = Project::find()
+                ->userId($user->id)
+                ->orderBy('id', 'desc')
+                ->one();
+            if ($lastProject) {
+                $project->contact_mailing_number = $lastProject->contact_mailing_number;
+                $project->contact_mailing_country = $lastProject->contact_mailing_country;
+                $project->contact_name = $lastProject->contact_name;
+                $project->contact_mailing_postalcode = $lastProject->contact_mailing_postalcode;
+                $project->contact_mailing_city = $lastProject->contact_mailing_city;
+                $project->contact_mailing_street = $lastProject->contact_mailing_street;
+                $project->contact_person_lastname = $lastProject->contact_person_lastname;
+                $project->contact_person_email = $lastProject->contact_person_email;
+                $project->contact_person_middle_name = $lastProject->contact_person_middle_name;
+                $project->contact_person_first_name = $lastProject->contact_person_first_name;
+                $project->location_mailing_number = $lastProject->location_mailing_number;
+                $project->location_mailing_country = $lastProject->location_mailing_country;
+                $project->location_name = $lastProject->location_name;
+                $project->location_mailing_postalcode = $lastProject->location_mailing_postalcode;
+                $project->location_mailing_city = $lastProject->location_mailing_city;
+                $project->location_mailing_street = $lastProject->location_mailing_street;
+            }
+            
+
         }
         $success = Craft::$app->elements->saveElement($project);
         
