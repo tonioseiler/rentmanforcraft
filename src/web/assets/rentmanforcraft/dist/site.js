@@ -156,9 +156,14 @@ window.rentman = {
      * copy the project
      */
     copyProject: function (projectId, callback) {
-        if (callback) {
-            callback();
-        }
+        let data = {
+            projectId: projectId,
+        };
+        $.post('/actions/rentman-for-craft/api/copy-project', data, function(response) {
+            if (callback) {
+                callback(response);
+            }
+        });
     },
 
     /*

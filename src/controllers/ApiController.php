@@ -78,21 +78,17 @@ class ApiController extends Controller
         $productsService = RentmanForCraft::getInstance()->productsService;
         $products = $productsService->searchProducts($query);
 
-        // TODO paolo: group products by cats
-        /*
-        $ret = [];
-        $items = $this->getItems();
-        foreach($items as $item) {
-            $product = $item->getProduct();
+        //@paolo: more or less like this
+        /*$ret = [];
+        foreach($products as $product) {
             $category = $product->getCategory();
             if (!isset($ret[$category->id])) {
                 $ret[$category->id] = [];
             }
-            $ret[$category->id][] = $item;
+            $ret[$category->id][] = $product;
         }
-        return $ret;
-        */
-        //return $products->getItemsGroupedByCategory();
+        return $this->asJson($ret);*/
+        
 
         return $this->asJson($products);
     }
@@ -177,8 +173,6 @@ class ApiController extends Controller
      */
     public function actionSetProjectProductQuantity(): Response
     {
-
-        //TODO: check user
 
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
@@ -318,9 +312,7 @@ class ApiController extends Controller
             $success = Craft::$app->elements->saveElement($project);
             Session::set('ACTIVE_PROJECT_ID', 0);
 
-            //TODO: ->setCc(), setFrom from settings
             $emailSettings = App::mailSettings();
-            //TODO: add table of items
 
             Craft::$app
                     ->getMailer()
@@ -336,11 +328,10 @@ class ApiController extends Controller
         } else {
             return $this->redirectToPostedUrl();
         }
-
     }
 
 
-    //thios is to be use from the cp
+    //this is to be use from the cp
 
     /**
      * rentman-for-craft/api/submit-project-to-rentman action
@@ -450,14 +441,29 @@ class ApiController extends Controller
 
         if ($project) {
             $duplicate = Craft::$app->elements->duplicateElement($project);
-            //TODO: duplicate items
+            $duplicate->title = $duplicate->title.' (Kopie)';
             $duplicate->dateOrdered = null;
             $duplicate->dateSubmitted = null;
             $success = Craft::$app->elements->saveElement($duplicate);
 
+            //duplicate items
+            foreach($project->getItems() as $item) {
+                $newItem = new ProjectItem();
+                $newItem->id = 0;
+                $newItem->projectId = $duplicate->id;
+                $newItem->productId = $item->productId;
+                $newItem->quantity = $item->quantity;
+                $newItem->itemtype = $item->itemtype;
+                $newItem->unit_price = $item->unit_price;
+                $newItem->save();
+            }
+
+            $projectService = RentmanForCraft::getInstance()->projectsService;
+            $projectService->updateProjectItemsAndPrice($duplicate);
+
         }
         if ($request->isAjax) {
-            return $this->asJson($this->createProjectResponse($project));
+            return $this->asJson($this->createProjectResponse($duplicate));
         } else {
             return $this->redirectToPostedUrl();
         }
