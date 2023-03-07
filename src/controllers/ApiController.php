@@ -502,7 +502,33 @@ class ApiController extends Controller
      */
     public function actionDeleteProject(): Response
     {
-        //TODO: implement
+        $this->requirePostRequest();
+        $request = Craft::$app->getRequest();
+        $params = $request->getBodyParams();
+        
+        $user = Craft::$app->getUser()->getIdentity();
+        
+        if (empty($user)) {
+            $project = Project::find()
+                ->userId(0)
+                ->id($params['projectId'])
+                ->one();
+        } else {
+            $project = Project::find()
+                ->userId($user->id)
+                ->id($params['projectId'])
+                ->one();
+        }
+
+        if ($project) {
+            Craft::$app->elements->deleteElement($project);
+        }
+
+        if ($request->isAjax) {
+            return $this->asJson(['success' => true]);
+        } else {
+            return $this->redirectToPostedUrl();
+        }
     }
 
     private function getCurrentUser(): ?User {

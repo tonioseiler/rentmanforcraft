@@ -170,9 +170,14 @@ window.rentman = {
      * delete the project
      */
     deleteProject: function (projectId, callback) {
-        if (callback) {
-            callback();
-        }
+        let data = {
+            projectId: projectId,
+        };
+        $.post('/actions/rentman-for-craft/api/delete-project', data, function(response) {
+            if (callback) {
+                callback(response);
+            }
+        });
     },
 
 }
