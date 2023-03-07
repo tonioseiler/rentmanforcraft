@@ -137,34 +137,21 @@ class RentmanForCraftVariable
         if ($fullTree) {
             $categories = $this->getCategories($parentId);
             foreach($categories as $cat) {
-                $ret .= '<li class="'.(in_array($cat->id, $activeCatIds) ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a>';
+                //$ret .= '<li class="'.(in_array($cat->id, $activeCatIds) ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a>';
+                $ret .= '
+                <li class="'.(in_array($cat->id, $activeCatIds) ? 'active' : '').'">
+                    <input type="checkbox" id="mm'.$cat->id.'" style="display:none;">
+                    <label for="mm'.$cat->id.'">
+                        <a href="'.$cat->getUrl().'" class="'.(in_array($cat->id, $activeCatIds) ? 'act' : '').'">'.$cat->displayname.'</a>
+                        '.($cat->hasChildren() ? '<span class="icons"><span class="arrow down white"></span></span>' : '').'
+                    </label>
+                ';
                 if ($cat->hasChildren()) {
                     $ret .= '<ul>';
                     $ret .= $this->printCategoryTreeMobile(true, $activeCategoryId, $cat->id);
                     $ret .= '</ul>';
                 }
                 $ret .= '</li>';
-
-            }
-        } else {
-            if (empty($activeCategoryId)) {
-                //just print the main cats
-                $categories = $this->getCategories($parentId);
-                foreach($categories as $cat) {
-                    $ret .= '<li><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a></li>';
-                }
-            } else {
-                $categories = $this->getCategories($parentId);
-                foreach($categories as $cat) {
-                    $isActive = in_array($cat->id, $activeCatIds);
-                    $ret .= '<li class="'.($isActive  ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a>';
-                    if ($cat->hasChildren() && $isActive) {
-                        $ret .= '<ul>';
-                        $ret .= $this->printCategoryTreeMobile(false, $activeCategoryId, $cat->id);
-                        $ret .= '</ul>';
-                    }
-                    $ret .= '</li>';
-                }
             }
         }
 
