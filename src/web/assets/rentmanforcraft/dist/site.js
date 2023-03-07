@@ -57,6 +57,25 @@ window.rentman = {
         });
     },
 
+    searchProducts: function (query,callback) {
+        $.get('/actions/rentman-for-craft/api/search-products', query, function(response) {
+            if(response) {
+                if (callback) {
+                    callback(response);
+                }
+            } else {
+                if (callback) {
+                    callback(null);
+                }
+            }
+
+        });
+    },
+
+
+
+
+
     /*
      * set the currenty active project
      * if callback is a string, we assume the namespace for the callback method is "app"
