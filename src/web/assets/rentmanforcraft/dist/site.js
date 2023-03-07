@@ -58,7 +58,7 @@ window.rentman = {
     },
 
     searchProducts: function (query,callback) {
-        $.get('/actions/rentman-for-craft/api/search-products', query, function(response) {
+        $.get('/actions/rentman-for-craft/api/search-products', 'query='.query, function(response) {
             if(response) {
                 if (callback) {
                     callback(response);
