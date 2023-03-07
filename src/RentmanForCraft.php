@@ -9,12 +9,14 @@ use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterCpNavItemsEvent;
+use craft\events\RegisterEmailMessagesEvent;
 use craft\events\RegisterTemplateRootsEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\TemplateEvent;
 use craft\helpers\Session;
 use craft\log\MonologTarget;
 use craft\services\Elements;
+use craft\services\SystemMessages;
 use craft\web\UrlManager;
 use craft\web\View;
 use craft\web\twig\variables\Cp;
@@ -222,7 +224,17 @@ class RentmanForCraft extends Plugin
                     }
                 }
             }
-        ); 
+        );
+
+        //custom system messages
+        Event::on(SystemMessages::class, SystemMessages::EVENT_REGISTER_MESSAGES, function(RegisterEmailMessagesEvent $event) {
+            $event->messages[] = [
+                'key' => 'project_ordered',
+                'heading' => 'Projekt eingereicht',
+                'subject' => 'Projekt eingereicht',
+                'body' => 'Inhalt der Email',
+            ];
+        });
 
 
     }

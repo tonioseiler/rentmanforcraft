@@ -294,6 +294,18 @@ class ApiController extends Controller
             }
             $success = Craft::$app->elements->saveElement($project);
             Session::set('ACTIVE_PROJECT_ID', 0);
+
+            //TODO: ->setCc(), setFrom from settings
+            $emailSettings = App::mailSettings();
+            //TODO: add table of items
+
+            Craft::$app
+                    ->getMailer()
+                    ->composeFromKey('project_ordered', ['project', $project])
+                    ->setTo($project->contact_person_email)
+                    ->setCc($emailSettings->fromEmail)
+                    ->setFrom($emailSettings->fromEmail)
+                    ->send();
         }
 
         if ($request->isAjax) {
