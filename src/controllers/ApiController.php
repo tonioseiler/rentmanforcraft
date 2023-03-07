@@ -442,6 +442,7 @@ class ApiController extends Controller
         $project = new Project();
         $project->userId = 0;
         $project->title = 'Neues Projekt';
+        $project->shooting_days = 1;
         if (!empty($user)) {
             $project->userId = $user->id;
             //TODO: Inherit fields from last order
