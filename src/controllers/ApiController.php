@@ -77,6 +77,23 @@ class ApiController extends Controller
         $request = Craft::$app->getRequest();
         $productsService = RentmanForCraft::getInstance()->productsService;
         $products = $productsService->searchProducts($query);
+
+        // TODO paolo: group products by cats
+        /*
+        $ret = [];
+        $items = $this->getItems();
+        foreach($items as $item) {
+            $product = $item->getProduct();
+            $category = $product->getCategory();
+            if (!isset($ret[$category->id])) {
+                $ret[$category->id] = [];
+            }
+            $ret[$category->id][] = $item;
+        }
+        return $ret;
+        */
+        //return $products->getItemsGroupedByCategory();
+
         return $this->asJson($products);
     }
 
