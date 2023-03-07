@@ -120,6 +120,58 @@ class RentmanForCraftVariable
         return $ret;
     }
 
+    public function printCategoryTreeMobile($fullTree = false, $activeCategoryId = 0, $parentId = 0)
+    {
+        $ret = '';
+
+        $activeCatIds = [];
+        if (!empty($activeCategoryId)) {
+            $tmp = Category::find()->id($activeCategoryId)->one();
+            while (!$tmp->isMainCategory()) {
+                $activeCatIds[] = $tmp->id;
+                $tmp = $tmp->getParent();
+            }
+            $activeCatIds[] = $tmp->id;
+        }
+
+        if ($fullTree) {
+            $categories = $this->getCategories($parentId);
+            foreach($categories as $cat) {
+                $ret .= '<li class="'.(in_array($cat->id, $activeCatIds) ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a>';
+                if ($cat->hasChildren()) {
+                    $ret .= '<ul>';
+                    $ret .= $this->printCategoryTreeMobile(true, $activeCategoryId, $cat->id);
+                    $ret .= '</ul>';
+                }
+                $ret .= '</li>';
+
+            }
+        } else {
+            if (empty($activeCategoryId)) {
+                //just print the main cats
+                $categories = $this->getCategories($parentId);
+                foreach($categories as $cat) {
+                    $ret .= '<li><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a></li>';
+                }
+            } else {
+                $categories = $this->getCategories($parentId);
+                foreach($categories as $cat) {
+                    $isActive = in_array($cat->id, $activeCatIds);
+                    $ret .= '<li class="'.($isActive  ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a>';
+                    if ($cat->hasChildren() && $isActive) {
+                        $ret .= '<ul>';
+                        $ret .= $this->printCategoryTreeMobile(false, $activeCategoryId, $cat->id);
+                        $ret .= '</ul>';
+                    }
+                    $ret .= '</li>';
+                }
+            }
+        }
+
+        if (!empty($ret) && $parentId == 0) $ret = '<ul>'.$ret.'</ul>';
+        return $ret;
+    }
+
 
     public function getSetContent($productId)
     {
