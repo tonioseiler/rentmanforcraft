@@ -140,7 +140,7 @@ class RentmanForCraftVariable
                 //$ret .= '<li class="'.(in_array($cat->id, $activeCatIds) ? 'active' : '').'"><a href="'.$cat->getUrl().'">'.$cat->displayname.'</a>';
                 $ret .= '
                 <li class="'.(in_array($cat->id, $activeCatIds) ? 'active' : '').'">
-                    <input type="checkbox" id="mm'.$cat->id.'" style="display:none;">
+                    <input type="checkbox" id="mm'.$cat->id.'" style="display:none;" '.(in_array($cat->id, $activeCatIds) ? 'checked' : '').'>
                     <label for="mm'.$cat->id.'">
                         <a href="'.$cat->getUrl().'" class="'.(in_array($cat->id, $activeCatIds) ? 'act' : '').'">'.$cat->displayname.'</a>
                         '.($cat->hasChildren() ? '<span class="icons"><span class="arrow down white"></span></span>' : '').'
