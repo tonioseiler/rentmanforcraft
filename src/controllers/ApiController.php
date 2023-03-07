@@ -151,9 +151,9 @@ class ApiController extends Controller
 
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
-        $params = $request->getBodyParams();
+        $project = $this->getProjectFromRequest($request);
 
-        Session::set('ACTIVE_PROJECT_ID', $params['projectId']);
+        Session::set('ACTIVE_PROJECT_ID', $project->id);
 
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $project = $projectService->getActiveProject();
