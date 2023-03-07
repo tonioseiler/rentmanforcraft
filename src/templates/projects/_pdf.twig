@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style type="text/css">
+
+    body, div, span, h1, h2, h3, h4, h5, h6, p, a, img, strong, b, i, dl, dt, dd, ol, ul, li, table, tr, th, td {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        vertical-align: baseline;
+        font-size: 16px;
+        font-family: "Source Sans Pro", serif;
+        font-weight: 300;
+        line-height: 16px;
+        color:#000000;
+        margin:0px;
+        text-align: left;
+    }
+
+    h1 {
+        font-weight: 400;
+        font-size: 22px;
+        margin-bottom: 0.4cm;
+    }
+    h2 {
+        font-weight: 300;
+        color: #333333;
+        margin-bottom: 0.2cm;
+    }
+    p {
+        padding:0;
+        margin:0;
+    }
+
+    .item-image {
+        max-width: 4.2cm;
+        max-height: 8cm;
+        margin-bottom: 0.4cm;
+    }
+
+    #image-container {
+        margin-bottom: 1cm;
+    }
+
+    #image-container td {
+        text-align: center;
+    }
+    #image-container .first {
+        padding: 0;
+        text-align: left;
+    }
+    #image-container .last {
+        padding: 0;
+        text-align: right;
+    }
+
+    table {
+        width: 100%;
+        page-break-inside: auto;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    table td {
+        text-align: left;
+    }
+    ol, ul {
+        list-style: none;
+    }
+
+    .page-break {
+        page-break-after: always;
+    }
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width:100%;
+        margin:0 auto;
+        font-size: 8pt;
+        text-align: center;
+    }
+    #logo {
+        width: 10cm;
+    }
+    #logo-container {
+        text-align: right;
+        padding-bottom: 1.2cm;
+    }
+
+    #data-container {
+        font-weight: 300;
+        font-size: 15px;
+        color: #333333;
+    }
+
+    #data-container td {
+        border-top: 0.5pt solid #333333;
+        border-bottom: 0.5pt solid #333333;
+        padding: 0.05cm 0.2cm 0.1cm;
+    }
+
+    #data-container .label {
+        width: 6cm;
+        font-weight: 400;
+    }
+    </style>
+</head>
+<body>
+    <table id="main-container">
+        <tr><td id="logo-container">
+            <img id="logo" src="{!! base64ImageSource(resource_path('assets/images/BGA_Logo_Pink.png')) !!}" />
+        </td></tr>
+        <tr><td><h1 class="fullname">{{isset($contact->birthdate) ? $contact->birthdate->year : ''}} {{$contact->firstname}} {{$contact->lastname}} {{isset($contact->birthdate) ? ' ('.$contact->birthdate->age.') ' : ''}}</h1></td></tr>
+        <tr><td><h2>Kommt aus: {{$contact->city}} {{ empty($contact->state) ? '' : $contact->state }}</h2></td></tr>
+        <tr><td>
+            <table id="image-container">
+                <tr>
+                    <td class="first">
+                        @if(!empty($thumbs[0]) && file_exists($thumbs[0]))
+                            <img class="item-image" src="{{base64ImageSource($thumbs[0])}}" />
+                        @endif
+                    </td>
+                    <td class="">
+                        @if(!empty($thumbs[1]) && file_exists($thumbs[1]))
+                            <img class="item-image" src="{{base64ImageSource($thumbs[1])}}" />
+                        @endif
+                    </td>
+                    <td class="">
+                        @if(!empty($thumbs[2]) && file_exists($thumbs[2]))
+                            <img class="item-image" src="{{base64ImageSource($thumbs[2])}}" />
+                        @endif
+                    </td>
+                    <td class="last">
+                        @if(!empty($thumbs[3]) && file_exists($thumbs[3]))
+                            <img class="item-image" src="{{base64ImageSource($thumbs[3])}}" />
+                        @endif
+                    </td>
+                </tr>
+            </table>
+        </td></tr>
+        <tr><td>
+            <table id="data-container">
+                @if (!empty($contact->height))
+                    <tr><td class="label">GrÃ¶sse</td><td>{{$contact->height}} cm</td></tr>
+                @endif
+                @if (!empty($contact->head_circumference))
+                    <tr><td class="label">Kopfumfang</td><td>{{$contact->head_circumference}} cm</td></tr>
+                @endif
+                @if (!empty($contact->chest_measurement))
+                    <tr><td class="label">Brustumfang</td><td>{{$contact->chest_measurement}} cm</td></tr>
+                @endif
+                @if (!empty($contact->waist_circumference))
+                    <tr><td class="label">Taillenumfang</td><td>{{$contact->waist_circumference}} cm</td></tr>
+                @endif
+                @if (!empty($contact->jeans_size))
+                    <tr><td class="label">JeansgrÃ¶sse</td><td>{{$contact->jeans_size}}</td></tr>
+                @endif
+                @if (!empty($contact->clothing_size))
+                    <tr><td class="label">KonfektionsgrÃ¶sse</td><td>{{$contact->clothing_size}}</td></tr>
+                @endif
+                @if (!empty($contact->weight))
+                    <tr><td class="label">Gewicht</td><td>{{$contact->weight}} kg</td></tr>
+                @endif
+                @if (!empty($contact->shoe_size))
+                    <tr><td class="label">SchuhgrÃ¶sse</td><td>{{$contact->shoe_size}}</td></tr>
+                @endif
+                @if (!empty($contact->collar_size))
+                    <tr><td class="label">Kragenweite</td><td>{{$contact->collar_size}} cm</td></tr>
+                @endif
+                @if (!empty($contact->arm_length))
+                    <tr><td class="label">ArmlÃ¤nge</td><td>{{$contact->arm_length}} cm</td></tr>
+                @endif
+                @if (!empty($contact->eye_color))
+                    <tr><td class="label">Augenfarbe</td><td>{{!empty($contact->eye_color ) ? \App\Contact::EYE_COLORS[$contact->eye_color] : 'â€“'}}</td></tr>
+                @endif
+                @if (!empty($contact->hair_color))
+                    <tr><td class="label">Haarfarbe</td><td>{{!empty($contact->hair_color ) ? \App\Contact::HAIR_COLORS[$contact->hair_color] : 'â€“'}}</td></tr>
+                @endif
+            </table>
+        </td></tr>
+    </table>
+    <div class="footer">{{ setting('FOOTER.ADDRESS', 'BACKGROUND ACTION GMBH | Badenerstrasse 141 | 8004 ZÃ¼rich | 044 221 96 84 | info@backgroundaction.ch') }}</div>
+</body>
+</html>

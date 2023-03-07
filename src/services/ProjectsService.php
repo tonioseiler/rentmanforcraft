@@ -12,6 +12,9 @@ use furbo\rentmanforcraft\RentmanForCraft;
 use yii\base\Component;
 use yii\web\IdentityInterface;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 /**
  * Projects Service service
  */
@@ -103,5 +106,25 @@ class ProjectsService extends Component
         }
         return 1;
     }
+
+    public function generatePDF(Project $project) {
+        $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/project/_pdf',['project' => $project]);
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', TRUE);
+        $options->set('debugKeepTemp', TRUE);
+        $options->set('isHtml5ParserEnabled', true);
+        //$options->setTempDir();
+        $dompdf = new Dompdf($options);
+
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        $output = $dompdf->output();
+
+        //todo: save pdf output and return file name
+
+
+    }
+
 
 }

@@ -240,6 +240,23 @@ class Product extends RentmanElement
         ]);
     }
 
+    protected static function defineSearchableAttributes(): array
+    {
+        return [
+            'rentmanId',
+            'custom',
+            'displayname',
+            'code',
+            'external_remark',
+            'shop_description_short',
+            'shop_description_long',
+            'shop_seo_title',
+            'shop_seo_keyword',
+            'shop_seo_description'
+        ];
+    }
+
+
     public function getUriFormat(): ?string {
         $settings = RentmanForCraft::getInstance()->getSettings()->productRoutes;
         return $settings[$this->site->handle]['uriFormat'];

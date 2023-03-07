@@ -43,5 +43,9 @@ class ProductsService extends Component
        
     }
 
+    public function searchProducts($query) {
+        return Product::find()->search("*" . $query . "*")->limit(100)->all();
+    }
+
 
 }

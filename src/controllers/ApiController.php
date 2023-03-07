@@ -31,6 +31,7 @@ class ApiController extends Controller
         'set-active-project',
         'create-project',
         'update-project',
+        'submit-project',
         'set-project-product-quantity',
         'set-project-shooting-days',
     ];
@@ -71,7 +72,10 @@ class ApiController extends Controller
 
     public function actionSearchProducts($query): Response
     {
-        //TODO: implement
+        $request = Craft::$app->getRequest();
+        $productsService = RentmanForCraft::getInstance()->productsService;
+        $products = $productsService->searchProducts($query);
+        return $this->asJson($products);
     }
 
     /**
