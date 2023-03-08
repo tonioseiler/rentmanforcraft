@@ -114,7 +114,7 @@ class ProjectsService extends Component
         $oldTemplateMode = $view->getTemplateMode();
 
         $view->setTemplateMode($view::TEMPLATE_MODE_SITE);
-        $html = $view->renderTemplate('/src/templates/projects/_pdf',['project' => $project]);
+        $html = $view->renderTemplate('rentman-for-craft/src/templates/projects/_pdf',['project' => $project]);
 
         $view->setTemplateMode($oldTemplateMode);
 
