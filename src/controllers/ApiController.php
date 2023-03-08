@@ -544,6 +544,7 @@ class ApiController extends Controller
         }
     }
 
+    // TODO @Tonio verify this please (it works but maybe it is wrong anyway): I have added this because you told me that the download pdf should be a GET, and I needed to load the project from the projectId get var.
     private function getProjectFromGetRequest($request) {
         $params = $request->getQueryParams();
         $user = Craft::$app->getUser()->getIdentity();
