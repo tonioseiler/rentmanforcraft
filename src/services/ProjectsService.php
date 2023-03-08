@@ -108,6 +108,7 @@ class ProjectsService extends Component
     }
 
     public function generatePDF(Project $project) {
+        Craft::$app->getView()->setTemplateMode('site');
         $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/projects/_pdf',['project' => $project]);
 
         $options = new Options();
