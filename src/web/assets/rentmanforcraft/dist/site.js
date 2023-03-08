@@ -179,8 +179,12 @@ window.rentman = {
             }
         });
     },
+
     downloadProjectPdf: function (projectId,callback) {
+        console.log('rentman js - downloadProjectPdf');
         $.get('/actions/rentman-for-craft/api/generate-project-pdf', {projectId:projectId}, function(response) {
+            console.log('rentman js - downloadProjectPdf - got response');
+
             if(response) {
                 if (callback) {
                     callback(response);
@@ -190,8 +194,12 @@ window.rentman = {
                     callback(null);
                 }
             }
+
         });
     },
+
+
+
 
 }
 

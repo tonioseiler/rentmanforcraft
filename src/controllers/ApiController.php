@@ -499,7 +499,7 @@ class ApiController extends Controller
 
     public function actionGenerateProjectPdf(): Response
     {
-        $this->requirePostRequest();
+        /*$this->requirePostRequest();*/
         $request = Craft::$app->getRequest();
         $project = $this->getProjectFromRequest($request);
 
