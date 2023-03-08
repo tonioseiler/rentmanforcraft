@@ -501,6 +501,7 @@ class ApiController extends Controller
     {
         /*$this->requirePostRequest();*/
         $request = Craft::$app->getRequest();
+        dd($request);
         $project = $this->getProjectFromRequest($request);
 
         $projectService = RentmanForCraft::getInstance()->projectsService;
