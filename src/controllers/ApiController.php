@@ -501,8 +501,7 @@ class ApiController extends Controller
     {
         /*$this->requirePostRequest();*/
         $request = Craft::$app->getRequest();
-        dd($request);
-        $project = $this->getProjectFromRequest($request);
+        $project = $this->getProjectFromGetRequest($request);
 
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $filename = $projectService->generatePDF($project);
@@ -532,7 +531,6 @@ class ApiController extends Controller
     private function getProjectFromRequest($request) {
         $params = $request->getBodyParams();
         $user = Craft::$app->getUser()->getIdentity();
-        dd($params);
         if (empty($user)) {
             return Project::find()
                 ->userId(0)
@@ -545,4 +543,22 @@ class ApiController extends Controller
                 ->one();
         }
     }
+
+    private function getProjectFromGetRequest($request) {
+        $params = $request->getQueryParams();
+        $user = Craft::$app->getUser()->getIdentity();
+        if (empty($user)) {
+            return Project::find()
+                ->userId(0)
+                ->id($params['projectId'])
+                ->one();
+        } else {
+            return Project::find()
+                ->userId($user->id)
+                ->id($params['projectId'])
+                ->one();
+        }
+    }
+
+
 }
