@@ -503,6 +503,7 @@ class ApiController extends Controller
         $request = Craft::$app->getRequest();
         $project = $this->getProjectFromRequest($request);
 
+        dd($project);
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $filename = $projectService->generatePDF($project);
         dd($filename);
