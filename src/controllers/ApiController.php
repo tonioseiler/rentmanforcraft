@@ -359,6 +359,7 @@ class ApiController extends Controller
      
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
+        $params = $request->getBodyParams();
         $project = $this->getProjectFromRequest($request);
 
         unset($params['id']);
