@@ -6,6 +6,7 @@ use Craft;
 use craft\console\User;
 use craft\elements\User as ElementsUser;
 use craft\helpers\Session;
+use craft\web\View;
 use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\records\ProjectItem;
 use furbo\rentmanforcraft\RentmanForCraft;
@@ -108,8 +109,7 @@ class ProjectsService extends Component
     }
 
     public function generatePDF(Project $project) {
-        Craft::$app->getView()->setTemplateMode('site');
-        $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/projects/_pdf',['project' => $project]);
+        $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/projects/_pdf',['project' => $project], View::TEMPLATE_MODE_SITE);
 
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
