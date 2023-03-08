@@ -109,78 +109,18 @@
 </head>
 <body>
     <table id="main-container">
-        <tr><td id="logo-container">
-            <img id="logo" src="{!! base64ImageSource(resource_path('assets/images/BGA_Logo_Pink.png')) !!}" />
-        </td></tr>
-        <tr><td><h1 class="fullname">{{isset($contact->birthdate) ? $contact->birthdate->year : ''}} {{$contact->firstname}} {{$contact->lastname}} {{isset($contact->birthdate) ? ' ('.$contact->birthdate->age.') ' : ''}}</h1></td></tr>
-        <tr><td><h2>Kommt aus: {{$contact->city}} {{ empty($contact->state) ? '' : $contact->state }}</h2></td></tr>
-        <tr><td>
-            <table id="image-container">
-                <tr>
-                    <td class="first">
-                        @if(!empty($thumbs[0]) && file_exists($thumbs[0]))
-                            <img class="item-image" src="{{base64ImageSource($thumbs[0])}}" />
-                        @endif
-                    </td>
-                    <td class="">
-                        @if(!empty($thumbs[1]) && file_exists($thumbs[1]))
-                            <img class="item-image" src="{{base64ImageSource($thumbs[1])}}" />
-                        @endif
-                    </td>
-                    <td class="">
-                        @if(!empty($thumbs[2]) && file_exists($thumbs[2]))
-                            <img class="item-image" src="{{base64ImageSource($thumbs[2])}}" />
-                        @endif
-                    </td>
-                    <td class="last">
-                        @if(!empty($thumbs[3]) && file_exists($thumbs[3]))
-                            <img class="item-image" src="{{base64ImageSource($thumbs[3])}}" />
-                        @endif
-                    </td>
-                </tr>
-            </table>
-        </td></tr>
-        <tr><td>
-            <table id="data-container">
-                @if (!empty($contact->height))
-                    <tr><td class="label">GrÃ¶sse</td><td>{{$contact->height}} cm</td></tr>
-                @endif
-                @if (!empty($contact->head_circumference))
-                    <tr><td class="label">Kopfumfang</td><td>{{$contact->head_circumference}} cm</td></tr>
-                @endif
-                @if (!empty($contact->chest_measurement))
-                    <tr><td class="label">Brustumfang</td><td>{{$contact->chest_measurement}} cm</td></tr>
-                @endif
-                @if (!empty($contact->waist_circumference))
-                    <tr><td class="label">Taillenumfang</td><td>{{$contact->waist_circumference}} cm</td></tr>
-                @endif
-                @if (!empty($contact->jeans_size))
-                    <tr><td class="label">JeansgrÃ¶sse</td><td>{{$contact->jeans_size}}</td></tr>
-                @endif
-                @if (!empty($contact->clothing_size))
-                    <tr><td class="label">KonfektionsgrÃ¶sse</td><td>{{$contact->clothing_size}}</td></tr>
-                @endif
-                @if (!empty($contact->weight))
-                    <tr><td class="label">Gewicht</td><td>{{$contact->weight}} kg</td></tr>
-                @endif
-                @if (!empty($contact->shoe_size))
-                    <tr><td class="label">SchuhgrÃ¶sse</td><td>{{$contact->shoe_size}}</td></tr>
-                @endif
-                @if (!empty($contact->collar_size))
-                    <tr><td class="label">Kragenweite</td><td>{{$contact->collar_size}} cm</td></tr>
-                @endif
-                @if (!empty($contact->arm_length))
-                    <tr><td class="label">ArmlÃ¤nge</td><td>{{$contact->arm_length}} cm</td></tr>
-                @endif
-                @if (!empty($contact->eye_color))
-                    <tr><td class="label">Augenfarbe</td><td>{{!empty($contact->eye_color ) ? \App\Contact::EYE_COLORS[$contact->eye_color] : 'â€“'}}</td></tr>
-                @endif
-                @if (!empty($contact->hair_color))
-                    <tr><td class="label">Haarfarbe</td><td>{{!empty($contact->hair_color ) ? \App\Contact::HAIR_COLORS[$contact->hair_color] : 'â€“'}}</td></tr>
-                @endif
-            </table>
-        </td></tr>
+        <tr>
+            <td id="logo-container">
+                <!--<img id="logo" src="{!! base64ImageSource(resource_path('assets/images/BGA_Logo_Pink.png')) !!}" />-->
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h1>{{project.title}}</h1>
+            </td>
+        </tr>
     </table>
-    <div class="footer">{{ setting('FOOTER.ADDRESS', 'BACKGROUND ACTION GMBH | Badenerstrasse 141 | 8004 ZÃ¼rich | 044 221 96 84 | info@backgroundaction.ch') }}</div>
+    <div class="footer">
+    </div>
 </body>
 </html>
