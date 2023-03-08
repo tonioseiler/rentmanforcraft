@@ -108,7 +108,8 @@ class ProjectsService extends Component
     }
 
     public function generatePDF(Project $project) {
-        $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/projects/_pdf',['project' => $project]);
+        //$html = Craft::$app->getView()->renderTemplate('rentman-for-craft/projects/_pdf',['project' => $project]);
+        $html = Craft::$app->view->renderTemplate('rentman-for-craft/projects/_pdf',['project' => $project]);
 
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
