@@ -33,23 +33,47 @@
         {% endif %}
         {% if project.contact_mailing_street is not empty %}
             {{ project.contact_mailing_street }}<br/>
-            {% if project.contact_mailing_street is not empty %}
-                {{ project.contact_mailing_street }}
-                {% if project.contact_mailing_postalcode is not empty %}
-                    - {{ project.contact_mailing_postalcode }}
-                    {% if project.contact_mailing_city is not empty %}
-                        {{ project.contact_mailing_city }}
-                        {% if project.contact_mailing_country is not empty %}
-                            - {{ project.contact_mailing_country }}
-                        {% endif %}
+            {% if project.contact_mailing_postalcode is not empty %}
+                - {{ project.contact_mailing_postalcode }}
+                {% if project.contact_mailing_city is not empty %}
+                    {{ project.contact_mailing_city }}
+                    {% if project.contact_mailing_country is not empty %}
+                        - {{ project.contact_mailing_country }}
                     {% endif %}
                 {% endif %}
-                <br>
             {% endif %}
         {% endif %}
-
-
+        <br><br>
     </p>
+
+    <h2>Adresse Produktion</h2>
+    <p>
+        {{ project.contact_person_first_name }} {{ project.contact_person_lastname }} <br/>
+        {% if project.contact_name is not empty %}
+            {{ project.contact_name }}<br/>
+        {% endif %}
+        {% if project.contact_person_email is not empty %}
+            E-Mail:{{ project.contact_person_email }}<br/>
+        {% endif %}
+        {% if project.contact_mailing_number is not empty %}
+            Telefon:{{ project.contact_mailing_number }}<br/>
+        {% endif %}
+        {% if project.contact_mailing_street is not empty %}
+            {{ project.contact_mailing_street }}<br/>
+            {% if project.contact_mailing_postalcode is not empty %}
+                - {{ project.contact_mailing_postalcode }}
+                {% if project.contact_mailing_city is not empty %}
+                    {{ project.contact_mailing_city }}
+                    {% if project.contact_mailing_country is not empty %}
+                        - {{ project.contact_mailing_country }}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        <br><br>
+    </p>
+
+
 
     <table id="address">
         <tr>
