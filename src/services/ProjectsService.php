@@ -126,7 +126,7 @@ class ProjectsService extends Component
         $dompdf->render();
 
         // Parameters
-        $x          = 490;
+        $x          = 494;
         $y          = 790;
         $text       = "Seite {PAGE_NUM} / {PAGE_COUNT}";
         $font       = $dompdf->getFontMetrics()->get_font('Helvetica', 'normal');
@@ -140,7 +140,7 @@ class ProjectsService extends Component
             $x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle
         );
         $dompdf->getCanvas()->page_text(
-            54, $y, 'BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch', $font, $size, $color, $word_space, $char_space, $angle
+            56, $y, 'BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch', $font, $size, $color, $word_space, $char_space, $angle
         );
 
 
