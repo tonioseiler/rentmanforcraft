@@ -124,7 +124,8 @@ class ProjectsService extends Component
         $dompdf->loadHtml($html);
         $dompdf->render();
         if ($stream) {
-            $dompdf->stream($filename);
+            //$dompdf->stream($filename); TODO Paolo re-activate when done with project items
+            $dompdf->stream("", array("Attachment" => false));
         } else {
             $output = $dompdf->output();
             $storagePath = Craft::getAlias('@storage');
