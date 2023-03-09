@@ -139,6 +139,9 @@ class ProjectsService extends Component
         $dompdf->getCanvas()->page_text(
             $x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle
         );
+        $dompdf->getCanvas()->page_text(
+            0, $y, 'BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch', $font, $size, $color, $word_space, $char_space, $angle
+        );
 
 
         if ($stream) {
