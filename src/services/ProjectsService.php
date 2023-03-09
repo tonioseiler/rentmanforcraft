@@ -110,7 +110,7 @@ class ProjectsService extends Component
 
     public function generatePDF(Project $project, $stream = true) {
 
-        $filename = 'BLOW UP rental - Anfrage #'.$project->id.' '.date('d-m-Y').'.pdf';
+        $filename = 'BLOW UP rental - Anfrage #'.$project->id.'.pdf';
 
         $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/pdf/project',['project' => $project], View::TEMPLATE_MODE_CP);
         
