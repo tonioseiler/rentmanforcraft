@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="page-header">Anfrage #{{ project.id }} - {{ now|date('d/m/Y') }} - {{ project.title }}</h1>
+    <h1 class="page-header">Anfrage #{{ project.id }} - {{ project.dateUpdated|date }} - {{ project.title }}</h1>
 
 
     <h2>Rechnungsadresse und Kontaktdaten</h2>
