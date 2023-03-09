@@ -92,22 +92,21 @@
         <dd class="">{{project.in}} - {{project.out}}</dd>
     </dl>
 
-    <table>
+    <table class="table-order-items">
         <thead>
-        <tr class="border-b-2 border-b-darkgrey">
-            <th scope="col" class="py-3">Bezeichnung</th>
-            <th scope="col" class="px-3 sm:px-6 py-3 text-right w-0">kg</th>
-            <th scope="col" class="px-3 sm:px-6 py-3 text-right w-0">CHF</th>
-            <th scope="col" class="px-3 sm:px-6 py-3 text-right w-0"><span class="hidden sm:inline">Anzahl </span><span class="inline sm:hidden">Anz.</span></th>
-            <th scope="col" class="total py-3 text-right w-[100px]">Total ({{ project.shooting_days > 1 ? project.shooting_days~' Tage' : '1 Tag' }})</th>
+        <tr>
+            <th>Bezeichnung</th>
+            <th>kg</th>
+            <th>CHF</th>
+            <th>Anzahl </th>
+            <th>Total ({{ project.shooting_days > 1 ? project.shooting_days~' Tage' : '1 Tag' }})</th>
         </tr>
         </thead>
         <tbody>
         {% set productsGroupedByCats = project.getItemsGroupedByCategory %}
         {% for categoryId, products in productsGroupedByCats %}
             {% set category = craft.rentman.getCategoryById(categoryId) %}
-
-            <tr class="border-b border-b-lightgrey border-t-2 border-t-darkgrey">
+            <tr class="category">
                 <th scope="row" class="py-4 font-medium font-bold">
                     {{ category.displayname }}:
                 </th>
