@@ -75,10 +75,6 @@
         <hr><br>
     {% endif %}
 
-
-
-
-
     <h2>Projektangaben</h2>
     <p>
         Titel: {{ project.title }}<br>
@@ -89,8 +85,6 @@
     <br>
     <hr><br>
 
-
-
     {% if project.remark is not empty %}
         <h2>Kommentar</h2>
         <p>
@@ -100,20 +94,6 @@
         <hr><br>
     {% endif %}
 
-    <hr/>
-    <br/>
-
-    <h2>Projektangaben</h2>
-    <dl>
-        <dt class="">Titel</dt>
-        <dd class="">{{ project.title }}</dd>
-        <br/>
-        <dt class="">Mietzeitraum</dt>
-        <dd class="">{{ project.in }} - {{ project.out }}</dd>
-    </dl>
-
-    <hr/>
-    <br/>
     <table class="table-order-items">
         <thead>
         <tr>
