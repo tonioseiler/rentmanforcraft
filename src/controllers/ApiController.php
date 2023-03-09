@@ -283,7 +283,8 @@ class ApiController extends Controller
     {
         $settings = RentmanForCraft::getInstance()->getSettings();
         $rentmanService = RentmanForCraft::getInstance()->rentmanService;
-
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+        
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
         $project = $this->getProjectFromRequest($request);
@@ -300,13 +301,16 @@ class ApiController extends Controller
 
             $emailSettings = App::mailSettings();
 
-            Craft::$app
+            $message = Craft::$app
                     ->getMailer()
                     ->composeFromKey('project_ordered', ['project', $project])
                     ->setTo($project->contact_person_email)
                     ->setCc($emailSettings->fromEmail)
-                    ->setFrom($emailSettings->fromEmail)
-                    ->send();
+                    ->setFrom($emailSettings->fromEmail);
+
+            $filePath = $projectService->generatePDF($project, false);
+            $message->attach($filePath);
+            $message->send();
         }
 
         if ($request->isAjax) {

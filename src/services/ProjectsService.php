@@ -110,7 +110,7 @@ class ProjectsService extends Component
 
     public function generatePDF(Project $project, $stream = true) {
 
-        $filename = 'project-'.$project->id.'_'.date('Y-m-d_H:i').'.pdf';
+        $filename = 'project-'.$project->id.'_'.date('Y-m-d_H-i').'.pdf';
 
         $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/pdf/project',['project' => $project], View::TEMPLATE_MODE_CP);
         
@@ -131,7 +131,7 @@ class ProjectsService extends Component
             $filepath = $storagePath.'/projects/'.$filename;
             file_put_contents($filepath, $output);
         }
-        return $filename;
+        return $filepath;
     }
 
 
