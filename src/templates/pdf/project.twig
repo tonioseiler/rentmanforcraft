@@ -139,8 +139,8 @@
 
         {% endfor %}
         <tfoot>
-        <tr class="border-b border-b-lightgrey border-t-2 border-t-darkgrey">
-            <td colspan="5" class="py-4 text-right font-bold">
+        <tr class="total">
+            <td colspan="5">
                 {{ project.price|round ==  project.price ? (project.price|number_format(0, '.', '’') ~".-&nbsp;&nbsp;&nbsp;")|raw  : project.price|number(2) }}
             </td>
         </tr>
