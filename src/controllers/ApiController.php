@@ -513,11 +513,11 @@ class ApiController extends Controller
 
     }
 
-    private function getCurrentUser(): ?User {
+    protected function getCurrentUser(): ?User {
         return Craft::$app->getUser()->getIdentity();
     }
 
-    private function createProjectResponse($project) {
+    protected function createProjectResponse($project) {
         $projectService = RentmanForCraft::getInstance()->projectsService;
 
         return [
@@ -527,7 +527,7 @@ class ApiController extends Controller
         ];
     }
 
-    private function getProjectFromRequest($request) {
+    protected function getProjectFromRequest($request) {
         $params = $request->getBodyParams();
         $user = Craft::$app->getUser()->getIdentity();
         if (empty($user)) {
@@ -544,7 +544,7 @@ class ApiController extends Controller
     }
 
     // TODO @Tonio verify this please (it works but maybe it is wrong anyway): I have added this because you told me that the download pdf should be a GET, and I needed to load the project from the projectId get var.
-    private function getProjectFromGetRequest($request) {
+    protected function getProjectFromGetRequest($request) {
         $params = $request->getQueryParams();
         $user = Craft::$app->getUser()->getIdentity();
         if (empty($user)) {
