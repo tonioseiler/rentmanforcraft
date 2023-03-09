@@ -122,6 +122,8 @@ class ProjectsService extends Component
         $dompdf = new Dompdf($options);
 
         $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+
         $dompdf->render();
         if ($stream) {
             //$dompdf->stream($filename); TODO Paolo re-activate when done with project items
