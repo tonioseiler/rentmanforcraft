@@ -107,7 +107,7 @@
         {% for categoryId, products in productsGroupedByCats %}
             {% set category = craft.rentman.getCategoryById(categoryId) %}
             <tr class="category">
-                <td scope="row" class="py-4 font-medium font-bold">
+                <td>
                     {{ category.displayname }}:
                 </td>
             </tr>
