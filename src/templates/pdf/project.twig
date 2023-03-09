@@ -48,13 +48,7 @@
     <br>
     <hr><br>
 
-    {% if
-        project.location_name is not empty
-        or project.location_mailing_number is not empty
-        or project.location_mailing_street is not empty
-        or project.location_mailing_postalcode is not empty
-        or project.location_mailing_city is not empty
-        or project.location_mailing_country is not empty %}
+    {% if project.location_name is not empty or project.location_mailing_number is not empty or project.location_mailing_street is not empty or project.location_mailing_postalcode is not empty or project.location_mailing_city is not empty or project.location_mailing_country is not empty %}
         <h2>Adresse Produktion</h2>
         <p>
             {% if project.location_name is not empty %}
@@ -83,7 +77,7 @@
     <table id="address">
         <tr>
             <td>
-                <h2>Produktions- / Rechnungsadresse</h2>
+                <h2>OLD Produktions- / Rechnungsadresse</h2>
                 <p>
                     {{ project.location_name }}<br/>
 
