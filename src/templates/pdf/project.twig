@@ -92,7 +92,57 @@
         <dd class="">{{project.in}} - {{project.out}}</dd>
     </dl>
 
-    add items here as a table
+    <table>
+        <thead>
+        <tr class="border-b-2 border-b-darkgrey">
+            <th scope="col" class="py-3">Bezeichnung</th>
+            <th scope="col" class="px-3 sm:px-6 py-3 text-right w-0">kg</th>
+            <th scope="col" class="px-3 sm:px-6 py-3 text-right w-0">CHF</th>
+            <th scope="col" class="px-3 sm:px-6 py-3 text-right w-0"><span class="hidden sm:inline">Anzahl </span><span class="inline sm:hidden">Anz.</span></th>
+            <th scope="col" class="total py-3 text-right w-[100px]">Total ({{ project.shooting_days > 1 ? project.shooting_days~' Tage' : '1 Tag' }})</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set productsGroupedByCats = project.getItemsGroupedByCategory %}
+        {% for categoryId, products in productsGroupedByCats %}
+            {% set category = craft.rentman.getCategoryById(categoryId) %}
+
+            <tr class="border-b border-b-lightgrey border-t-2 border-t-darkgrey">
+                <th scope="row" class="py-4 font-medium font-bold">
+                    {{ category.displayname }}:
+                </th>
+            </tr>
+            {% for product in products %}
+                {% set productMainData = craft.rentman.getProductById(product.productId) %}
+                <tr class="border-b border-lightgrey">
+                    <th scope="row" class="py-4 font-medium pl-[20px]">
+                        <a href="/{{ productMainData.uri }}" class="no-underline hover:underline">{{ productMainData.displayname }}</a>
+                    </th>
+                    <td class="px-3 sm:px-6 py-4 text-right">
+                        {{ productMainData.weight }}
+                    </td>
+                    <td class="px-3 sm:px-6 py-4 text-right">
+                        {{ productMainData.price|round ==  productMainData.price ? (productMainData.price|number_format(0, '.', '’') ~".-")|raw  : productMainData.price|number(2) }}
+                    </td>
+                    <td class="px-3 sm:px-6 py-4 text-right">
+                        {{ product.quantity }}
+                    </td>
+                    <td class="py-4 text-right">
+                        {{ product.price|round ==  product.price ? (product.price|number_format(0, '.', '’') ~".-&nbsp;&nbsp;&nbsp;")|raw  : product.price|number(2) }}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        {% endfor %}
+        <tfoot>
+        <tr class="border-b border-b-lightgrey border-t-2 border-t-darkgrey">
+            <td colspan="5" class="py-4 text-right font-bold">
+                {{ project.price|round ==  project.price ? (project.price|number_format(0, '.', '’') ~".-&nbsp;&nbsp;&nbsp;")|raw  : project.price|number(2) }}
+            </td>
+        </tr>
+        </tfoot>
+        </tbody>
+    </table>
 
 {% endblock %}
 

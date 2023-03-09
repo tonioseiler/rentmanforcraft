@@ -504,7 +504,7 @@ class ApiController extends Controller
     public function actionGenerateProjectPdf(): Response
     {
         $request = Craft::$app->getRequest();
-        $project = $this->getProjectFromGetRequest($request);
+        $project = $this->getProjectFromRequest($request);
 
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $filename = $projectService->generatePDF($project);
@@ -528,7 +528,11 @@ class ApiController extends Controller
     }
 
     protected function getProjectFromRequest($request) {
-        $params = $request->getBodyParams();
+        if ($request->method == 'GET') {
+            $params = $request->getQueryParams();
+        } else  if ($request->method == 'POST') {
+            $params = $request->getBodyParams();
+        }
         $user = Craft::$app->getUser()->getIdentity();
         if (empty($user)) {
             return Project::find()
@@ -543,22 +547,6 @@ class ApiController extends Controller
         }
     }
 
-    // TODO @Tonio verify this please (it works but maybe it is wrong anyway): I have added this because you told me that the download pdf should be a GET, and I needed to load the project from the projectId get var.
-    protected function getProjectFromGetRequest($request) {
-        $params = $request->getQueryParams();
-        $user = Craft::$app->getUser()->getIdentity();
-        if (empty($user)) {
-            return Project::find()
-                ->userId(0)
-                ->id($params['projectId'])
-                ->one();
-        } else {
-            return Project::find()
-                ->userId($user->id)
-                ->id($params['projectId'])
-                ->one();
-        }
-    }
 
 
 }
