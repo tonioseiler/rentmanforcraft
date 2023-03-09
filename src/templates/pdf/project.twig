@@ -32,7 +32,7 @@
             Telefon:{{ project.contact_mailing_number }}<br/>
         {% endif %}
         {% if project.contact_mailing_street is not empty %}
-            {{ project.contact_mailing_street }}<br/>
+            {{ project.contact_mailing_street }}
             {% if project.contact_mailing_postalcode is not empty %}
                 - {{ project.contact_mailing_postalcode }}
                 {% if project.contact_mailing_city is not empty %}
@@ -43,8 +43,10 @@
                 {% endif %}
             {% endif %}
         {% endif %}
-        <br><br>
+
     </p>
+
+    <br><hr><br>
 
     <h2>Adresse Produktion</h2>
     <p>
