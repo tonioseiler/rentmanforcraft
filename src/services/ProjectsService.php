@@ -126,7 +126,7 @@ class ProjectsService extends Component
         $dompdf->render();
 
         // Parameters
-        $x          = 505;
+        $x          = 503;
         $y          = 790;
         $text       = "Seite {PAGE_NUM} / {PAGE_COUNT}";
         $font       = $dompdf->getFontMetrics()->get_font('Helvetica', 'normal');
