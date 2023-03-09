@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    {% include 'rentman-for-craft/pdf/_html-header' with {
+        'project' : project
+    } %}
+	<body>
+		<div id="header">
+            {% block header %}{% endblock %}
+		</div>
+        <div id="footer">
+		    {% block footer %}{% endblock %}
+		</div>
+        <div id="content">
+		    {% block content %}{% endblock %}
+        </div>
+
+	</body>
+</html>

@@ -1,0 +1,106 @@
+{% extends 'rentman-for-craft/pdf/layout' %}
+
+{% block header %}
+    <img id="logo" src="https://blowup-rental.ch/typo3conf/ext/template_blowup/Resources/Public/Images/logo2x.png" alt="BLOW UP rental" />
+    <p>
+        BLOW UP rental<br />
+        Badenerstrasse 571a<br />
+        8048 Zürich<br />
+        <br />
+        <br />
+        <br />
+    </p>
+{% endblock %}
+
+{% block content %}
+    <h1 class="page-header">Anfrage #{{ project.id }}</h1>
+
+    <table id="address">
+        <tr>
+            <td>
+                <h2>Produktions- / Rechnungsadresse</h2>
+                <p>
+                {{project.location_name}}<br />
+                
+                {% if project.location_mailing_number is not empty %}
+                    {{project.location_mailing_number}}<br />
+                {% endif %}
+
+                <br />
+
+                {% if project.location_mailing_street is not empty %}
+                    {{project.location_mailing_street}}<br />
+                {% endif %}
+
+                <br />
+
+                {% if project.location_mailing_postalcode is not empty or project.location_mailing_city is not empty %}
+                    {% if project.location_mailing_postalcode is not empty %}
+                        {{project.location_mailing_postalcode}}
+                    {% endif %}
+                    {% if project.location_mailing_city is not empty %}
+                        {{project.location_mailing_city}}
+                    {% endif %}
+                    <br />
+                {% endif %}
+
+                <br />
+
+                {% if project.location_mailing_country is not empty %}
+                    {{project.location_mailing_country}}<br />
+                {% endif %}
+
+                </p>
+
+                {% if project.remark is not empty %}
+                    <h2>Kommentar</h2>
+                    <p style="line-height: 19px">
+                        {{project.remark|nl2br}}
+                    </p>
+                {% endif %}
+            </td>
+            <td>
+                <h2>Kontaktangaben</h2>
+                <p>
+                    {{project.contact_person_first_name}} {{project.contact_person_lastname}} <br />
+                    {% if project.contact_name is not empty %}
+                        {{project.contact_name}}<br />
+                    {% endif %}
+
+                    {% if project.contact_person_email is not empty %}
+                       {{project.contact_person_email}}<br />
+                    {% endif %}
+
+                    {% if project.contact_mailing_number is not empty %}
+                       {{project.contact_mailing_number}}<br />
+                    {% endif %}
+
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <hr />
+    <br />
+
+    <h2>Projektangaben</h2>
+    <dl>
+        <dt class="">Titel</dt>
+        <dd class="">{{project.title}}</dd>
+        <br />
+        <dt class="">Mietzeitraum</dt>
+        <dd class="">{{project.in}} - {{project.out}}</dd>
+    </dl>
+
+    add items here as a table
+
+{% endblock %}
+
+{% block footer %}
+    <table>
+        <tr>
+            <td>BLOW UP rental – +41 44 501 55 30 – mail@blowup-rental.ch</td>
+            <td class="text-right">Seite <span class="pagenum"></span></td>
+        </tr>
+    </table>
+{% endblock %}

@@ -108,10 +108,12 @@ class ProjectsService extends Component
         return 1;
     }
 
-    public function generatePDF(Project $project) {
-        $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/projects/_pdf',['project' => $project]);
-        //$html = Craft::$app->getView()->renderTemplate('rentman-for-craft/projects/_pdf',['project' => $project],View::TEMPLATE_MODE_SITE );
+    public function generatePDF(Project $project, $stream = true) {
 
+        $filename = 'project-'.$project->id.'_'.date('Y-m-d_H:i').'.pdf';
+
+        $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/pdf/project',['project' => $project], View::TEMPLATE_MODE_CP);
+        
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
         $options->set('debugKeepTemp', TRUE);
@@ -121,11 +123,15 @@ class ProjectsService extends Component
 
         $dompdf->loadHtml($html);
         $dompdf->render();
-        $output = $dompdf->output();
-
-        //todo: save pdf output and return file name
-
-
+        if ($stream) {
+            $dompdf->stream($filename);
+        } else {
+            $output = $dompdf->output();
+            $storagePath = Craft::getAlias('@storage');
+            $filepath = $storagePath.'/projects/'.$filename;
+            file_put_contents($filepath, $output);
+        }
+        return $filename;
     }
 
 

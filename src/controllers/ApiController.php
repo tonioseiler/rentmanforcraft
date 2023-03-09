@@ -499,19 +499,14 @@ class ApiController extends Controller
 
     public function actionGenerateProjectPdf(): Response
     {
-        /*$this->requirePostRequest();*/
         $request = Craft::$app->getRequest();
         $project = $this->getProjectFromGetRequest($request);
 
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $filename = $projectService->generatePDF($project);
-        dd($filename);
+        
+        return $this->asJson(['success' => true, 'filename' => $filename]);
 
-        if ($request->isAjax) {
-            return $this->asJson(['success' => true]);
-        } else {
-            return $this->redirectToPostedUrl();
-        }
     }
 
     private function getCurrentUser(): ?User {
