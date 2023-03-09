@@ -145,8 +145,8 @@ class ProjectsService extends Component
 
 
         if ($stream) {
-            //$dompdf->stream($filename); TODO Paolo re-activate when done with project items
-            $dompdf->stream("", array("Attachment" => false));
+            $dompdf->stream($filename);
+            //$dompdf->stream("", array("Attachment" => false)); activate for debug, pdf is displayed in the browser (if browser can handle pdf)
         } else {
             $output = $dompdf->output();
             $storagePath = Craft::getAlias('@storage');
