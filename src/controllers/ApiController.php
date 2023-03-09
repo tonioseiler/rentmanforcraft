@@ -414,6 +414,7 @@ class ApiController extends Controller
                 $newItem->quantity = $item->quantity;
                 $newItem->itemtype = $item->itemtype;
                 $newItem->unit_price = $item->unit_price;
+                $newItem->price = $item->price;
                 $newItem->save();
             }
 
