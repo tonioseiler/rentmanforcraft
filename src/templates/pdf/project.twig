@@ -115,20 +115,20 @@
             </tr>
             {% for product in products %}
                 {% set productMainData = craft.rentman.getProductById(product.productId) %}
-                <tr class="border-b border-lightgrey">
-                    <th scope="row" class="py-4 font-medium pl-[20px]">
-                        <a href="/{{ productMainData.uri }}" class="no-underline hover:underline">{{ productMainData.displayname }}</a>
-                    </th>
-                    <td class="px-3 sm:px-6 py-4 text-right">
+                <tr class="product">
+                    <td class="title">
+                       {{ productMainData.displayname }}
+                    </td>
+                    <td>
                         {{ productMainData.weight }}
                     </td>
-                    <td class="px-3 sm:px-6 py-4 text-right">
+                    <td>
                         {{ productMainData.price|round ==  productMainData.price ? (productMainData.price|number_format(0, '.', '’') ~".-")|raw  : productMainData.price|number(2) }}
                     </td>
-                    <td class="px-3 sm:px-6 py-4 text-right">
+                    <td>
                         {{ product.quantity }}
                     </td>
-                    <td class="py-4 text-right">
+                    <td>
                         {{ product.price|round ==  product.price ? (product.price|number_format(0, '.', '’') ~".-&nbsp;&nbsp;&nbsp;")|raw  : product.price|number(2) }}
                     </td>
                 </tr>
