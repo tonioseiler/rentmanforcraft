@@ -74,58 +74,31 @@
         <br>
         <hr><br>
     {% endif %}
-    <table id="address">
-        <tr>
-            <td>
-                <h2>OLD Produktions- / Rechnungsadresse</h2>
-                <p>
-                    {{ project.location_name }}<br/>
-
-                    {% if project.location_mailing_number is not empty %}
-                        {{ project.location_mailing_number }}<br/>
-                    {% endif %}
-
-                    <br/>
-
-                    {% if project.location_mailing_street is not empty %}
-                        {{ project.location_mailing_street }}<br/>
-                    {% endif %}
-
-                    <br/>
-
-                    {% if project.location_mailing_postalcode is not empty or project.location_mailing_city is not empty %}
-                        {% if project.location_mailing_postalcode is not empty %}
-                            {{ project.location_mailing_postalcode }}
-                        {% endif %}
-                        {% if project.location_mailing_city is not empty %}
-                            {{ project.location_mailing_city }}
-                        {% endif %}
-                        <br/>
-                    {% endif %}
-
-                    <br/>
-
-                    {% if project.location_mailing_country is not empty %}
-                        {{ project.location_mailing_country }}<br/>
-                    {% endif %}
-
-                </p>
-
-                {% if project.remark is not empty %}
-                    <h2>Kommentar</h2>
-                    <p>
-                        {{ project.remark|nl2br }}
-                    </p>
-                {% endif %}
 
 
-            </td>
-            <td>
-                <h2>Kontaktangaben</h2>
 
-            </td>
-        </tr>
-    </table>
+
+
+    <h2>Projektangaben</h2>
+    <p>
+        Titel: {{ project.title }}<br>
+        Drehtage: {{ project.shooting_days }}<br>
+        Mietzeitraum: {{ project.in|date }} - {{ project.out|date }}<br>
+        Drehzeitraum:  {{ project.planperiod_start|date }} - {{ project.planperiod_end|date }}<br>
+    </p>
+    <br>
+    <hr><br>
+
+
+
+    {% if project.remark is not empty %}
+        <h2>Kommentar</h2>
+        <p>
+            {{ project.remark|nl2br }}
+        </p>
+        <br>
+        <hr><br>
+    {% endif %}
 
     <hr/>
     <br/>
