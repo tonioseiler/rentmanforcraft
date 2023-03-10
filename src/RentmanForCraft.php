@@ -251,10 +251,13 @@ class RentmanForCraft extends Plugin
                         $emailTextContent = 'Guten Tag ' . $customerName . '
 
 Vielen Dank für die Anfrage. Gerne senden wir dir die Offerte schnellstmöglich zu.
+
 Bei Fragen sind wir für dich da.
 
 Liebe Grüsse,
+
 BLOW UP rental
+
 +41 44 501 55 30 - mail@blowup-rental.ch - https://blowup-rental.ch
 ';
 
