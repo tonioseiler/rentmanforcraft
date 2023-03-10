@@ -227,6 +227,7 @@ class RentmanForCraft extends Plugin
         //custom system messages
         Event::on(SystemMessages::class, SystemMessages::EVENT_REGISTER_MESSAGES, function (RegisterEmailMessagesEvent $event) {
             $params = Craft::$app->request->getBodyParams();
+            dd($params);
             if (isset($params['activeProjectId'])) {
                 dd($params['activeProjectId']);
             } else {
