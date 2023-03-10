@@ -228,8 +228,10 @@ class RentmanForCraft extends Plugin
 
         //custom system messages
         Event::on(SystemMessages::class, SystemMessages::EVENT_REGISTER_MESSAGES, function(RegisterEmailMessagesEvent $event) {
-            $request = Craft::$app->getRequest();
-            $project = $this->getProjectFromRequest($request);
+            $project = $this->getActiveProject();
+
+
+
             $customerName='';
             if($project->contact_person_first_name != '')  $customerName.=$project->contact_person_first_name.' ';
             if($project->contact_person_lastname != '')  $customerName.=$project->contact_person_lastname.' ';
