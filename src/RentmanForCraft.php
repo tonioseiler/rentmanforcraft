@@ -228,11 +228,25 @@ class RentmanForCraft extends Plugin
 
         //custom system messages
         Event::on(SystemMessages::class, SystemMessages::EVENT_REGISTER_MESSAGES, function(RegisterEmailMessagesEvent $event) {
+            $request = Craft::$app->getRequest();
+            $project = $this->getProjectFromRequest($request);
+            $customerName='';
+            if($project->contact_person_first_name != '')  $customerName.=$project->contact_person_first_name.' ';
+            if($project->contact_person_lastname != '')  $customerName.=$project->contact_person_lastname.' ';
+            $emailTextContent= 'Guten Tag '.$customerName.'
+
+Vielen Dank für die Anfrage. Gerne senden wir dir die Offerte schnellstmöglich zu.
+Bei Fragen sind wir für dich da.
+
+Grüsse
+BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch https://blowup-rental.ch
+';
+
             $event->messages[] = [
                 'key' => 'project_ordered',
                 'heading' => 'BLOW UP rental - Projekt eingereicht',
                 'subject' => 'BLOW UP rental - Projekt eingereicht',
-                /*'body' => 'Inhalt der Email',*/
+                'body' => $emailTextContent
             ];
         });
 
