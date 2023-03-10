@@ -248,8 +248,8 @@ class RentmanForCraft extends Plugin
                         $customerName = '';
                         if ($project->contact_person_first_name != '') $customerName .= $project->contact_person_first_name . ' ';
                         if ($project->contact_person_lastname != '') $customerName .= $project->contact_person_lastname . ' ';
-                        $emailTextContent = 'Guten Tag ' . $customerName . '
-Vielen Dank für die Anfrage. Gerne senden wir dir die Offerte schnellstmöglich zu.
+                        $emailTextContent = 'Guten Tag ' . $customerName . '\n\n
+Vielen Dank für die Anfrage. Gerne senden wir dir die Offerte schnellstmöglich zu.\n\n
 Bei Fragen sind wir für dich da.';
 
                         $event->messages[] = [
