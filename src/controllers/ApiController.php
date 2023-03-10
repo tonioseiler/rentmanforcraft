@@ -298,17 +298,6 @@ class ApiController extends Controller
                 $project->dateSubmitted = date('Y-m-d H:i:s');
             }
             $success = Craft::$app->elements->saveElement($project);
-            $customerName='';
-            if($project->contact_person_first_name != '')  $customerName.=$project->contact_person_first_name.' ';
-            if($project->contact_person_lastname != '')  $customerName.=$project->contact_person_lastname.' ';
-            $emailTextContent= 'Guten Tag '.$customerName.'
-
-Vielen Dank für die Anfrage. Gerne senden wir dir die Offerte schnellstmöglich zu.
-Bei Fragen sind wir für dich da.
-
-Grüsse
-BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch https://blowup-rental.ch
-';
             Session::set('ACTIVE_PROJECT_ID', 0);
             $emailSettings = App::mailSettings();
             $message = Craft::$app
@@ -316,9 +305,7 @@ BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch https://blowup-rental.
                     ->composeFromKey('project_ordered', ['project', $project])
                     ->setTo($project->contact_person_email)
                     ->setCc($emailSettings->fromEmail)
-                    ->setFrom($emailSettings->fromEmail)
-                    ->setTextBody($emailTextContent)
-                    ->setHtmlBody($emailTextContent);
+                    ->setFrom($emailSettings->fromEmail);
             $filePath = $projectService->generatePDF($project, false);
             $message->attach($filePath);
             $message->send();
