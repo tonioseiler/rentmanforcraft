@@ -17,7 +17,8 @@
             src: url('fonts/fontawesome-webfont.ttf');
         }
         @page {
-        	margin: 44.2px 65px 60px 65px;
+        	/*margin: 44.2px 65px 60px 65px;*/
+			margin: 2cm 2cm 2cm 2cm;
         }
 		body {
 			font-family: "Helvetica";
@@ -35,6 +36,10 @@
    			line-height: 15px;
             margin-bottom: 6px;
 		}
+		hr {
+			border-top: 1pt black solid;
+		}
+
 		a {
 			color: #000000;
 			text-decoration:none;
@@ -47,22 +52,47 @@
         	page-break-inside: avoid;
         }
 
+
+
+		#logo {
+			width:7cm;
+			margin-bottom: 1cm;
+		}
+
 		.table-order-items {
 			width:100%;
+			border-collapse: separate;
+			border-spacing: 0 10px;
 		}
 		.table-order-items tr th{
 			font-weight: bold;
+			text-align: right;
+		}
+		.table-order-items tr th.title{
 			text-align: left;
 		}
 
 		.table-order-items tr.category {
-			border-top:1px red solid;
-			padding-top:10px;
 		}
 		.table-order-items tr.category td{
-			column-span: all;
-			border-top:1px green solid;
-			padding-top:10px;
+			font-weight: bold;
+			border-top:2pt #333333 solid;
+			padding-top:6px;
+		}
+		.table-order-items tr.product td{
+			border-top:1pt #999999 solid;
+			padding-top:6px;
+			text-align: right;
+		}
+		.table-order-items tr.product td.title{
+			text-align: left;
+			margin-left:12px;
+		}
+		.table-order-items tr.total td{
+			font-weight: bold;
+			border-top:2pt #333333 solid;
+			padding-top:6px;
+			text-align: right;
 		}
 
 

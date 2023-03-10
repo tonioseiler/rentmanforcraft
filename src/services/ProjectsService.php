@@ -110,7 +110,7 @@ class ProjectsService extends Component
 
     public function generatePDF(Project $project, $stream = true) {
 
-        $filename = 'project-'.$project->id.'_'.date('Y-m-d_H-i').'.pdf';
+        $filename = 'BLOW UP rental - Anfrage #'.$project->id.'.pdf';
 
         $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/pdf/project',['project' => $project], View::TEMPLATE_MODE_CP);
         
@@ -122,10 +122,31 @@ class ProjectsService extends Component
         $dompdf = new Dompdf($options);
 
         $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
+
+        // Parameters
+        $x          = 494;
+        $y          = 790;
+        $text       = "Seite {PAGE_NUM} / {PAGE_COUNT}";
+        $font       = $dompdf->getFontMetrics()->get_font('Helvetica', 'normal');
+        $size       = 10;
+        $color      = array(0,0,0);
+        $word_space = 0.0;
+        $char_space = 0.0;
+        $angle      = 0.0;
+
+        $dompdf->getCanvas()->page_text(
+            $x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle
+        );
+        $dompdf->getCanvas()->page_text(
+            56, $y, 'BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch', $font, $size, $color, $word_space, $char_space, $angle
+        );
+
+
         if ($stream) {
-            //$dompdf->stream($filename); TODO Paolo re-activate when done with project items
-            $dompdf->stream("", array("Attachment" => false));
+            $dompdf->stream($filename);
+            //$dompdf->stream("", array("Attachment" => false)); activate for debug, pdf is displayed in the browser (if browser can handle pdf)
         } else {
             $output = $dompdf->output();
             $storagePath = Craft::getAlias('@storage');
