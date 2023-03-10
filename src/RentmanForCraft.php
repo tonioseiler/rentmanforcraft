@@ -230,12 +230,13 @@ class RentmanForCraft extends Plugin
             if (isset($params['activeProjectId'])) {
                 $projectId = $params['activeProjectId'];
                 if (!empty($projectId)) {
+                    dd($projectId);
                     $project = Project::find()
                         ->userId(0)
                         ->id($projectId)
                         ->one();
                     if ($project) {
-                        dd($project);
+
                         $customerName = '';
                         if ($project->contact_person_first_name != '') $customerName .= $project->contact_person_first_name . ' ';
                         if ($project->contact_person_lastname != '') $customerName .= $project->contact_person_lastname . ' ';
