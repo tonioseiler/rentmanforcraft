@@ -232,7 +232,7 @@ class RentmanForCraft extends Plugin
                 'key' => 'project_ordered',
                 'heading' => 'BLOW UP rental - Projekt eingereicht',
                 'subject' => 'BLOW UP rental - Projekt eingereicht',
-                /*'body' => 'Inhalt der Email',*/
+                'body' => 'Inhalt der Email',
             ];
         });
 

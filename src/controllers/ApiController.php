@@ -317,7 +317,8 @@ BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch https://blowup-rental.
                     ->setTo($project->contact_person_email)
                     ->setCc($emailSettings->fromEmail)
                     ->setFrom($emailSettings->fromEmail)
-                    ->setTextBody($emailTextContent);
+                    ->setTextBody($emailTextContent)
+                    ->setHtmlBody($emailTextContent);
             $filePath = $projectService->generatePDF($project, false);
             $message->attach($filePath);
             $message->send();
