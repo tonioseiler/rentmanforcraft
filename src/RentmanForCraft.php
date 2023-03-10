@@ -249,13 +249,9 @@ class RentmanForCraft extends Plugin
                         if ($project->contact_person_first_name != '') $customerName .= $project->contact_person_first_name . ' ';
                         if ($project->contact_person_lastname != '') $customerName .= $project->contact_person_lastname . ' ';
                         $emailTextContent = 'Guten Tag ' . $customerName . '<br><br>
-Vielen Dank für die Anfrage. Gerne senden wir dir die Offerte schnellstmöglich zu.<br>
-Bei Fragen sind wir für dich da.<br><br>
-
-Liebe Grüsse,<br>
-BLOW UP rental<br>
-+41 44 501 55 30 - mail@blowup-rental.ch - https://blowup-rental.ch
-';
+                            Vielen Dank für die Anfrage. Gerne senden wir dir die Offerte schnellstmöglich zu.<br>
+                            Bei Fragen sind wir für dich da.
+                        ';
 
                         $event->messages[] = [
                             'key' => 'project_ordered',
