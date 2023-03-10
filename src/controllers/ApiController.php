@@ -14,6 +14,7 @@ use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\records\Project as ProjectRecord;
 use furbo\rentmanforcraft\records\ProjectItem;
 use furbo\rentmanforcraft\RentmanForCraft;
+use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
 /**
@@ -152,9 +153,9 @@ class ApiController extends Controller
 
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
-        $project = $this->getProjectFromRequest($request);
-
-        Session::set('ACTIVE_PROJECT_ID', $project->id);
+        $params = $request->getBodyParams();
+        
+        Session::set('ACTIVE_PROJECT_ID', $params['projectId']);
 
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $project = $projectService->getActiveProject();
@@ -528,23 +529,46 @@ class ApiController extends Controller
     }
 
     protected function getProjectFromRequest($request) {
+
+        $projectService = RentmanForCraft::getInstance()->projectsService;
+
         if ($request->method == 'GET') {
             $params = $request->getQueryParams();
         } else  if ($request->method == 'POST') {
             $params = $request->getBodyParams();
         }
         $user = Craft::$app->getUser()->getIdentity();
-        if (empty($user)) {
+
+        // CP Requests can access all projects
+        if ($request->isCpRequest) {
             return Project::find()
-                ->userId(0)
                 ->id($params['projectId'])
                 ->one();
         } else {
-            return Project::find()
-                ->userId($user->id)
-                ->id($params['projectId'])
-                ->one();
+            if (empty($user)) {
+
+                $project = $projectService->getActiveProject();
+
+                // guest user can only access active project
+
+                if ($project->id == $params['projectId']) {
+                    return Project::find()
+                        ->userId(0)
+                        ->id($params['projectId'])
+                        ->one();
+                }
+                
+            } else {
+                //if there is a user, make user project is assigned to user
+                return Project::find()
+                    ->userId($user->id)
+                    ->id($params['projectId'])
+                    ->one();
+            }
         }
+
+        throw new ForbiddenHttpException('User not authorized to access this project.');
+        
     }
 
 
