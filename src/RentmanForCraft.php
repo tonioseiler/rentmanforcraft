@@ -34,7 +34,6 @@ use furbo\rentmanforcraft\web\assets\rentmanforcraft\RentmanForCraftCPAsset;
 use yii\base\Event;
 
 
-
 /**
  * Rentman for Craft plugin
  *
@@ -58,7 +57,7 @@ class RentmanForCraft extends Plugin
     {
         return [
             'components' => [
-                'rentmanService' => RentmanService::class, 
+                'rentmanService' => RentmanService::class,
                 'productsService' => ProductsService::class,
                 'categoriesService' => CategoriesService::class,
                 'projectsService' => ProjectsService::class
@@ -72,13 +71,11 @@ class RentmanForCraft extends Plugin
 
 
         // Defer most setup tasks until Craft is fully initialized
-        Craft::$app->onInit(function() {
+        Craft::$app->onInit(function () {
             $this->attachEventHandlers();
             $this->registerLogger();
 
         });
-
-
 
 
     }
@@ -101,7 +98,8 @@ class RentmanForCraft extends Plugin
         return $cpNavItem;
     }
 
-    protected function registerLogger() {
+    protected function registerLogger()
+    {
         // Register a custom log target, keeping the format as simple as possible.
         Craft::getLogger()->dispatcher->targets[] = new MonologTarget([
             'name' => 'rentman-for-craft',
@@ -132,14 +130,14 @@ class RentmanForCraft extends Plugin
     protected function getCpRoutes(): array
     {
         return [
-            'rentman-for-craft' => [ 'template' => 'rentman-for-craft/products/_index.twig' ],
+            'rentman-for-craft' => ['template' => 'rentman-for-craft/products/_index.twig'],
             'rentman-for-craft/products' => ['template' => 'rentman-for-craft/products/_index.twig'],
             'rentman-for-craft/products/<elementId:\\d+>' => 'elements/edit',
             'rentman-for-craft/categories' => ['template' => 'rentman-for-craft/categories/_index.twig'],
             'rentman-for-craft/categories/<elementId:\\d+>' => 'elements/edit',
             'rentman-for-craft/projects' => ['template' => 'rentman-for-craft/projects/_index.twig'],
             'rentman-for-craft/projects/<elementId:\\d+>' => 'elements/edit',
-            
+
         ];
     }
 
@@ -156,21 +154,21 @@ class RentmanForCraft extends Plugin
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function (RegisterUrlRulesEvent $event) {
             $event->rules = array_merge($event->rules, $this->getCpRoutes());
         });
-        
+
         // Executed after settings are saved
         Event::on(
             Plugin::class,
             Plugin::EVENT_AFTER_SAVE_SETTINGS,
             function (Event $event) {
                 if ($event->sender::class == "furbo\\rentmanforcraft\\RentmanForCraft") {
-                    
+
                     //save field layout
                     $fieldsService = Craft::$app->getFields();
-                    
+
                     $fieldLayout1 = $fieldsService->assembleLayoutFromPost('settings');
                     $fieldLayout1->type = Product::class;
                     $fieldsService->saveLayout($fieldLayout1);
-                    
+
                 }
             }
         );
@@ -201,14 +199,14 @@ class RentmanForCraft extends Plugin
         );
 
         //executed after user logs in
-        Event::on( \yii\web\User::class,  
-            \yii\web\User::EVENT_AFTER_LOGIN, 
-            function( \yii\web\UserEvent $event) {
+        Event::on(\yii\web\User::class,
+            \yii\web\User::EVENT_AFTER_LOGIN,
+            function (\yii\web\UserEvent $event) {
                 //check if request has a active prject id, if yes, add it to the new session and set the user id on the project
                 $params = Craft::$app->request->getBodyParams();
                 if (isset($params['activeProjectId'])) {
                     $projectId = $params['activeProjectId'];
-                    if(!empty($projectId)) {
+                    if (!empty($projectId)) {
                         Session::set('ACTIVE_PROJECT_ID', $projectId);
 
                         $project = Project::find()
@@ -227,15 +225,18 @@ class RentmanForCraft extends Plugin
         );
 
         //custom system messages
-        Event::on(SystemMessages::class, SystemMessages::EVENT_REGISTER_MESSAGES, function(RegisterEmailMessagesEvent $event) {
-            $project = $this->getActiveProject();
-
-
-
-            $customerName='';
-            if($project->contact_person_first_name != '')  $customerName.=$project->contact_person_first_name.' ';
-            if($project->contact_person_lastname != '')  $customerName.=$project->contact_person_lastname.' ';
-            $emailTextContent= 'Guten Tag '.$customerName.'
+        Event::on(SystemMessages::class, SystemMessages::EVENT_REGISTER_MESSAGES, function (RegisterEmailMessagesEvent $event) {
+            if (isset($params['activeProjectId'])) {
+                if (!empty($projectId)) {
+                    $project = Project::find()
+                        ->userId(0)
+                        ->id($projectId)
+                        ->one();
+                    if ($project) {
+                        $customerName = '';
+                        if ($project->contact_person_first_name != '') $customerName .= $project->contact_person_first_name . ' ';
+                        if ($project->contact_person_lastname != '') $customerName .= $project->contact_person_lastname . ' ';
+                        $emailTextContent = 'Guten Tag ' . $customerName . '
 
 Vielen Dank für die Anfrage. Gerne senden wir dir die Offerte schnellstmöglich zu.
 Bei Fragen sind wir für dich da.
@@ -244,12 +245,17 @@ Grüsse
 BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch https://blowup-rental.ch
 ';
 
-            $event->messages[] = [
-                'key' => 'project_ordered',
-                'heading' => 'BLOW UP rental - Projekt eingereicht',
-                'subject' => 'BLOW UP rental - Projekt eingereicht',
-                'body' => $emailTextContent
-            ];
+                        $event->messages[] = [
+                            'key' => 'project_ordered',
+                            'heading' => 'BLOW UP rental - Projekt eingereicht',
+                            'subject' => 'BLOW UP rental - Projekt eingereicht',
+                            'body' => $emailTextContent
+                        ];
+                    }
+                }
+            }
+
+
         });
 
 
