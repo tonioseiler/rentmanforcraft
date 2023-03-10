@@ -226,23 +226,18 @@ class RentmanForCraft extends Plugin
 
         //custom system messages
         Event::on(SystemMessages::class, SystemMessages::EVENT_REGISTER_MESSAGES, function (RegisterEmailMessagesEvent $event) {
-            $params = Craft::$app->request->getBodyParams();
-            dd($params);
-            if (isset($params['activeProjectId'])) {
-                dd($params['activeProjectId']);
-            } else {
-               die('no activeProjectId');
-            }
+            /*
             $event->messages[] = [
                 'key' => 'project_ordered',
                 'heading' => 'BLOW UP rental - Projekt eingereicht',
                 'subject' => 'BLOW UP rental - Projekt eingereicht',
                 'body' => 'email body content'
             ];
-            /*
+            */
+
             $params = Craft::$app->request->getBodyParams();
-            if (isset($params['activeProjectId'])) {
-                $projectId = $params['activeProjectId'];
+            if (isset($params['projectId'])) {
+                $projectId = $params['projectId'];
                 if (!empty($projectId)) {
                     dd($projectId);
                     $project = Project::find()
@@ -273,7 +268,7 @@ BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch https://blowup-rental.
                 }
             }
 
-*/
+
         });
 
 
