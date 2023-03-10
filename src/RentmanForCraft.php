@@ -239,7 +239,6 @@ class RentmanForCraft extends Plugin
             if (isset($params['projectId'])) {
                 $projectId = $params['projectId'];
                 if (!empty($projectId)) {
-                    dd($projectId);
                     $project = Project::find()
                         ->userId(0)
                         ->id($projectId)
