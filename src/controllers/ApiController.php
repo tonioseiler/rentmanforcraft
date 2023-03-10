@@ -300,7 +300,7 @@ class ApiController extends Controller
             $success = Craft::$app->elements->saveElement($project);
             $customerName='';
             if($project->contact_person_first_name != '')  $customerName.=$project->contact_person_first_name.' ';
-            if($project->contact_person_last_name != '')  $customerName.=$project->contact_person_last_name.' ';
+            if($project->contact_person_lastname != '')  $customerName.=$project->contact_person_lastname.' ';
             $emailTextContent= 'Guten Tag '.$customerName.'
 
 Vielen Dank für die Anfrage. Gerne senden wir dir die Offerte schnellstmöglich zu.
