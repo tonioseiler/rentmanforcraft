@@ -230,8 +230,8 @@ class RentmanForCraft extends Plugin
         Event::on(SystemMessages::class, SystemMessages::EVENT_REGISTER_MESSAGES, function(RegisterEmailMessagesEvent $event) {
             $event->messages[] = [
                 'key' => 'project_ordered',
-                'heading' => 'Projekt eingereicht',
-                'subject' => 'Projekt eingereicht',
+                'heading' => 'BLOW UP rental - Projekt eingereicht',
+                'subject' => 'BLOW UP rental - Projekt eingereicht',
                 'body' => 'Inhalt der Email',
             ];
         });
