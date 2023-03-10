@@ -235,6 +235,7 @@ class RentmanForCraft extends Plugin
                         ->id($projectId)
                         ->one();
                     if ($project) {
+                        dd($project);
                         $customerName = '';
                         if ($project->contact_person_first_name != '') $customerName .= $project->contact_person_first_name . ' ';
                         if ($project->contact_person_lastname != '') $customerName .= $project->contact_person_lastname . ' ';
