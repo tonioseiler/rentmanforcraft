@@ -33,7 +33,7 @@ use craft\helpers\Json;
  * @package   MuseumPlusForCraftCms
  * @since     1.0.0
  */
-class RentmanForCraftProducts extends BaseRelationField
+class Products extends BaseRelationField
 {
 
     /**
