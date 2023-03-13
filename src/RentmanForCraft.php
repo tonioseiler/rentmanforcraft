@@ -25,6 +25,7 @@ use furbo\rentmanforcraft\elements\Category;
 use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\models\Settings;
+use furbo\rentmanforcraft\fields\RentmanForCraftProducts as ProductsField;
 use furbo\rentmanforcraft\services\CategoriesService;
 use furbo\rentmanforcraft\services\ProductsService;
 use furbo\rentmanforcraft\services\ProjectsService;
@@ -181,6 +182,15 @@ class RentmanForCraft extends Plugin
                 /** @var CraftVariable $variable */
                 $variable = $event->sender;
                 $variable->set('rentman', RentmanForCraftVariable::class);
+            }
+        );
+
+        // Register our fields
+        Event::on(
+            Fields::class,
+            Fields::EVENT_REGISTER_FIELD_TYPES,
+            function (RegisterComponentTypesEvent $event) {
+                $event->types[] = ProductsField::class;
             }
         );
 
