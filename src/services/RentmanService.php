@@ -418,34 +418,56 @@ class RentmanService extends Component
 
         $jsonResponse = json_decode($response->getBody()->getContents(), true);
 
-        $projectId = $jsonResponse['data']['id'];
+        $rentmanProjectId = $jsonResponse['data']['id'];
 
         $count = 0;
         foreach ($project->getItems() as $item) {
             $product = $item->getProduct();
-            $data = [
-                "quantity" => intval($item->quantity),
-                "quantity_total" => intval($item->quantity),
-                "is_comment" => false,
-                "is_kit" => true,
-                "discount" => 0,
-                "name" => $product->displayname,
-                "external_remark" => "",
-                "unit_price" => floatval($item->unit_price),
-                "factor" => '1',
-                "order" => "".$count
-            ];
+            $this->addProductToProject($rentmanProjectId, $product->displayname, $item->quantity, floatval($item->unit_price), floatval($item->factor), $count);
+
+            //check if there is automatic accessoies
+            $accessories = $this->getProductAccesories($product->id);
+            foreach ($accessories as $acc) {
+                if ($acc->automatic) {
+                    $accProduct = Product::find()
+                        ->anyStatus()
+                        ->id($acc->productId)
+                        ->one();
+                    $this->addProductToProject($rentmanProjectId, $accProduct->displayname, intval($item->quantity) * $acc->quantity, floatval($product->price), floatval($item->factor), $count);
+                    $count++;
+                }
+            }
+
 
             $count++;
 
-            $response = $this->client->request('POST', $this->apiUrl.'projectrequests/'.$projectId.'/projectrequestequipment', [
-                'headers' => $this->requestHeaders,
-                'body'    => json_encode($data)
-            ]);
         }
 
         $project->dateSubmitted = date('Y-m-d H:i:s');
             
+    }
+
+    protected function addProductToProject($rentmanProjectId, $name, $quantity, $price, $factor, $order) {
+        $data = [
+            "quantity" => $quantity,
+            "quantity_total" => $quantity,
+            "is_comment" => false,
+            "is_kit" => true,
+            "discount" => 0,
+            "name" => $name,
+            "external_remark" => "",
+            "unit_price" => $price,
+            "factor" => "".$factor,
+            "order" => "".$order
+        ];
+
+        //dd($data);
+
+        $response = $this->client->request('POST', $this->apiUrl.'projectrequests/'.$rentmanProjectId.'/projectrequestequipment', [
+            'headers' => $this->requestHeaders,
+            'body'    => json_encode($data)
+        ]);
+
     }
 
     protected function formatDateTime($dateTimeStr) {
