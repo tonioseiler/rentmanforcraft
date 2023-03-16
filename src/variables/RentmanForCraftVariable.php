@@ -160,14 +160,16 @@ class RentmanForCraftVariable
     }
 
 
-    public function getSetContent($productId)
+    public function getSetContents($productId)
     {
-       
+        $rentmanService = RentmanForCraft::getInstance()->rentmanService;
+        return $rentmanService->getSetContents($productId);
     }
 
     public function getProductAccesories($productId)
     {
-       
+        $rentmanService = RentmanForCraft::getInstance()->rentmanService;
+        return $rentmanService->getProductAccesories($productId);
     }
 
     public function getUserProjects(): array

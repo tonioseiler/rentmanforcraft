@@ -12,6 +12,7 @@ use yii\base\Component;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 /**
  * Rentman Service service
@@ -259,78 +260,108 @@ class RentmanService extends Component
 
     }
 
-    public function getAccessoires($productId) {
-        //TODO: Tonio
+    public function getProductAccesories($productId) {
+        if (empty($this->client)) {
+            $this->init();
+        }
+        try {
+
+            $product = Product::find()
+                        ->anyStatus()
+                        ->id($productId)
+                        ->one();
+
+            $response = $this->client->request('GET', $this->apiUrl.'equipment/'.$product->rentmanId.'/accessories', [
+                'headers' => $this->requestHeaders
+            ]);
+
+            $jsonResponse = json_decode($response->getBody()->getContents(), true);
+
+            $equipments = Arr::pluck($jsonResponse['data'], 'equipment');
+            $rentmanIds = [];
+            foreach ($equipments as $equipment) {
+                $tmp = explode('/',$equipment);
+                $rentmanIds[] = end($tmp);
+            }
+
+            $accessories = [];
+            foreach ( $jsonResponse['data'] as $jsonEntry) {
+                $tmp = explode('/',$jsonEntry['equipment']);
+                $rentmanId = end($tmp);
+                $accessory = Product::find()
+                    ->anyStatus()
+                    ->where(['rentmanId' => $rentmanId])
+                    ->one();
+                if ($accessory) {
+                    $o = new \stdClass();
+                    $o->productId = $accessory->id;
+                    $o->quantity = $jsonEntry['quantity'];
+                    $o->automatic = $jsonEntry['automatic'];
+                    $accessories[] = $o;
+                }
+            }
+
+            return $accessories;
+
+        } catch (RequestException $e) {
+            echo $e->getRequest() . "\n";
+            if ($e->hasResponse()) {
+                echo $e->getResponse() . "\n";
+            }
+        }
         return [];
-        return Cache::remember('accessories-'.$productId, 24 * 60, function() use ($productId) {
-            if (empty($this->client)) {
-                $this->init();
-            }
-            try {
-
-                //translate id to rentman id
-                $product = Product::find($productId);
-
-                $response = $this->client->request('GET', $this->apiUrl.'equipment/'.$product->rentmanId.'/accessories', [
-                    'headers' => $this->requestHeaders
-                ]);
-
-                $jsonResponse = json_decode($response->getBody()->getContents(), true);
-
-                $equipments = Arr::pluck($jsonResponse['data'], 'equipment');
-                $rentmanIds = [];
-                foreach ($equipments as $equipment) {
-                    $tmp = explode('/',$equipment);
-                    $rentmanIds[] = end($tmp);
-                }
-                $setProducts = Product::whereIn('rentmanId',$rentmanIds)->get();
-
-                return $setProducts;
-
-            } catch (RequestException $e) {
-                echo $e->getRequest() . "\n";
-                if ($e->hasResponse()) {
-                    echo $e->getResponse() . "\n";
-                }
-            }
-        });
     }
 
     public function getSetContents($productId) {
-        //TODO: Tonio
+
+        if (empty($this->client)) {
+            $this->init();
+        }
+        try {
+
+            $product = Product::find()
+                        ->anyStatus()
+                        ->id($productId)
+                        ->one();
+
+            $response = $this->client->request('GET', $this->apiUrl.'equipment/'.$product->rentmanId.'/equipmentsetscontent', [
+                'headers' => $this->requestHeaders
+            ]);
+
+            $jsonResponse = json_decode($response->getBody()->getContents(), true);
+
+            $equipments = Arr::pluck($jsonResponse['data'], 'equipment');
+            $rentmanIds = [];
+            foreach ($equipments as $equipment) {
+                $tmp = explode('/',$equipment);
+                $rentmanIds[] = end($tmp);
+            }
+
+            $setContents = [];
+            foreach ( $jsonResponse['data'] as $jsonEntry) {
+                $tmp = explode('/',$jsonEntry['equipment']);
+                $rentmanId = end($tmp);
+                $setContent = Product::find()
+                    ->anyStatus()
+                    ->where(['rentmanId' => $rentmanId])
+                    ->one();
+                if ($setContent) {
+                    $o = new \stdClass();
+                    $o->productId = $setContent->id;
+                    $o->quantity = $jsonEntry['quantity'];
+                    $setContents[] = $o;
+                }
+            }
+
+            return $setContents;
+
+        } catch (RequestException $e) {
+            echo $e->getRequest() . "\n";
+            if ($e->hasResponse()) {
+                echo $e->getResponse() . "\n";
+            }
+        }
         return [];
-        return Cache::remember('set-contents-'.$productId, 24 * 60, function() use ($productId) {
-            if (empty($this->client)) {
-                $this->init();
-            }
-            try {
-
-                //translate id to rentman id
-                $product = Product::find($productId);
-
-                $response = $this->client->request('GET', $this->apiUrl.'equipment/'.$product->rentmanId.'/equipmentsetscontent', [
-                    'headers' => $this->requestHeaders
-                ]);
-
-                $jsonResponse = json_decode($response->getBody()->getContents(), true);
-
-                $equipments = Arr::pluck($jsonResponse['data'], 'equipment');
-                $rentmanIds = [];
-                foreach ($equipments as $equipment) {
-                    $tmp = explode('/',$equipment);
-                    $rentmanIds[] = end($tmp);
-                }
-                $setProducts = Product::whereIn('rentmanId',$rentmanIds)->get();
-
-                return $setProducts;
-
-            } catch (RequestException $e) {
-                echo $e->getRequest() . "\n";
-                if ($e->hasResponse()) {
-                    echo $e->getResponse() . "\n";
-                }
-            }
-        });
     }
 
 
