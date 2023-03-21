@@ -11,6 +11,7 @@ use craft\fieldlayoutelements\TextareaField;
 use craft\fieldlayoutelements\TextField;
 use craft\fieldlayoutelements\TitleField;
 use craft\helpers\Cp;
+use craft\helpers\Session;
 use craft\helpers\UrlHelper;
 use craft\models\FieldLayout;
 use craft\models\FieldLayoutTab;
@@ -267,7 +268,17 @@ class Project extends RentmanElement
 
         $currentUser = Craft::$app->getUser()->getIdentity();
         if (!$currentUser) {
-            return false;
+            // TODO the guest user must be able to view his project
+            // check that $this->userId == 0
+            // check in session for project id
+
+
+            $projectId = Session::get('ACTIVE_PROJECT_ID', 0);
+            if( ($this->userId == 0) && ($this->id == $projectId) ) {
+                return true;
+            } else {
+                return false;
+            }
         }
         if ($currentUser->admin) {
             return true;
