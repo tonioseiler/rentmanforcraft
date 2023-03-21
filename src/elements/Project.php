@@ -266,6 +266,7 @@ class Project extends RentmanElement
         */
 
         $currentUser = Craft::$app->getUser()->getIdentity();
+        dd($currentUser);
         if (!$currentUser) {
             return false;
         }
