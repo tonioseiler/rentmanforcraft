@@ -268,11 +268,9 @@ class Project extends RentmanElement
 
         $currentUser = Craft::$app->getUser()->getIdentity();
         if (!$currentUser) {
-            // TODO the guest user must be able to view his project
+            // guest user must be able to view his project
             // check that $this->userId == 0
             // check in session for project id
-
-
             $projectId = Session::get('ACTIVE_PROJECT_ID', 0);
             if( ($this->userId == 0) && ($this->id == $projectId) ) {
                 return true;
