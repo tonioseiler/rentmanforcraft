@@ -257,11 +257,28 @@ class Project extends RentmanElement
 
     public function canView(User $user): bool
     {
+        /*
         if (parent::canView($user)) {
             return true;
         }
         // todo: implement user permissions
         return $user->can('viewProjects');
+        */
+
+        $currentUser = Craft::$app->getUser()->getIdentity();
+        if (!$currentUser) {
+            return false;
+        }
+
+        // Admin can everything
+        if ($currentUser->admin) {
+            return true;
+        }
+
+
+        // Only allow the owner of the project to view it
+        return $currentUser->id == $this->userId;
+
     }
 
     public function canSave(User $user): bool
