@@ -255,7 +255,7 @@ class Project extends RentmanElement
         ];
     }
 
-    public function canView(User $user): bool
+    public function canView(User $user = null): bool
     {
         /*
         if (parent::canView($user)) {
