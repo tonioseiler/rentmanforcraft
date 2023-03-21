@@ -269,25 +269,23 @@ class Project extends RentmanElement
         if (!$currentUser) {
             return false;
         }
-
-        // Admin can everything
         if ($currentUser->admin) {
             return true;
         }
-
-
-        // Only allow the owner of the project to view it
         return $currentUser->id == $this->userId;
-
     }
 
     public function canSave(User $user): bool
     {
+
         if (parent::canSave($user)) {
             return true;
         }
         // todo: implement user permissions
         return $user->can('saveProjects');
+
+
+
     }
 
     public function canDuplicate(User $user): bool
