@@ -52,14 +52,13 @@
                 }) #}
 
 
-                {{ tag('input', {
+                {% forms.lightswitch({
                     label: 'enabled',
                     type: 'checkbox',
                     name: 'autoSubmitProjects',
                     value: '1',
                     checked: (settings['autoSubmitProjects'] ?? false) ? true : false,
-                }) }}
-
+                }) %}
 
 
 
