@@ -406,8 +406,12 @@ class RentmanService extends Component
             'name' => $project->title ?? '',
             'external_reference' => $project->id ?? '',
             'remark' => $remark ?? '',
+            /*
             'planperiod_end' => $this->formatDateTime($project->planperiod_end),
             'planperiod_start' => $this->formatDateTime($project->planperiod_start),
+            */
+            'planperiod_end' => $this->formatDateTime($project->in),
+            'planperiod_start' => $this->formatDateTime($project->out),
             'price' => $project->price
         ];
 
