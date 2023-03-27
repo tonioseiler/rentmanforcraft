@@ -327,8 +327,6 @@ class ApiController extends Controller
     public function actionSubmitProjectToRentman(): Response
     {
 
-        //TODO: Check if user has cp access
-
         $settings = RentmanForCraft::getInstance()->getSettings();
         $rentmanService = RentmanForCraft::getInstance()->rentmanService;
 

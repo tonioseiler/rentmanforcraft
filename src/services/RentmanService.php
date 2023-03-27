@@ -393,8 +393,8 @@ class RentmanService extends Component
             'contact_person_email' => $email,
             'contact_person_middle_name' => $project->contact_person_middle_name ?? '',
             'contact_person_first_name' => $project->contact_person_first_name ?? '',
-            'usageperiod_end' => $this->formatDateTime($project->usageperiod_end) ?? '',
-            'usageperiod_start' => $this->formatDateTime($project->usageperiod_start) ?? '',
+            'usageperiod_end' => $this->formatDateTime($project->planperiod_end) ?? '',
+            'usageperiod_start' => $this->formatDateTime($project->planperiod_start) ?? '',
             'in' => $this->formatDateTime($project->in),
             'out' => $this->formatDateTime($project->out),
             'location_mailing_number' => $project->location_mailing_number ?? '',
@@ -410,6 +410,7 @@ class RentmanService extends Component
             'planperiod_start' => $this->formatDateTime($project->planperiod_start),
             'price' => $project->price
         ];
+
 
         $response = $this->client->request('POST', $this->apiUrl.'projectrequests', [
             'headers' => $this->requestHeaders,
