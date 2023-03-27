@@ -11,6 +11,7 @@ use craft\fieldlayoutelements\TextareaField;
 use craft\fieldlayoutelements\TextField;
 use craft\fieldlayoutelements\TitleField;
 use craft\helpers\Cp;
+use craft\helpers\Session;
 use craft\helpers\UrlHelper;
 use craft\models\FieldLayout;
 use craft\models\FieldLayoutTab;
@@ -255,22 +256,45 @@ class Project extends RentmanElement
         ];
     }
 
-    public function canView(User $user): bool
+    public function canView(User $user = null): bool
     {
+        /*
         if (parent::canView($user)) {
             return true;
         }
         // todo: implement user permissions
         return $user->can('viewProjects');
+        */
+
+        $currentUser = Craft::$app->getUser()->getIdentity();
+        if (!$currentUser) {
+            // guest user must be able to view his project
+            // check that $this->userId == 0
+            // check in session for project id
+            $projectId = Session::get('ACTIVE_PROJECT_ID', 0);
+            if( ($this->userId == 0) && ($this->id == $projectId) ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if ($currentUser->admin) {
+            return true;
+        }
+        return $currentUser->id == $this->userId;
     }
 
     public function canSave(User $user): bool
     {
+
         if (parent::canSave($user)) {
             return true;
         }
         // todo: implement user permissions
         return $user->can('saveProjects');
+
+
+
     }
 
     public function canDuplicate(User $user): bool

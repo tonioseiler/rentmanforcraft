@@ -6,8 +6,8 @@
    			margin: 0;
    			padding: 0;
    			border: 0;
-   			font-size: 13px;
-   			line-height: 15px;
+   			font-size: 12px;
+   			line-height: 14px;
    			letter-spacing:0.02em;
    			vertical-align: baseline;
 		}
@@ -62,7 +62,7 @@
 		.table-order-items {
 			width:100%;
 			border-collapse: separate;
-			border-spacing: 0 10px;
+			border-spacing: 0 4px;
 		}
 		.table-order-items tr th{
 			font-weight: bold;
@@ -71,17 +71,22 @@
 		.table-order-items tr th.title{
 			text-align: left;
 		}
+		.table-order-items tr th.kg,
+		.table-order-items tr td.kg
+		{
+			margin-left:4px;
+		}
 
 		.table-order-items tr.category {
 		}
 		.table-order-items tr.category td{
 			font-weight: bold;
 			border-top:2pt #333333 solid;
-			padding-top:6px;
+			padding-top:4px;
 		}
 		.table-order-items tr.product td{
 			border-top:1pt #999999 solid;
-			padding-top:6px;
+			padding-top:4px;
 			text-align: right;
 		}
 		.table-order-items tr.product td.title{
@@ -91,7 +96,7 @@
 		.table-order-items tr.total td{
 			font-weight: bold;
 			border-top:2pt #333333 solid;
-			padding-top:6px;
+			padding-top:4px;
 			text-align: right;
 		}
 
