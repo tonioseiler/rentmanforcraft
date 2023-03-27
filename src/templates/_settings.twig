@@ -42,13 +42,23 @@
                 <div class="heading">
                     <label>Automatically send projects to rentman ({{ settings['autoSubmitProjects'] }})</label>
                 </div>
-                {# forms.lightswitch({
+
+                {{ tag('input', {
+                    type: 'checkbox',
+                    name: 'fields[myFieldHandle]',
+                    value: '1',
+                    checked: (settings['autoSubmitProjects'] ?? false) ? true : false,
+                }) }}
+
+
+                {{ forms.lightswitch({
                     label: 'enabled',
                     instructions: '',
                     id: 'autoSubmitProjects',
                     name: 'autoSubmitProjects',
-                    value: settings['autoSubmitProjects']})
-                #}
+                    value: true,
+                })
+                }}
                 <input type="radio" name="autoSubmitProjects" id="autoSubmitProjects" value="1" {{  settings['autoSubmitProjects']=="1" ? 'checked' }}>Yes<br>
                 <input type="radio" name="autoSubmitProjects" id="autoSubmitProjects" value="0"{{  settings['autoSubmitProjects']=="1" ? '' : 'checked' }}>No<br>
 
