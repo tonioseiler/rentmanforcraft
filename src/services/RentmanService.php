@@ -410,8 +410,8 @@ class RentmanService extends Component
             'planperiod_end' => $this->formatDateTime($project->planperiod_end),
             'planperiod_start' => $this->formatDateTime($project->planperiod_start),
             */
-            'planperiod_end' => $this->formatDateTime($project->in),
-            'planperiod_start' => $this->formatDateTime($project->out),
+            'planperiod_end' => $this->formatDateTime($project->out),
+            'planperiod_start' => $this->formatDateTime($project->in),
             'price' => $project->price
         ];
 
