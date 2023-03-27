@@ -8,7 +8,7 @@
 
 {% do view.registerAssetBundle("furbo\\rentmanforcraft\\web\\assets\\rentmanforcraft\\RentmanForCraftCPAsset") %}
 
-{# The content of the CP Section#}
+{# The content of the CP Section #}
 {% block content %}
     <div id="fields">
         <div id="settings">
@@ -17,38 +17,35 @@
                 instructions: 'How the plugin will be called in the Control Panel',
                 id: 'cpTitle',
                 name: 'cpTitle',
-                value: settings['cpTitle']})
-            }}
+                value: settings['cpTitle']}) }}
 
-            <hr />
+            <hr/>
 
             {{ forms.textField({
                 label: 'Api URL',
                 instructions: '',
                 id: 'apiUrl',
                 name: 'apiUrl',
-                value: settings['apiUrl']})
-            }}
+                value: settings['apiUrl']}) }}
 
             {{ forms.textField({
                 label: 'Api Key',
                 instructions: '',
                 id: 'apiKey',
                 name: 'apiKey',
-                value: settings['apiKey']})
-            }}
+                value: settings['apiKey']}) }}
 
             <div class="field">
                 <div class="heading">
                     <label>Automatically send projects to rentman ({{ settings['autoSubmitProjects'] }})</label>
                 </div>
 
-                {{ tag('input', {
+                {# tag('input', {
                     type: 'checkbox',
                     name: 'fields[myFieldHandle]',
                     value: '1',
                     checked: (settings['autoSubmitProjects'] ?? false) ? true : false,
-                }) }}
+                }) #}
 
 
                 {{ forms.lightswitch({
@@ -56,219 +53,220 @@
                     instructions: '',
                     id: 'autoSubmitProjects',
                     name: 'autoSubmitProjects',
-                    value: true,
-                })
-                }}
+                    value: (settings['autoSubmitProjects'] ?? false) ? true : false,
+                }) }}
+                {#
                 <input type="radio" name="autoSubmitProjects" id="autoSubmitProjects" value="1" {{  settings['autoSubmitProjects']=="1" ? 'checked' }}>Yes<br>
-                <input type="radio" name="autoSubmitProjects" id="autoSubmitProjects" value="0"{{  settings['autoSubmitProjects']=="1" ? '' : 'checked' }}>No<br>
+ <input type="radio" name="autoSubmitProjects" id="autoSubmitProjects" value="0"{{  settings['autoSubmitProjects']=="1" ? '' : 'checked' }}>No<br>
+                #}
 
                 </field>
 
-            <hr />
+                <hr/>
 
-            {% set siteRows = [] %}
+                {% set siteRows = [] %}
 
-            {% for site in craft.app.sites.getAllSites() %}
-                {% set siteSettings = settings['productRoutes'][site.handle] ?? null %}
-                {% set siteRows = siteRows|merge({
-                    (site.handle): {
-                        heading: site.name|t('site')|e,
+                {% for site in craft.app.sites.getAllSites() %}
+                    {% set siteSettings = settings['productRoutes'][site.handle] ?? null %}
+                    {% set siteRows = siteRows|merge({
+                        (site.handle): {
+                            heading: site.name|t('site')|e,
+                            uriFormat: {
+                                value: siteSettings ? siteSettings.uriFormat,
+                            },
+                            template: {
+                                value: siteSettings ? siteSettings.template,
+                            },
+                        }|filter
+                    }) %}
+                {% endfor %}
+
+                {{ forms.editableTableField({
+                    label: "Product URLS"|t('app'),
+                    instructions: "Define URLS and template to be used to products."|t('app'),
+                    id: 'productRoutes',
+                    name: 'productRoutes',
+                    cols: {
+                        heading: {
+                            type: 'heading',
+                            heading: "Site"|t('app'),
+                            thin: true
+                        },
                         uriFormat: {
-                            value: siteSettings ? siteSettings.uriFormat,
+                            type: 'singleline',
+                            heading: "Entry URI Format"|t('app'),
+                            info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('app'),
+                            placeholder: 'Leave blank if entries don’t have URLs'|t('app'),
+                            code: true,
+                            width: 500,
+                            class: ['type-channel', 'type-structure']|filter
                         },
                         template: {
-                            value: siteSettings ? siteSettings.template,
+                            type: 'template',
+                            heading: "Template"|t('app'),
+                            info: "Which template should be loaded when an entry’s URL is requested."|t('app'),
+                            code: true
+                        }
+                    }|filter,
+                    rows: siteRows,
+                    fullWidth: true,
+                    allowAdd: false,
+                    allowDelete: false,
+                    allowReorder: false
+                }) }}
+
+                <hr/>
+
+                {% set siteRows = [] %}
+
+                {% for site in craft.app.sites.getAllSites() %}
+                    {% set siteSettings = settings['categoryRoutes'][site.handle] ?? null %}
+                    {% set siteRows = siteRows|merge({
+                        (site.handle): {
+                            heading: site.name|t('site')|e,
+                            uriFormat: {
+                                value: siteSettings ? siteSettings.uriFormat,
+                            },
+                            template: {
+                                value: siteSettings ? siteSettings.template,
+                            },
+                        }|filter
+                    }) %}
+                {% endfor %}
+
+                {{ forms.editableTableField({
+                    label: "Category URLS"|t('app'),
+                    instructions: "Define URLS and template to be used to categories."|t('app'),
+                    id: 'categoryRoutes',
+                    name: 'categoryRoutes',
+                    cols: {
+                        heading: {
+                            type: 'heading',
+                            heading: "Site"|t('app'),
+                            thin: true
                         },
-                    }|filter
-                }) %}
-            {% endfor %}
-
-            {{ forms.editableTableField({
-                label: "Product URLS"|t('app'),
-                instructions: "Define URLS and template to be used to products."|t('app'),
-                id: 'productRoutes',
-                name: 'productRoutes',
-                cols: {
-                    heading: {
-                        type: 'heading',
-                        heading: "Site"|t('app'),
-                        thin: true
-                    },
-                    uriFormat: {
-                        type: 'singleline',
-                        heading: "Entry URI Format"|t('app'),
-                        info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('app'),
-                        placeholder: 'Leave blank if entries don’t have URLs'|t('app'),
-                        code: true,
-                        width: 500,
-                        class: ['type-channel', 'type-structure']|filter
-                    },
-                    template: {
-                        type: 'template',
-                        heading: "Template"|t('app'),
-                        info: "Which template should be loaded when an entry’s URL is requested."|t('app'),
-                        code: true
-                    }
-                }|filter,
-                rows: siteRows,
-                fullWidth: true,
-                allowAdd: false,
-                allowDelete: false,
-                allowReorder: false
-            }) }}
-
-            <hr />
-
-            {% set siteRows = [] %}
-
-            {% for site in craft.app.sites.getAllSites() %}
-                {% set siteSettings = settings['categoryRoutes'][site.handle] ?? null %}
-                {% set siteRows = siteRows|merge({
-                    (site.handle): {
-                        heading: site.name|t('site')|e,
                         uriFormat: {
-                            value: siteSettings ? siteSettings.uriFormat,
+                            type: 'singleline',
+                            heading: "Entry URI Format"|t('app'),
+                            info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('app'),
+                            placeholder: 'Leave blank if entries don’t have URLs'|t('app'),
+                            code: true,
+                            width: 500,
+                            class: ['type-channel', 'type-structure']|filter
                         },
                         template: {
-                            value: siteSettings ? siteSettings.template,
+                            type: 'template',
+                            heading: "Template"|t('app'),
+                            info: "Which template should be loaded when an entry’s URL is requested."|t('app'),
+                            code: true
+                        }
+                    }|filter,
+                    rows: siteRows,
+                    fullWidth: true,
+                    allowAdd: false,
+                    allowDelete: false,
+                    allowReorder: false
+                }) }}
+
+                <hr/>
+
+                {% set siteRows = [] %}
+
+                {% for site in craft.app.sites.getAllSites() %}
+                    {% set siteSettings = settings['projectRoutes'][site.handle] ?? null %}
+                    {% set siteRows = siteRows|merge({
+                        (site.handle): {
+                            heading: site.name|t('site')|e,
+                            uriFormat: {
+                                value: siteSettings ? siteSettings.uriFormat,
+                            },
+                            template: {
+                                value: siteSettings ? siteSettings.template,
+                            },
+                        }|filter
+                    }) %}
+                {% endfor %}
+
+                {{ forms.editableTableField({
+                    label: "Project URLS"|t('app'),
+                    instructions: "Define URLS and template to be used for projects."|t('app'),
+                    id: 'projectRoutes',
+                    name: 'projectRoutes',
+                    cols: {
+                        heading: {
+                            type: 'heading',
+                            heading: "Site"|t('app'),
+                            thin: true
                         },
-                    }|filter
-                }) %}
-            {% endfor %}
-
-            {{ forms.editableTableField({
-                label: "Category URLS"|t('app'),
-                instructions: "Define URLS and template to be used to categories."|t('app'),
-                id: 'categoryRoutes',
-                name: 'categoryRoutes',
-                cols: {
-                    heading: {
-                        type: 'heading',
-                        heading: "Site"|t('app'),
-                        thin: true
-                    },
-                    uriFormat: {
-                        type: 'singleline',
-                        heading: "Entry URI Format"|t('app'),
-                        info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('app'),
-                        placeholder: 'Leave blank if entries don’t have URLs'|t('app'),
-                        code: true,
-                        width: 500,
-                        class: ['type-channel', 'type-structure']|filter
-                    },
-                    template: {
-                        type: 'template',
-                        heading: "Template"|t('app'),
-                        info: "Which template should be loaded when an entry’s URL is requested."|t('app'),
-                        code: true
-                    }
-                }|filter,
-                rows: siteRows,
-                fullWidth: true,
-                allowAdd: false,
-                allowDelete: false,
-                allowReorder: false
-            }) }}
-
-            <hr />
-
-            {% set siteRows = [] %}
-
-            {% for site in craft.app.sites.getAllSites() %}
-                {% set siteSettings = settings['projectRoutes'][site.handle] ?? null %}
-                {% set siteRows = siteRows|merge({
-                    (site.handle): {
-                        heading: site.name|t('site')|e,
                         uriFormat: {
-                            value: siteSettings ? siteSettings.uriFormat,
+                            type: 'singleline',
+                            heading: "Entry URI Format"|t('app'),
+                            info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('app'),
+                            placeholder: 'Leave blank if entries don’t have URLs'|t('app'),
+                            code: true,
+                            width: 500,
+                            class: ['type-channel', 'type-structure']|filter
                         },
                         template: {
-                            value: siteSettings ? siteSettings.template,
+                            type: 'template',
+                            heading: "Template"|t('app'),
+                            info: "Which template should be loaded when an entry’s URL is requested."|t('app'),
+                            code: true
+                        }
+                    }|filter,
+                    rows: siteRows,
+                    fullWidth: true,
+                    allowAdd: false,
+                    allowDelete: false,
+                    allowReorder: false
+                }) }}
+
+                <hr/>
+
+
+                {{ forms.editableTableField({
+                    label: "Shooting Days Factor",
+                    instructions: "",
+                    id: 'shootingDaysFactor',
+                    name: 'shootingDaysFactor',
+                    cols: {
+                        days: {
+                            type: 'number',
+                            heading: "Days",
+                            info: "",
+                            placeholder: '',
+                            code: true,
+                            width: 10,
+                            class: ['type-channel', 'type-structure']|filter
                         },
-                    }|filter
-                }) %}
-            {% endfor %}
+                        factor: {
+                            type: 'number',
+                            heading: "Factor",
+                            info: "What factor should be applied to calcualte price for x days",
+                            code: true,
+                            width: 10,
+                        }
+                    }|filter,
+                    rows: settings['shootingDaysFactor'],
+                    fullWidth: false,
+                    allowAdd: true,
+                    allowDelete: true,
+                    allowReorder: true
+                }) }}
 
-            {{ forms.editableTableField({
-                label: "Project URLS"|t('app'),
-                instructions: "Define URLS and template to be used for projects."|t('app'),
-                id: 'projectRoutes',
-                name: 'projectRoutes',
-                cols: {
-                    heading: {
-                        type: 'heading',
-                        heading: "Site"|t('app'),
-                        thin: true
-                    },
-                    uriFormat: {
-                        type: 'singleline',
-                        heading: "Entry URI Format"|t('app'),
-                        info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('app'),
-                        placeholder: 'Leave blank if entries don’t have URLs'|t('app'),
-                        code: true,
-                        width: 500,
-                        class: ['type-channel', 'type-structure']|filter
-                    },
-                    template: {
-                        type: 'template',
-                        heading: "Template"|t('app'),
-                        info: "Which template should be loaded when an entry’s URL is requested."|t('app'),
-                        code: true
-                    }
-                }|filter,
-                rows: siteRows,
-                fullWidth: true,
-                allowAdd: false,
-                allowDelete: false,
-                allowReorder: false
-            }) }}
+                <hr/>
 
-            <hr />
+                {{ forms.fieldLayoutDesignerField({
+                    label: "Additional fields for products"|t('app'),
+                    id: 'product-fields',
+                    fieldLayout: craft.app.fields.getLayoutByType(
+                        'furbo\\rentmanforcraft\\elements\\Product'
+                    ),
+                }) }}
+
+            </div>
 
 
-            {{ forms.editableTableField({
-                label: "Shooting Days Factor",
-                instructions: "",
-                id: 'shootingDaysFactor',
-                name: 'shootingDaysFactor',
-                cols: {
-                    days: {
-                        type: 'number',
-                        heading: "Days",
-                        info: "",
-                        placeholder: '',
-                        code: true,
-                        width: 10,
-                        class: ['type-channel', 'type-structure']|filter
-                    },
-                    factor: {
-                        type: 'number',
-                        heading: "Factor",
-                        info: "What factor should be applied to calcualte price for x days",
-                        code: true,
-                        width: 10,
-                    }
-                }|filter,
-                rows: settings['shootingDaysFactor'],
-                fullWidth: false,
-                allowAdd: true,
-                allowDelete: true,
-                allowReorder: true
-            }) }}
-
-            <hr />
-
-            {{ forms.fieldLayoutDesignerField({
-                label: "Additional fields for products"|t('app'),
-                id: 'product-fields',
-                fieldLayout: craft.app.fields.getLayoutByType(
-                    'furbo\\rentmanforcraft\\elements\\Product'
-                ),
-            }) }}
-            
-        </div>
-
-        
         </div>
     </div>
 {% endblock %}
