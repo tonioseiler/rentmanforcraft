@@ -53,8 +53,8 @@
                     instructions: '',
                     id: 'autoSubmitProjects',
                     name: 'autoSubmitProjects',
-                    value: true,
-                    checked: (settings['autoSubmitProjects'] ? true : false),
+                    value: 1,
+                    checked: (settings['autoSubmitProjects'] == 1 ? true : false),
                 }) }}
                 {#
                 <input type="radio" name="autoSubmitProjects" id="autoSubmitProjects" value="1" {{  settings['autoSubmitProjects']=="1" ? 'checked' }}>Yes<br>
