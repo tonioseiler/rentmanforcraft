@@ -123,13 +123,13 @@
                         {{ productMainData.weight }}
                     </td>
                     <td>
-                        {{ productMainData.price|round ==  productMainData.price ? (productMainData.price|number_format(0, '.', '’') ~".-")|raw  : productMainData.price|number(2) }}
+                        {{ productMainData.price|number_format(2, '.', '’') }}
                     </td>
                     <td>
                         {{ product.quantity }}
                     </td>
                     <td>
-                        {{ product.price|round ==  product.price ? (product.price|number_format(0, '.', '’') ~".-&nbsp;&nbsp;&nbsp;")|raw  : product.price|number(2) }}
+                        {{ product.price|number_format(2, '.', '’') }}
                     </td>
                 </tr>
             {% endfor %}
@@ -138,7 +138,7 @@
         <tfoot>
         <tr class="total">
             <td colspan="5">
-                {{ project.price|round ==  project.price ? (project.price|number_format(0, '.', '’') ~".-&nbsp;&nbsp;&nbsp;")|raw  : project.price|number(2) }}
+                {{ project.price|number_format(2, '.', '’') }}
             </td>
         </tr>
         </tfoot>
