@@ -26,6 +26,7 @@ class CategoriesService extends Component
             ->parentId($parentId);
 
         $categories = $query->orderBy('order')->all();
+        $allCategories = [];
         foreach ($categories as $category) {
             $allCategories[] = [
                 'id' => $category->id,
@@ -33,18 +34,18 @@ class CategoriesService extends Component
                 'displayname' => $category->displayname
             ];
             $tempSubCategories = $this->getCategoriesRecursive($category->id);
-            if ($tempSubCategories != null) {
-                //$allCategories[] = $tempSubCategories;
+            if (!empty($tempSubCategories)) {
                 $allCategories = array_merge($allCategories, $tempSubCategories);
             }
         }
-
-
+        return $allCategories;
+        /*
         if (isset($allCategories)) {
             return $allCategories;
         } else {
             return null;
         }
+        */
 
     }
 
