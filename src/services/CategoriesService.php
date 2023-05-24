@@ -28,7 +28,7 @@ class CategoriesService extends Component
 
         $categories = $query->orderBy('order')->all();
         foreach ($categories as $category) {
-            $allCategories[] = $category.id;
+            $allCategories[] = $category->id;
         }
 
         dd($allCategories);
