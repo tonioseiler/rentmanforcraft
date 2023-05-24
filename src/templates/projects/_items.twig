@@ -1,35 +1,35 @@
 <table class="project-items">
     <thead>
-        <tr>
-            <th>{{'Product'|t('rentman-for-craft')}}</th>
-            <th class="number">{{'Weight'|t('rentman-for-craft')}}</th>
-            <th class="number">{{'Unit Price'|t('rentman-for-craft')}}</th>
-            <th class="number">{{'Quantity'|t('rentman-for-craft')}}</th>
-            <th class="number">{{'Factor'|t('rentman-for-craft')}}</th>
-            <th class="number">{{'Price'|t('rentman-for-craft')}}</th>
-        </tr>
+    <tr>
+        <th>{{ 'Product'|t('rentman-for-craft') }}</th>
+        <th class="number">{{ 'Weight'|t('rentman-for-craft') }}</th>
+        <th class="number">{{ 'Unit Price'|t('rentman-for-craft') }}</th>
+        <th class="number">{{ 'Quantity'|t('rentman-for-craft') }}</th>
+        <th class="number">{{ 'Factor'|t('rentman-for-craft') }}</th>
+        <th class="number">{{ 'Price'|t('rentman-for-craft') }}</th>
+    </tr>
     </thead>
     <tbody>
-        {% for item in project.getItems() %}
-            {% set product = item.getProduct().getElement() %}
-            {% if product.title is defined %}
+    {% for item in project.getItems() %}
+        {% set product = item.getProduct().getElement() %}
+        {% if product.title is defined %}
             <tr>
-                <td>{{product.title}}</td>
-                <td class="number">{{product.weight}}</td>
-                <td class="number">{{item.unit_price|number_format(2, '.', '\'')}}</td>
-                <td class="number">{{item.quantity}}</td>
-                <td class="number">{{item.factor}}</td>
-                <td class="number">{{item.price|number_format(2, '.', '\'')}}</td>
+                <td>{{ product.title }}</td>
+                <td class="number">{{ product.weight }}</td>
+                <td class="number">{{ item.unit_price|number_format(2, '.', '\'') }}</td>
+                <td class="number">{{ item.quantity }}</td>
+                <td class="number">{{ item.factor }}</td>
+                <td class="number">{{ item.price|number_format(2, '.', '\'') }}</td>
             </tr>
-            {% endif %}
-        {% endfor %}
-        <tr class="total">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class="number">{{project.price|number_format(2, '.', '\'')}}</td>
-        </tr>
+        {% endif %}
+    {% endfor %}
+    <tr class="total">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="number">{{ project.price|number_format(2, '.', '\'') }}</td>
+    </tr>
     </tbody>
 </table> 
