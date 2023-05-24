@@ -22,28 +22,22 @@ class CategoriesService extends Component
 
     public function getCategoriesRecursive($parentId = 0)
     {
-        //$allCategories = array();
         $query = Category::find()
             ->parentId($parentId);
 
         $categories = $query->orderBy('order')->all();
         foreach ($categories as $category) {
-            //$allCategories[] = $category->id;
-
             $allCategories[] = [
                 'id' => $category->id,
                 'uri' => $category->uri,
                 'displayname' => $category->displayname
             ];
-
-
-
             $tempSubCategories = $this->getCategoriesRecursive($category->id);
             if ($tempSubCategories != null) {
-                $allCategories[] = $tempSubCategories;
+                //$allCategories[] = $tempSubCategories;
+                $allCategories = array_merge($allCategories, $tempSubCategories);
             }
         }
-
 
         if (isset($allCategories)) {
             return $allCategories;
