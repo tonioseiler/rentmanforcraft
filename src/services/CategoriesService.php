@@ -34,8 +34,11 @@ class CategoriesService extends Component
         }
 
 
-
-        return $allCategories;
+        if (isset($allCategories)) {
+            return $allCategories;
+        } else {
+            return null;
+        }
     }
 
 
