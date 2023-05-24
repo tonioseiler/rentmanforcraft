@@ -22,7 +22,7 @@ class CategoriesService extends Component
 
     public function getCategoriesRecursive($parentId = 0)
     {
-        $allCategories = array();
+        //$allCategories = array();
         $query = Category::find()
             ->parentId($parentId);
 
