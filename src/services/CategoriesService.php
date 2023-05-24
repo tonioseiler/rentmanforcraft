@@ -38,12 +38,15 @@ class CategoriesService extends Component
                 $allCategories = array_merge($allCategories, $tempSubCategories);
             }
         }
+        return $allCategories;
 
+        /*
         if (isset($allCategories)) {
             return $allCategories;
         } else {
             return null;
         }
+        */
     }
 
 
