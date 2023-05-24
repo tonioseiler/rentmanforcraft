@@ -20,7 +20,40 @@ class CategoriesService extends Component
         return $query->orderBy('order')->all();
     }
 
-    public function getCategoriesRecursive($parentId = 0)
+
+    public function getCategoriesRecursive($parentId = 0, $parentDisplayName = '')
+    {
+        $query = Category::find()
+            ->parentId($parentId);
+
+        $categories = $query->orderBy('order')->all();
+        $allCategories = [];
+        foreach ($categories as $category) {
+            $currentDisplayName = $parentDisplayName !== '' ? $parentDisplayName . ' - ' . $category->displayname : $category->displayname;
+            $tempSubCategories = $this->getCategoriesRecursive($category->id, $currentDisplayName);
+            if (!empty($tempSubCategories)) {
+                $allCategories[] = [
+                    'id' => $category->id,
+                    'uri' => $category->uri,
+                    'displayname' => $currentDisplayName,
+                    'haschildren' => 1,
+                ];
+                $allCategories = array_merge($allCategories, $tempSubCategories);
+            } else {
+                $allCategories[] = [
+                    'id' => $category->id,
+                    'uri' => $category->uri,
+                    'displayname' => $currentDisplayName,
+                    'haschildren' => 0,
+                ];
+            }
+        }
+        return $allCategories;
+    }
+
+
+
+    public function getCategoriesRecursiveGood($parentId = 0)
     {
         $query = Category::find()
             ->parentId($parentId);
@@ -48,14 +81,6 @@ class CategoriesService extends Component
             }
         }
         return $allCategories;
-        /*
-        if (isset($allCategories)) {
-            return $allCategories;
-        } else {
-            return null;
-        }
-        */
-
     }
 
 
