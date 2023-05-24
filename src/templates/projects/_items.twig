@@ -12,7 +12,7 @@
     <tbody>
         {% for item in project.getItems() %}
             {% set product = item.getProduct().getElement() %}
-            {% if product is defined %}
+            {% if product.title is defined %}
             <tr>
                 <td>{{product.title}}</td>
                 <td class="number">{{product.weight}}</td>
