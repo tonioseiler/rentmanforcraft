@@ -28,8 +28,8 @@ class CategoriesService extends Component
         $categories = $query->orderBy('order')->all();
 
         foreach ($categories as $category) {
-            $subCategories = $this->getCategories($category->id);
-            $category->setDescendants($subCategories);
+            $subCategories = $this->getCategoriesRecursive($category->id);
+            $category->subcategories = $subCategories;
         }
 
         return $categories;
