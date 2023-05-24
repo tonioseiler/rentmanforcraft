@@ -34,7 +34,7 @@ class CategoriesService extends Component
         dd($allCategories);
 
         foreach ($categories as $category) {
-            $subCategories = $this->getCategoriesRecursive($category->id);
+            $subCategories = $this->getCategoriesRecursive($category.id);
             $category->children = $subCategories;
         }
 
