@@ -35,9 +35,16 @@ class CategoriesService extends Component
                     'id' => $category->id,
                     'uri' => $category->uri,
                     'displayname' => $category->displayname,
-                    'mothercat' => 1,
+                    'haschildren' => 1,
                 ];
                 $allCategories = array_merge($allCategories, $tempSubCategories);
+            } else {
+                $allCategories[] = [
+                    'id' => $category->id,
+                    'uri' => $category->uri,
+                    'displayname' => $category->displayname,
+                    'haschildren' => 0,
+                ];
             }
         }
         return $allCategories;
