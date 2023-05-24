@@ -12,7 +12,6 @@ use yii\base\Component;
 class CategoriesService extends Component
 {
 
-
     public function getCategories($parentId = 0)
     {
         $query = Category::find()
@@ -20,12 +19,10 @@ class CategoriesService extends Component
         return $query->orderBy('order')->all();
     }
 
-
     public function getCategoriesRecursive($parentId = 0, $parentDisplayName = '')
     {
         $query = Category::find()
             ->parentId($parentId);
-
         $categories = $query->orderBy('order')->all();
         $allCategories = [];
         foreach ($categories as $category) {
@@ -51,44 +48,10 @@ class CategoriesService extends Component
         return $allCategories;
     }
 
-
-
-    public function getCategoriesRecursiveGood($parentId = 0)
-    {
-        $query = Category::find()
-            ->parentId($parentId);
-
-        $categories = $query->orderBy('order')->all();
-        $allCategories = [];
-        foreach ($categories as $category) {
-
-            $tempSubCategories = $this->getCategoriesRecursive($category->id);
-            if (!empty($tempSubCategories)) {
-                $allCategories[] = [
-                    'id' => $category->id,
-                    'uri' => $category->uri,
-                    'displayname' => $category->displayname,
-                    'haschildren' => 1,
-                ];
-                $allCategories = array_merge($allCategories, $tempSubCategories);
-            } else {
-                $allCategories[] = [
-                    'id' => $category->id,
-                    'uri' => $category->uri,
-                    'displayname' => $category->displayname,
-                    'haschildren' => 0,
-                ];
-            }
-        }
-        return $allCategories;
-    }
-
-
-
     public function getCategoryById($id)
     {
         return Category::find()
             ->id($id)
-            ->one();  
+            ->one();
     }
 }
