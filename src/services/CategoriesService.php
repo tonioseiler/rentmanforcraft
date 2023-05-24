@@ -44,7 +44,6 @@ class CategoriesService extends Component
             }
         }
 
-        dd($allCategories);
 
         if (isset($allCategories)) {
             return $allCategories;
