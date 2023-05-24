@@ -28,12 +28,24 @@ class CategoriesService extends Component
 
         $categories = $query->orderBy('order')->all();
         foreach ($categories as $category) {
-            $allCategories[] = $category->id;
+            //$allCategories[] = $category->id;
+
+            $allCategories[] = [
+                'id' => $category->id,
+                'uri' => $category->uri,
+                'displayname' => $category->displayname
+            ];
+
+
+
             $tempSubCategories = $this->getCategoriesRecursive($category->id);
             if ($tempSubCategories != null) {
                 $allCategories[] = $tempSubCategories;
             }
         }
+
+        dd($allCategories);
+
         if (isset($allCategories)) {
             return $allCategories;
         } else {
