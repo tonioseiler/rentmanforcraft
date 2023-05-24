@@ -29,7 +29,7 @@ class CategoriesService extends Component
 
         foreach ($categories as $category) {
             $subCategories = $this->getCategoriesRecursive($category->id);
-            $category->subcategories = $subCategories;
+            $category->children = $subCategories;
         }
 
         return $categories;
