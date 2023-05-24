@@ -12,6 +12,7 @@
     <tbody>
         {% for item in project.getItems() %}
             {% set product = item.getProduct().getElement() %}
+            {% if product is defined %}
             <tr>
                 <td>{{product.title}}</td>
                 <td class="number">{{product.weight}}</td>
@@ -20,6 +21,7 @@
                 <td class="number">{{item.factor}}</td>
                 <td class="number">{{item.price|number_format(2, '.', '\'')}}</td>
             </tr>
+            {% endif %}
         {% endfor %}
         <tr class="total">
             <td></td>
