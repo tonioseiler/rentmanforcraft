@@ -291,7 +291,12 @@
         </div>
     </div>
     <div id="tab-translations" data-id="translations" role="tabpanel" class="tab hidden">
-        Translations
+        {{ forms.textField({
+            label: 'Translation test',
+            instructions: 'Just a test',
+            id: 'translationTest',
+            name: 'translationTest',
+            value: settings['translationTest']}) }}
     </div>
 
 
