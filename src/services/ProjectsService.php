@@ -127,6 +127,8 @@ class ProjectsService extends Component
         } else {
             $html = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
         }
+
+
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
         $options->set('debugKeepTemp', TRUE);
@@ -162,12 +164,14 @@ class ProjectsService extends Component
             //$dompdf->stream($filename,array("Attachment" => false)); ; activate for debug, pdf is displayed in the browser (if browser can handle pdf)
         } else {
 
+
             $output = $dompdf->output();
             $storagePath = Craft::getAlias('@storage');
             $filepath = $storagePath.'/projects/'.$filename;
             file_put_contents($filepath, $output);
+            return $filepath;
         }
-        return $filepath;
+        return;
     }
 
 
