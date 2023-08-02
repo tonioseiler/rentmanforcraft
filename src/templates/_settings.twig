@@ -339,14 +339,14 @@
         #}
 
 
-        {{ forms.select({
+
+        {{ forms.textField({
             label: "Project\'s PDF template"|t('app'),
             instructions: "Define the template to be used for project's pdf."|t('app'),
             id: 'templateForProjectPdf',
             name: 'templateForProjectPdf',
-            options: templates,
-            value: settings['templateForProjectPdf'],
-        }) }}
+            value: settings['templateForProjectPdf']}) }}
+
 
 
     </div>
