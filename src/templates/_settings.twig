@@ -10,6 +10,18 @@
 
 {# The content of the CP Section #}
 {% block content %}
+    {% set tabs = {
+        content: {
+            label: 'Main settings',
+            url: '#fields',
+        },
+        settings: {
+            label: 'Translations',
+            url: '#translations',
+        },
+    } %}
+
+    {% set selectedTab = 'fields' %}
 
     <div class="tabs">
         <ul>
