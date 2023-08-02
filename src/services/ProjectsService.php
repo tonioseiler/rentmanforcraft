@@ -111,9 +111,10 @@ class ProjectsService extends Component
     }
 
     public function generatePDF(Project $project, $stream = true) {
-        $settings = $this->getSettings();
-        $filename = 'BLOW UP rental - Anfrage #'.$project->id.'.pdf';
 
+        $plugin = RentmanForCraft::getInstance();
+        $settings = $plugin->getSettings();
+        $filename = 'BLOW UP rental - Anfrage #'.$project->id.'.pdf';
         if(isset($settings['pdfFilename']) && !empty($settings['pdfFilename'])) {
             $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
         }
