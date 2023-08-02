@@ -156,12 +156,15 @@ class ProjectsService extends Component
             56, $y, 'BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch', $font, $size, $color, $word_space, $char_space, $angle
         );
 
-        dd('all good till here2');
 
         if ($stream) {
+            dd('all good till here3');
+
             $dompdf->stream($filename);
             //$dompdf->stream("", array("Attachment" => false)); activate for debug, pdf is displayed in the browser (if browser can handle pdf)
         } else {
+            dd('all good till here4');
+
             $output = $dompdf->output();
             $storagePath = Craft::getAlias('@storage');
             $filepath = $storagePath.'/projects/'.$filename;
