@@ -33,7 +33,7 @@
 
 
 
-    <div id="tab-main-settings" data-id="tab-main-settings" role="tabpanel">
+    <div id="tab-main-settings" data-id="tab-main-settings" role="tabpanel" class="tab">
 
         <div id="settings">
             {{ forms.textField({
@@ -311,6 +311,10 @@
                 e.preventDefault();
                 console.log('clicked');
                 console.log($(this).parent().data('id'));
+                $('.tabs').addClass('hidden');
+                $('#'+ $(this).parent().data('id')).removeClass('hidden');
+
+
             })
 
         });
