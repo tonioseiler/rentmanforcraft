@@ -12,32 +12,15 @@
 {% block content %}
 
 
-
-
-
-    {% set tabs = {
-        fields: {
-            label: 'Main settings',
-            url: '#tab-main-settings',
-        },
-        translations: {
-            label: 'Translations',
-            url: '#tab-translations',
-        },
-    } %}
-
-    {% set selectedTab = 'fields' %}
-
-    {#
     <header id="content-header" class="pane-header">
         <div id="tabs" class="pane-tabs">
             <div class="" role="tablist" aria-label="Primary fields">
-                <a id="tab-fields" class="sel" href="#fields" tabindex="0" role="tab" data-id="tab--content" aria-selected="true">
+                <a class="sel" href="#fields" tabindex="0" role="tab" data-id="tab-main-settings" aria-selected="true">
                     <span class="tab-label">
                         Main settings
                     </span>
                 </a>
-                <a id="tab-translations" href="#translations" tabindex="-1" role="tab" data-id="tab--seo" aria-selected="false">
+                <a href="#translations" tabindex="-1" role="tab" data-id="tab-translations" aria-selected="false">
                     <span class="tab-label">
                         Translations
                     </span>
@@ -46,21 +29,9 @@
 
         </div>
     </header>
-    #}
 
-    <header id="content-header" class="pane-header">
-        <div id="tabs" class="pane-tabs">
-            <div class="" role="tablist" aria-label="Primary fields">
-                {% for tabId, tab in tabs %}
-                    <a id="{{ tabId }}" class="{{ loop.index0 == 0 ? 'sel' }}" href="{{ tab.url }}" tabindex="{{ loop.index0 }}" role="tab" data-id="{{ tabId }}" aria-selected="{{ loop.index0 == 0 ? 'true' : 'false' }}">
-                    <span class="tab-label">
-                        {{ tab.label }}
-                    </span>
-                    </a>
-                {% endfor %}
-            </div>
-        </div>
-    </header>
+
+
 
     <div id="tab-main-settings" data-id="tab-main-settings" role="tabpanel">
 
@@ -324,22 +295,18 @@
     </div>
 
 
-    {% js %}
-        new Craft.Tabs($('#tabs'));
-    {% endjs %}
-{#
+
 
     {% js %}
 
         $(document).ready(function() {
         $('#tabs a').on('click', function (e) {
             e.preventDefault();
-
-            $(this).tab('show')
+            console.log($(this).data('id'));
         })
 
         });
     {% endjs %}
-#}
+
 
 {% endblock %}
