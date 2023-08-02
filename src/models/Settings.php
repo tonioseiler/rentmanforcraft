@@ -139,6 +139,6 @@ class Settings extends Model
                                     ['days' => 107, 'factor' => 46.25]
                                 ];
     public $pdfFilename = '';
-    public $templateForProjectPdf = '';
+    public $templateForProjectPdf = [];
 
 }
