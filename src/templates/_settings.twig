@@ -303,10 +303,10 @@
 
             $('#settings-furbo-tabs a span').on('click', function (e) {
                 e.preventDefault();
-                console.log('clicked');
-                console.log($(this).parent().data('id'));
                 $('.tab').addClass('hidden');
                 $('#'+ $(this).parent().data('id')).removeClass('hidden');
+                $('#settings-furbo-tabs a').removeClass('sel');
+                $('#'+ $(this).parent().addClass('sel');
             })
 
         });
