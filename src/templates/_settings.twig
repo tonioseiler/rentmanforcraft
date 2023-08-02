@@ -319,7 +319,7 @@
             value: settings['templateForProjectPdf']}) }}
         #}
 
-        {{ forms.template: {
+        {{ forms.template: ({
             label: 'Project\'s PDF template',
             instructions: 'Leave empty to use the default template.',
             id: 'templateForProjectPdf',
@@ -327,7 +327,7 @@
             heading: "Template"|t('app'),
             info: "Which template should be used for the project's pdf file."|t('app'),
             code: true
-        } }}
+        }) }}
 
 
     </div>
