@@ -15,12 +15,12 @@
     <header id="content-header" class="pane-header">
         <div id="furbo-tabs" class="pane-tabs">
             <div class="" role="tablist" aria-label="Primary fields">
-                <a class="sel" href="#fields" tabindex="0" role="tab" data-id="tab-main-settings" aria-selected="true">
+                <a class="sel" href="#fields" tabindex="0" role="tab" data-id="settings-tab-main-settings" aria-selected="true">
                     <span class="tab-label">
                         Main settings
                     </span>
                 </a>
-                <a href="#translations" tabindex="-1" role="tab" data-id="tab-translations" aria-selected="false">
+                <a href="#translations" tabindex="-1" role="tab" data-id="settings-tab-translations" aria-selected="false">
                     <span class="tab-label">
                         Translations
                     </span>
@@ -300,12 +300,6 @@
     {% js %}
         $(document).ready(function() {
             $('#settings-furbo-tabs a span').off();
-            console.log('loaded');
-
-            $('body').click(function(e) {
-                var target = $(e.target);
-                console.log(target);
-            });
 
             $('#settings-furbo-tabs a span').on('click', function (e) {
                 e.preventDefault();
@@ -313,8 +307,6 @@
                 console.log($(this).parent().data('id'));
                 $('.tabs').addClass('hidden');
                 $('#'+ $(this).parent().data('id')).removeClass('hidden');
-
-
             })
 
         });
