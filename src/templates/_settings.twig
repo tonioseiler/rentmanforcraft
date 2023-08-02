@@ -310,11 +310,11 @@
 
 
 
-        $('#tabs a').on('click', function (e) {
+        $('#tabs a span').on('click', function (e) {
         e.preventDefault();
         console.log('clicked');
 
-        console.log($(this).data('id'));
+        console.log($(this).parent().data('id'));
         })
 
         });
