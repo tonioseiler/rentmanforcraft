@@ -204,6 +204,12 @@ class RentmanForCraft extends Plugin
                 if ($request->isCpRequest) {
                     $urlSegments = $request->segments;
                     if (count($urlSegments) > 0 && $urlSegments[0] == 'rentman-for-craft')
+
+                        $event->variables['tabs'] = [
+                            ['label' => 'Main Settings', 'url' => '#settings-tab-main-settings'],
+                            ['label' => 'Maintenance', 'url' => '#settings-tab-maintenance'],
+                        ];
+
                         Craft::$app->getView()->registerAssetBundle(RentmanForCraftCPAsset::class);
                 }
             }

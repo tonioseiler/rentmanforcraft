@@ -10,19 +10,24 @@
 
 {# The content of the CP Section #}
 {% block content %}
+
+    {#
+
+
+
     {% set tabs = {
         fields: {
             label: 'Main settings',
-            url: '#fields',
+            url: '#tab-main-settings',
         },
         translations: {
             label: 'Translations',
-            url: '#translations',
+            url: '#tab-translations',
         },
     } %}
 
     {% set selectedTab = 'fields' %}
-
+    #}
     {#
     <header id="content-header" class="pane-header">
         <div id="tabs" class="pane-tabs">
@@ -57,7 +62,7 @@
         </div>
     </header>
 
-    <div id="fields" data-id="fields" role="tabpanel">
+    <div id="tab-main-settings" data-id="tab-main-settings" role="tabpanel">
 
         <div id="settings">
             {{ forms.textField({
@@ -314,7 +319,7 @@
 
         </div>
     </div>
-    <div id="settings-translations" data-id="translations" role="tabpanel" class="hidden">
+    <div id="tab-translations" data-id="translations" role="tabpanel" class="hidden">
         Translations
     </div>
 
