@@ -11,9 +11,7 @@
 {# The content of the CP Section #}
 {% block content %}
 
-    {% js %}
-        new Craft.Tabs($('#tabs'));
-    {% endjs %}
+
 
 
 
@@ -54,7 +52,7 @@
         <div id="tabs" class="pane-tabs">
             <div class="" role="tablist" aria-label="Primary fields">
                 {% for tabId, tab in tabs %}
-                    <a id="tab-fields" class="{{ loop.index0 == 0 ? 'sel' }}" href="{{ tab.url }}" tabindex="{{ loop.index0 }}" role="tab" data-id="{{ tabId }}" aria-selected="{{ loop.index0 == 0 ? 'true' : 'false' }}">
+                    <a id="{{ tabId }}" class="{{ loop.index0 == 0 ? 'sel' }}" href="{{ tab.url }}" tabindex="{{ loop.index0 }}" role="tab" data-id="{{ tabId }}" aria-selected="{{ loop.index0 == 0 ? 'true' : 'false' }}">
                     <span class="tab-label">
                         {{ tab.label }}
                     </span>
@@ -321,9 +319,27 @@
 
         </div>
     </div>
-    <div id="settings-tab-translations" data-id="translations" role="tabpanel" class="hidden">
+    <div id="tab-translations" data-id="translations" role="tabpanel" class="hidden">
         Translations
     </div>
 
+
+    {% js %}
+        new Craft.Tabs($('#tabs'));
+    {% endjs %}
+{#
+
+    {% js %}
+
+        $(document).ready(function() {
+        $('#tabs a').on('click', function (e) {
+            e.preventDefault();
+
+            $(this).tab('show')
+        })
+
+        });
+    {% endjs %}
+#}
 
 {% endblock %}
