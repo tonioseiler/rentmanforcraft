@@ -42,7 +42,8 @@
     </header>
 
 
-    <div id="fields">
+    <div id="fields" data-id="fields" role="tabpanel">
+
         <div id="settings">
             {{ forms.textField({
                 label: 'Control Panel Title',
@@ -298,8 +299,7 @@
 
         </div>
     </div>
-
-    <div id="translations">
+    <div id="translations" data-id="translations" role="tabpanel">
         Translations
     </div>
 
