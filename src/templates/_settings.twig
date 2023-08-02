@@ -298,11 +298,12 @@
 
 
     {% js %}
-
         $(document).ready(function() {
         $('#tabs a').on('click', function (e) {
-            e.preventDefault();
-            console.log($(this).data('id'));
+        e.preventDefault();
+        console.log('clicked');
+
+        console.log($(this).data('id'));
         })
 
         });
