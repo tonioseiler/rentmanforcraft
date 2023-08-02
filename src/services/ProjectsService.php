@@ -163,8 +163,6 @@ class ProjectsService extends Component
             $dompdf->stream($filename);
             //$dompdf->stream($filename,array("Attachment" => false)); ; activate for debug, pdf is displayed in the browser (if browser can handle pdf)
         } else {
-
-
             $output = $dompdf->output();
             $storagePath = Craft::getAlias('@storage');
             $filepath = $storagePath.'/projects/'.$filename;
