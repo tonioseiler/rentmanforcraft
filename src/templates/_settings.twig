@@ -10,6 +10,17 @@
 
 {# The content of the CP Section #}
 {% block content %}
+
+    <div class="tabs">
+        <ul>
+
+            <li><a href="#fields">Main settings</a></li>
+            <li><a href="#translations">Translations</a></li>
+
+        </ul>
+    </div>
+
+
     <div id="fields">
         <div id="settings">
             {{ forms.textField({
@@ -266,4 +277,10 @@
 
         </div>
     </div>
+
+    <div id="translations">
+        Translations
+    </div>
+
+
 {% endblock %}
