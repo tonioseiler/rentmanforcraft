@@ -312,6 +312,19 @@
         #}
 
 
+        {% for site in craft.app.sites.getAllSites() %}
+            {% set siteSettingsProjectPdf = settings['templateForProjectPdf'][site.handle] ?? null %}
+            {% set siteRowsProjectPdf = siteRows|merge({
+                (site.handle): {
+                    heading: site.name|t('site')|e,
+                    template: {
+                        value: siteSettingsProjectPdf ? siteSettingsProjectPdf.template,
+                    },
+                }|filter
+            }) %}
+        {% endfor %}
+
+
         {{ forms.editableTableField({
             label: "Project\'s PDF template"|t('app'),
             instructions: "Define the template to be used for project's pdf."|t('app'),
@@ -330,7 +343,7 @@
                     code: true
                 }
             }|filter,
-            rows: siteRows,
+            rows: siteRowsProjectPdf,
             fullWidth: true,
             allowAdd: false,
             allowDelete: false,
