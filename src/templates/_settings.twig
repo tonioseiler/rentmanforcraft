@@ -22,7 +22,7 @@
                 </a>
                 <a href="#translations" tabindex="-1" role="tab" data-id="settings-tab-translations" aria-selected="false">
                     <span class="tab-label">
-                        Translations
+                        Whitelabel
                     </span>
                 </a>
             </div>
@@ -36,14 +36,6 @@
     <div id="tab-main-settings" data-id="tab-main-settings" role="tabpanel" class="tab">
 
         <div id="settings">
-            {{ forms.textField({
-                label: 'Control Panel Title',
-                instructions: 'How the plugin will be called in the Control Panel',
-                id: 'cpTitle',
-                name: 'cpTitle',
-                value: settings['cpTitle']}) }}
-
-            <hr/>
 
             {{ forms.textField({
                 label: 'Api URL',
@@ -291,6 +283,16 @@
         </div>
     </div>
     <div id="tab-translations" data-id="translations" role="tabpanel" class="tab hidden">
+
+        {{ forms.textField({
+            label: 'Control Panel Title',
+            instructions: 'How the plugin will be called in the Control Panel',
+            id: 'cpTitle',
+            name: 'cpTitle',
+            value: settings['cpTitle']}) }}
+
+        <hr>
+
         {{ forms.textField({
             label: 'Project\'s PDF Filename',
             instructions: 'This sets the name of the selected project\'s pdf file that downloaded by the users. Note that "- #{project id}.pdf" will be added at the end of the file',

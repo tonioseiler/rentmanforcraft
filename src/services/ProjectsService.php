@@ -12,7 +12,6 @@ use furbo\rentmanforcraft\records\ProjectItem;
 use furbo\rentmanforcraft\RentmanForCraft;
 use yii\base\Component;
 use yii\web\IdentityInterface;
-use furbo\rentmanforcraft\models\Settings;
 
 
 use Dompdf\Dompdf;
@@ -115,10 +114,10 @@ class ProjectsService extends Component
         $plugin = RentmanForCraft::getInstance();
         $settings = $plugin->getSettings();
         $filename = 'BLOW UP rental - Anfrage #'.$project->id.'.pdf';
+        // TODO Paolo set this title in blowup website, then put stantard title to something like "Project"
         if(isset($settings['pdfFilename']) && !empty($settings['pdfFilename'])) {
             $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
         }
-
 
         $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/pdf/project',['project' => $project], View::TEMPLATE_MODE_CP);
         
