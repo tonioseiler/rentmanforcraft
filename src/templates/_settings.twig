@@ -11,11 +11,11 @@
 {# The content of the CP Section #}
 {% block content %}
     {% set tabs = {
-        content: {
+        fields: {
             label: 'Main settings',
             url: '#fields',
         },
-        settings: {
+        translations: {
             label: 'Translations',
             url: '#translations',
         },
@@ -47,7 +47,7 @@
         <div id="tabs" class="pane-tabs">
             <div class="" role="tablist" aria-label="Primary fields">
                 {% for tabId, tab in tabs %}
-                    <a id="tab-fields" class="sel" href="{{ tab.url }}" tabindex="0" role="tab" data-id="tab--content" aria-selected="true">
+                    <a id="tab-fields" class="{{ loop.index0 == 0 ? 'sel' }}" href="{{ tab.url }}" tabindex="{{ loop.index0 }}" role="tab" data-id="{{ tabId }}" aria-selected="{{ loop.index0 == 0 ? 'true' : 'false' }}">
                     <span class="tab-label">
                         {{ tab.label }}
                     </span>
