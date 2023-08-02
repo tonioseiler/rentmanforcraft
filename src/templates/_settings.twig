@@ -299,6 +299,16 @@
             id: 'pdfFilename',
             name: 'pdfFilename',
             value: settings['pdfFilename']}) }}
+
+        <hr>
+
+        {{ forms.textField({
+            label: 'Project\'s PDF template',
+            instructions: 'Leave empty to use the default template.',
+            id: 'templateForProjectPdf',
+            name: 'templateForProjectPdf',
+            value: settings['templateForProjectPdf']}) }}
+
     </div>
 
     {% js %}
