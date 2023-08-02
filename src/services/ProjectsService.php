@@ -159,7 +159,8 @@ class ProjectsService extends Component
 
         if ($stream) {
 
-            $dompdf->stream($filename);
+            //$dompdf->stream($filename);
+            $dompdf->stream($filename,array("Attachment" => false));
             //$dompdf->stream("", array("Attachment" => false)); activate for debug, pdf is displayed in the browser (if browser can handle pdf)
         } else {
 
