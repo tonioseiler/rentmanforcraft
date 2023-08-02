@@ -137,7 +137,6 @@ class ProjectsService extends Component
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        dd('all good till here');
 
         // Parameters
         $x          = 494;
@@ -157,6 +156,7 @@ class ProjectsService extends Component
             56, $y, 'BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch', $font, $size, $color, $word_space, $char_space, $angle
         );
 
+        dd('all good till here2');
 
         if ($stream) {
             $dompdf->stream($filename);
