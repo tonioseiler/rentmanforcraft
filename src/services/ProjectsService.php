@@ -120,7 +120,7 @@ class ProjectsService extends Component
         }
 
 
-        dd($settings['templateForProjectPdf']);
+        dd($settings['templateForProjectPdf']['default']['template']);
 
         $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/pdf/project',['project' => $project], View::TEMPLATE_MODE_CP);
         
