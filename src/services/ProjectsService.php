@@ -119,10 +119,13 @@ class ProjectsService extends Component
             $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
         }
 
+        $templateToUse = 'rentman-for-craft/pdf/project'
+        $customTemplate = $settings['templateForProjectPdf']['default']['template'];
+        if($customTemplate != '') {
+            $templateToUse=$customTemplate;
+        }
 
-        dd($settings['templateForProjectPdf']['default']['template']);
-
-        $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/pdf/project',['project' => $project], View::TEMPLATE_MODE_CP);
+        $html = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
         
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
