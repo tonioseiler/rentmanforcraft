@@ -311,7 +311,7 @@
             value: settings['templateForProjectPdf']}) }}
         #}
 
-        {#
+
         {{ forms.editableTableField({
             label: "Project\'s PDF template"|t('app'),
             instructions: "Define the template to be used for project's pdf."|t('app'),
@@ -336,17 +336,17 @@
             allowDelete: false,
             allowReorder: false
         }) }}
-        #}
+{# {"default":{"template":"pdf\/project.twig"},"secondSite":{"template":""}} #}
 
 
-
+        {#
         {{ forms.textField({
             label: "Project\'s PDF template"|t('app'),
             instructions: "Define the template to be used for project's pdf."|t('app'),
             id: 'templateForProjectPdf',
             name: 'templateForProjectPdf',
             value: settings['templateForProjectPdf']}) }}
-
+        #}
 
 
     </div>
