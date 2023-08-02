@@ -311,10 +311,10 @@
             value: settings['templateForProjectPdf']}) }}
         #}
 
-
+        {% set siteRowsProjectPdf = [] %}
         {% for site in craft.app.sites.getAllSites() %}
             {% set siteSettingsProjectPdf = settings['templateForProjectPdf'][site.handle] ?? null %}
-            {% set siteRowsProjectPdf = siteRows|merge({
+            {% set siteRowsProjectPdf = siteRowsProjectPdf|merge({
                 (site.handle): {
                     heading: site.name|t('site')|e,
                     template: {
