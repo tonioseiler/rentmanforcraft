@@ -23,14 +23,23 @@
 
     {% set selectedTab = 'fields' %}
 
-    <div class="tabs">
-        <ul>
+    <header id="content-header" class="pane-header">
+        <div id="tabs" class="pane-tabs">
+            <div class="" role="tablist" aria-label="Primary fields">
+                <a id="tab-fields" class="sel" href="#fields" tabindex="0" role="tab" data-id="tab--content" aria-selected="true">
+                    <span class="tab-label">
+                        Main settings
+                    </span>
+                </a>
+                <a id="tab-translations" href="#translations" tabindex="-1" role="tab" data-id="tab--seo" aria-selected="false">
+                    <span class="tab-label">
+                        Translations
+                    </span>
+                </a>
+            </div>
 
-            <li><a href="#fields">Main settings</a></li>
-            <li><a href="#translations">Translations</a></li>
-
-        </ul>
-    </div>
+        </div>
+    </header>
 
 
     <div id="fields">
