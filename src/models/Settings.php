@@ -138,6 +138,6 @@ class Settings extends Model
                                     ['days' => 106, 'factor' => 46],
                                     ['days' => 107, 'factor' => 46.25]
                                 ];
-    public $translationTest = '';
+    public $pdfFilename = '';
 
 }
