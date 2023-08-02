@@ -309,25 +309,41 @@
             id: 'templateForProjectPdf',
             name: 'templateForProjectPdf',
             value: settings['templateForProjectPdf']}) }}
-
-
-        {{ forms.textField({
-            label: 'Project\'s PDF template',
-            instructions: 'Leave empty to use the default template.',
-            id: 'templateForProjectPdf',
-            name: 'templateForProjectPdf',
-            value: settings['templateForProjectPdf']}) }}
         #}
-
-        {{ forms.template ({
-            label: 'Project\'s PDF template',
-            instructions: 'Leave empty to use the default template.',
+        {{ forms.editableTableField({
+            label: "Project\'s PDF template"|t('app'),
+            instructions: "Define the template to be used for project's pdf."|t('app'),
             id: 'templateForProjectPdf',
             name: 'templateForProjectPdf',
-            heading: "Template"|t('app'),
-            info: "Which template should be used for the project's pdf file."|t('app'),
-            code: true
+            cols: {
+                heading: {
+                    type: 'heading',
+                    heading: "Site"|t('app'),
+                    thin: true
+                },
+                days: {
+                    type: 'number',
+                    heading: "Days",
+                    info: "",
+                    placeholder: '',
+                    code: true,
+                    width: 10,
+                    class: ['type-channel', 'type-structure']|filter
+                },
+                template: {
+                    type: 'template',
+                    heading: "Template"|t('app'),
+                    info: "Which template should be use for project's pdf."|t('app'),
+                    code: true
+                }
+            }|filter,
+            rows: siteRows,
+            fullWidth: true,
+            allowAdd: false,
+            allowDelete: false,
+            allowReorder: false
         }) }}
+
 
 
     </div>
