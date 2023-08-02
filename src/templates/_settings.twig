@@ -293,14 +293,11 @@
     <div id="tab-translations" data-id="translations" role="tabpanel" class="tab hidden">
         {{ forms.textField({
             label: 'Project\'s PDF Filename',
-            instructions: 'This sets the name of the selected project\'s pdf file that downloaded by the users.',
+            instructions: 'This sets the name of the selected project\'s pdf file that downloaded by the users. Note that "- #{project id}.pdf" will be added at the end of the file',
             id: 'pdfFilename',
             name: 'pdfFilename',
             value: settings['pdfFilename']}) }}
     </div>
-
-
-
 
     {% js %}
         $(document).ready(function() {

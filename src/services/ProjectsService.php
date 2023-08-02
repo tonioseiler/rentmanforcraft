@@ -112,6 +112,11 @@ class ProjectsService extends Component
 
         $filename = 'BLOW UP rental - Anfrage #'.$project->id.'.pdf';
 
+        if(isset($settings['pdfFilename']) && !empty($settings['pdfFilename'])) {
+            $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
+        }
+
+
         $html = Craft::$app->getView()->renderTemplate('rentman-for-craft/pdf/project',['project' => $project], View::TEMPLATE_MODE_CP);
         
         $options = new Options();
