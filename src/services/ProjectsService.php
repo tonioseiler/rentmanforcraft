@@ -12,6 +12,8 @@ use furbo\rentmanforcraft\records\ProjectItem;
 use furbo\rentmanforcraft\RentmanForCraft;
 use yii\base\Component;
 use yii\web\IdentityInterface;
+use furbo\rentmanforcraft\models\Settings;
+
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -109,7 +111,7 @@ class ProjectsService extends Component
     }
 
     public function generatePDF(Project $project, $stream = true) {
-
+        $settings = $this->getSettings();
         $filename = 'BLOW UP rental - Anfrage #'.$project->id.'.pdf';
 
         if(isset($settings['pdfFilename']) && !empty($settings['pdfFilename'])) {
