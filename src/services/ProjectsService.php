@@ -122,7 +122,8 @@ class ProjectsService extends Component
         $templateToUse = 'rentman-for-craft/pdf/project';
         $customTemplate = $settings['templateForProjectPdf']['default']['template'];
         if($customTemplate != '') {
-            $templateToUse='_views/'.$customTemplate;
+            //$templateToUse='_views/'.$customTemplate;
+            $templateToUse='_views/'.substr($customTemplate, 0,- 5);
         }
 
         $html = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
