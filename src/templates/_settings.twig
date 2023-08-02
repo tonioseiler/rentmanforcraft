@@ -23,6 +23,7 @@
 
     {% set selectedTab = 'fields' %}
 
+    {#
     <header id="content-header" class="pane-header">
         <div id="tabs" class="pane-tabs">
             <div class="" role="tablist" aria-label="Primary fields">
@@ -40,7 +41,21 @@
 
         </div>
     </header>
+    #}
 
+    <header id="content-header" class="pane-header">
+        <div id="tabs" class="pane-tabs">
+            <div class="" role="tablist" aria-label="Primary fields">
+                {% for tabId, tab in tabs %}
+                    <a id="tab-fields" class="sel" href="{{ tab.url }}" tabindex="0" role="tab" data-id="tab--content" aria-selected="true">
+                    <span class="tab-label">
+                        {{ tab.label }}
+                    </span>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </header>
 
     <div id="fields" data-id="fields" role="tabpanel">
 
