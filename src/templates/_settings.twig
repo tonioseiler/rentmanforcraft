@@ -302,6 +302,7 @@
 
         <hr>
 
+        {#
         {{ forms.textField({
             label: 'Project\'s PDF template',
             instructions: 'Leave empty to use the default template.',
@@ -309,19 +310,39 @@
             name: 'templateForProjectPdf',
             value: settings['templateForProjectPdf']}) }}
 
+
+        {{ forms.textField({
+            label: 'Project\'s PDF template',
+            instructions: 'Leave empty to use the default template.',
+            id: 'templateForProjectPdf',
+            name: 'templateForProjectPdf',
+            value: settings['templateForProjectPdf']}) }}
+        #}
+
+        {{ forms.template: {
+            label: 'Project\'s PDF template',
+            instructions: 'Leave empty to use the default template.',
+            id: 'templateForProjectPdf',
+            name: 'templateForProjectPdf',
+            heading: "Template"|t('app'),
+            info: "Which template should be used for the project's pdf file."|t('app'),
+            code: true
+        } }}
+
+
     </div>
 
     {% js %}
         $(document).ready(function() {
-            $('#settings-tabs a span').off();
+        $('#settings-tabs a span').off();
 
-            $('#settings-tabs a span').on('click', function (e) {
-                e.preventDefault();
-                $('.tab').addClass('hidden');
-                $('#'+ $(this).parent().data('id')).removeClass('hidden');
-                $('#settings-tabs a').removeClass('sel');
-                $(this).parent().addClass('sel');
-            })
+        $('#settings-tabs a span').on('click', function (e) {
+        e.preventDefault();
+        $('.tab').addClass('hidden');
+        $('#'+ $(this).parent().data('id')).removeClass('hidden');
+        $('#settings-tabs a').removeClass('sel');
+        $(this).parent().addClass('sel');
+        })
 
         });
     {% endjs %}
