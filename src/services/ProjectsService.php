@@ -119,7 +119,7 @@ class ProjectsService extends Component
             $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
         }
 
-        $templateToUse = 'rentman-for-craft/pdf/project'
+        $templateToUse = 'rentman-for-craft/pdf/project';
         $customTemplate = $settings['templateForProjectPdf']['default']['template'];
         if($customTemplate != '') {
             $templateToUse=$customTemplate;
