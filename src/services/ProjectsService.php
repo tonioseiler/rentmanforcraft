@@ -123,10 +123,12 @@ class ProjectsService extends Component
         $customTemplate = $settings['templateForProjectPdf']['default']['template'];
         if($customTemplate != '') {
             $templateToUse=$customTemplate;
-            //$templateToUse='_views/'.substr($customTemplate, 0,- 5);
+            $html = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_SITE);
+        } else {
+            $html = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
         }
 
-        $html = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
+
         
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
