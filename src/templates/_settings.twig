@@ -299,23 +299,19 @@
 
     {% js %}
         $(document).ready(function() {
-         console.log('loaded');
+            $('#settings-furbo-tabs a span').off();
+            console.log('loaded');
 
+            $('body').click(function(e) {
+                var target = $(e.target);
+                console.log(target);
+            });
 
-        $('body').click(function(e) {
-            var target = $(e.target);
-            console.log(target);
-        });
-
-
-        $('#settings-furbo-tabs a span').off();
-
-        $('#tabs a span').on('click', function (e) {
-        e.preventDefault();
-        console.log('clicked');
-
-        console.log($(this).parent().data('id'));
-        })
+            $('#settings-furbo-tabs a span').on('click', function (e) {
+                e.preventDefault();
+                console.log('clicked');
+                console.log($(this).parent().data('id'));
+            })
 
         });
     {% endjs %}
