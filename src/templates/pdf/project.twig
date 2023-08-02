@@ -1,6 +1,6 @@
 {% extends 'rentman-for-craft/pdf/layout' %}
 
-{% block header %}<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAA9hAAAPYQGoP6dpAAAADUlEQVQI12M4ceLEfwAIDANY5PrZiQAAAABJRU5ErkJggg==">{% endblock %}
+{% block header %}<img id="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACXBIWXMAAA9hAAAPYQGoP6dpAAAADUlEQVQI12M4ceLEfwAIDANY5PrZiQAAAABJRU5ErkJggg==">{% endblock %}
 
 {% block content %}
     <h1 class="page-header">Anfrage #{{ project.id }} - {{ project.dateUpdated|date }} - {{ project.title }}</h1>
