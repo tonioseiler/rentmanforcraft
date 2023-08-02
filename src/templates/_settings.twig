@@ -13,7 +13,7 @@
 
 
     <header id="content-header" class="pane-header">
-        <div id="furbo-tabs" class="pane-tabs">
+        <div id="tabs" class="pane-tabs">
             <div class="" role="tablist" aria-label="Primary fields">
                 <a class="sel" href="#fields" tabindex="0" role="tab" data-id="settings-tab-main-settings" aria-selected="true">
                     <span class="tab-label">
@@ -299,13 +299,13 @@
 
     {% js %}
         $(document).ready(function() {
-            $('#settings-furbo-tabs a span').off();
+            $('#settings-tabs a span').off();
 
-            $('#settings-furbo-tabs a span').on('click', function (e) {
+            $('#settings-tabs a span').on('click', function (e) {
                 e.preventDefault();
                 $('.tab').addClass('hidden');
                 $('#'+ $(this).parent().data('id')).removeClass('hidden');
-                $('#settings-furbo-tabs a').removeClass('sel');
+                $('#settings-tabs a').removeClass('sel');
                 $(this).parent().addClass('sel');
             })
 
