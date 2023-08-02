@@ -127,7 +127,7 @@ class ProjectsService extends Component
         } else {
             $html = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
         }
-        
+        dd('all good till here');
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
         $options->set('debugKeepTemp', TRUE);
