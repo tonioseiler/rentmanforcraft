@@ -302,6 +302,7 @@ class ApiController extends Controller
             Session::set('ACTIVE_PROJECT_ID', 0);
             $emailSettings = App::mailSettings();
 
+            /*
             $message = Craft::$app
                     ->getMailer()
                     ->composeFromKey('project_ordered', ['project', $project])
@@ -311,15 +312,14 @@ class ApiController extends Controller
             $filePath = $projectService->generatePDF($project, false);
             $message->attach($filePath);
             $message->send();
+            */
 
 
-            // popo paolo finish new version
+            // TODO paolo finish new version
 
-            /*
             $templateToUse = 'rentman-for-craft/email/project';
-            $customTemplate = $settings['templateForProjectEmail']['default']['template'];
-            if($customTemplate != '') {
-                $templateToUse=$customTemplate;
+            if(isset($settings['templateForProjectEmail']['default']['template']) && !empty($settings['templateForProjectEmail']['default']['template'])) {
+                $templateToUse = $settings['templateForProjectEmail']['default']['template'];
                 $body = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_SITE);
             } else {
                 $body = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
@@ -329,12 +329,13 @@ class ApiController extends Controller
                 ->setSubject('Your subject here')
                 ->setHtmlBody($body)
                 ->setTo($project->contact_person_email)
-                ->setCc($emailSettings->fromEmail)
+                /*->setCc($emailSettings->fromEmail)*/
                 ->setFrom($emailSettings->fromEmail);
-            $filePath = $projectService->generatePDF($project, false);
+
+                $filePath = $projectService->generatePDF($project, false);
             $message->attach($filePath);
             $message->send();
-            */
+
         }
 
         if ($request->isAjax) {
