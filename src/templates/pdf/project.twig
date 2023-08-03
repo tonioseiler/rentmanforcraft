@@ -17,7 +17,7 @@
             E-Mail:{{ project.contact_person_email }}<br/>
         {% endif %}
         {% if project.contact_mailing_number is not empty %}
-            Telefon:{{ project.contact_mailing_number }}<br/>
+            {{ 'Phone'|t('app') }}:{{ project.contact_mailing_number }}<br/>
         {% endif %}
         {% if project.contact_mailing_street is not empty %}
             {{ project.contact_mailing_street }}
@@ -37,7 +37,7 @@
     <hr><br>
 
     {% if project.location_name is not empty or project.location_mailing_number is not empty or project.location_mailing_street is not empty or project.location_mailing_postalcode is not empty or project.location_mailing_city is not empty or project.location_mailing_country is not empty %}
-        <h2>Adresse Produktion</h2>
+        <h2>{{ 'Production address'|t('app') }}</h2>
         <p>
             {% if project.location_name is not empty %}
                 {{ project.location_name }}<br/>
