@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="page-header">Anfrage #{{ project.id }} - {{ project.dateUpdated|date }} - {{ project.title }}</h1>
+    <h1 class="page-header">{{ 'Inquiry #'|t('app') }}{{ project.id }} - {{ project.dateUpdated|date }} - {{ project.title }}</h1>
 
 
     <h2>{{ 'Billing address and contact details'|t('app') }}</h2>
