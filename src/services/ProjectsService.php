@@ -128,6 +128,12 @@ class ProjectsService extends Component
             $html = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
         }
 
+        $projectPdfFooter = '';
+        if(isset($settings['projectPdfFooter']) && !empty($settings['projectPdfFooter'])) {
+            $projectPdfFooter = $settings['projectPdfFooter'];
+        }
+
+
 
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
@@ -155,7 +161,7 @@ class ProjectsService extends Component
             $x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle
         );
         $dompdf->getCanvas()->page_text(
-            56, $y, 'BLOW UP rental - +41 44 501 55 30 - mail@blowup-rental.ch', $font, $size, $color, $word_space, $char_space, $angle
+            56, $y, $projectPdfFooter, $font, $size, $color, $word_space, $char_space, $angle
         );
 
 
