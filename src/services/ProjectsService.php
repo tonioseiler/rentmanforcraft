@@ -167,6 +167,7 @@ class ProjectsService extends Component
         if ($stream) {
             $dompdf->stream($filename);
             //$dompdf->stream($filename,array("Attachment" => false)); //activate for debug, pdf is displayed in the browser (if browser can handle pdf)
+            return;
         } else {
             $output = $dompdf->output();
             $storagePath = Craft::getAlias('@storage');
@@ -174,7 +175,6 @@ class ProjectsService extends Component
             file_put_contents($filepath, $output);
             return $filepath;
         }
-        return;
     }
 
 

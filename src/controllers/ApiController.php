@@ -330,7 +330,11 @@ class ApiController extends Controller
                 $emailSubject = Craft::t('app', $settings['projectEmailSubject']);
             }
 
-
+            $filename = Craft::t('app', 'Inquiry #').$project->id.'.pdf';
+            // TODO Paolo set this title in blowup website, then put stantard title to something like "Project"
+            if(isset($settings['pdfFilename']) && !empty($settings['pdfFilename'])) {
+                $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
+            }
 
             $message = Craft::$app
                 ->getMailer()
@@ -343,7 +347,8 @@ class ApiController extends Controller
             //$message->subject = 'Your subject here';
             //$message->template = 'Your subject here';
             $filePath = $projectService->generatePDF($project, false);
-            $message->attach($filePath);
+
+            $message->attach($filePath, ['fileName' => $filename, 'contentType' => 'application/pdf']);
             $message->send();
 
         }
