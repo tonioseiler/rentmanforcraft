@@ -66,7 +66,7 @@
 
     <h2>{{ 'Project details'|t('app') }}</h2>
     <p>
-        {{ 'Title'|t('app') }}Titel: {{ project.title }}<br>
+        {{ 'Title'|t('app') }}: {{ project.title }}<br>
         {{ 'Shooting days'|t('app') }}: {{ project.shooting_days }}<br>
         {{ 'Rental period'|t('app') }}: {{ project.in|date }} - {{ project.out|date }}<br>
         {{ 'Shooting period'|t('app') }}:  {{ project.planperiod_start|date }} - {{ project.planperiod_end|date }}<br>
@@ -75,7 +75,7 @@
     <hr><br>
 
     {% if project.remark is not empty %}
-        <h2>Kontakt Name, Telefon, Email und Bemerkung</h2>
+        <h2>{{ 'Contact name, phone, email and comment'|t('app') }}</h2>
         <p>
             {{ project.remark|nl2br }}
         </p>
@@ -86,11 +86,11 @@
     <table class="table-order-items">
         <thead>
         <tr>
-            <th class="title">Bezeichnung</th>
+            <th class="title">{{ 'Denomination'|t('app') }}</th>
             <th class="kg">kg</th>
-            <th>CHF</th>
-            <th>Anzahl</th>
-            <th>Total ({{ project.shooting_days > 1 ? project.shooting_days~' Tage' : '1 Tag' }})</th>
+            <th>{{ 'CHF'|t('app') }}</th>
+            <th>{{ 'Quantity'|t('app') }}</th>
+            <th>{{ 'Title'|t('app') }} ({{ project.shooting_days > 1 ? project.shooting_days~' '~{{ 'Title'|t('app') }}~' Tage' : '1 '~{{ 'Title'|t('app') }} }})</th>
         </tr>
         </thead>
         <tbody>
