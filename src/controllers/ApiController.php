@@ -8,6 +8,7 @@ use craft\helpers\App;
 use craft\helpers\Session;
 use craft\web\Controller;
 use craft\web\Request;
+use craft\web\View;
 use DateTime;
 use furbo\rentmanforcraft\elements\Product;
 use furbo\rentmanforcraft\elements\Project;
@@ -300,6 +301,7 @@ class ApiController extends Controller
             $success = Craft::$app->elements->saveElement($project);
             Session::set('ACTIVE_PROJECT_ID', 0);
             $emailSettings = App::mailSettings();
+
             $message = Craft::$app
                     ->getMailer()
                     ->composeFromKey('project_ordered', ['project', $project])
@@ -309,6 +311,30 @@ class ApiController extends Controller
             $filePath = $projectService->generatePDF($project, false);
             $message->attach($filePath);
             $message->send();
+
+
+            // popo paolo finish new version
+
+            /*
+            $templateToUse = 'rentman-for-craft/email/project';
+            $customTemplate = $settings['templateForProjectEmail']['default']['template'];
+            if($customTemplate != '') {
+                $templateToUse=$customTemplate;
+                $body = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_SITE);
+            } else {
+                $body = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
+            }
+            $message = Craft::$app
+                ->getMailer()
+                ->setSubject('Your subject here')
+                ->setHtmlBody($body)
+                ->setTo($project->contact_person_email)
+                ->setCc($emailSettings->fromEmail)
+                ->setFrom($emailSettings->fromEmail);
+            $filePath = $projectService->generatePDF($project, false);
+            $message->attach($filePath);
+            $message->send();
+            */
         }
 
         if ($request->isAjax) {
