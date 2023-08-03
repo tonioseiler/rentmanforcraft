@@ -64,12 +64,12 @@
         <hr><br>
     {% endif %}
 
-    <h2>Projektangaben</h2>
+    <h2>{{ 'Project details'|t('app') }}</h2>
     <p>
-        Titel: {{ project.title }}<br>
-        Drehtage: {{ project.shooting_days }}<br>
-        Mietzeitraum: {{ project.in|date }} - {{ project.out|date }}<br>
-        Drehzeitraum:  {{ project.planperiod_start|date }} - {{ project.planperiod_end|date }}<br>
+        {{ 'Title'|t('app') }}Titel: {{ project.title }}<br>
+        {{ 'Shooting days'|t('app') }}: {{ project.shooting_days }}<br>
+        {{ 'Rental period'|t('app') }}: {{ project.in|date }} - {{ project.out|date }}<br>
+        {{ 'Shooting period'|t('app') }}:  {{ project.planperiod_start|date }} - {{ project.planperiod_end|date }}<br>
     </p>
     <br>
     <hr><br>
