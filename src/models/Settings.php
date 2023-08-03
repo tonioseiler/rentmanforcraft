@@ -141,5 +141,9 @@ class Settings extends Model
     public $pdfFilename = '';
     public $templateForProjectPdf = [];
     public $projectPdfFooter = '';
+    public $projectEmailSubject = '';
+    public $templateForProjectEmail = [];
+
+
 
 }

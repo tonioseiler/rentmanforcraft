@@ -301,16 +301,6 @@
             value: settings['pdfFilename']}) }}
 
 
-
-        {#
-        {{ forms.textField({
-            label: 'Project\'s PDF template',
-            instructions: 'Leave empty to use the default template.',
-            id: 'templateForProjectPdf',
-            name: 'templateForProjectPdf',
-            value: settings['templateForProjectPdf']}) }}
-        #}
-
         {% set siteRowsProjectPdf = [] %}
         {% for site in craft.app.sites.getAllSites() %}
             {% set siteSettingsProjectPdf = settings['templateForProjectPdf'][site.handle] ?? null %}
@@ -355,11 +345,53 @@
             id: 'projectPdfFooter',
             name: 'projectPdfFooter',
             value: settings['projectPdfFooter']}) }}
+
         <hr>
 
+        {{ forms.textField({
+            label: 'Subject of project\'s email',
+            instructions: '',
+            id: 'projectEmailSubject',
+            name: 'projectEmailSubject',
+            value: settings['projectEmailSubject']}) }}
 
+        {% set siteRowsProjectEmail = [] %}
+        {% for site in craft.app.sites.getAllSites() %}
+            {% set siteSettingsProjectEmail = settings['templateForProjectEmail'][site.handle] ?? null %}
+            {% set siteRowsProjectEmail = siteRowsProjectEmail|merge({
+                (site.handle): {
+                    heading: site.name|t('site')|e,
+                    template: {
+                        value: siteSettingsProjectEmail ? siteSettingsProjectEmail.template,
+                    },
+                }|filter
+            }) %}
+        {% endfor %}
 
-
+        {{ forms.editableTableField({
+            label: "Project\'s email template"|t('app'),
+            instructions: "Define the template to be used for the project's email."|t('app'),
+            id: 'templateForProjectEmail',
+            name: 'templateForProjectEmail',
+            cols: {
+                heading: {
+                    type: 'heading',
+                    heading: "Site"|t('app'),
+                    thin: true
+                },
+                template: {
+                    type: 'template',
+                    heading: "Template"|t('app'),
+                    info: "Which template should be use for project's email."|t('app'),
+                    code: true
+                }
+            }|filter,
+            rows: siteRowsProjectEmail,
+            fullWidth: true,
+            allowAdd: false,
+            allowDelete: false,
+            allowReorder: false
+        }) }}
 
     </div>
 
