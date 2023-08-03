@@ -324,10 +324,18 @@ class ApiController extends Controller
             } else {
                 $body = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
             }
+
+            $emailSubject = 'Project submitted';
+            if(isset($settings['projectEmailSubject']) && !empty($settings['projectEmailSubject'])) {
+                $emailSubject = Craft::t('app', $settings['projectEmailSubject']);
+            }
+
+
+
             $message = Craft::$app
                 ->getMailer()
                 ->compose()
-                ->setSubject('Your subject here')
+                ->setSubject($emailSubject)
                 ->setHtmlBody($body)
                 ->setTo($project->contact_person_email)
                 /*->setCc($emailSettings->fromEmail)*/
