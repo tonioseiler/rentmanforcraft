@@ -113,7 +113,8 @@ class ProjectsService extends Component
 
         $plugin = RentmanForCraft::getInstance();
         $settings = $plugin->getSettings();
-        $filename = 'BLOW UP rental - Anfrage #'.$project->id.'.pdf';
+        //$filename = 'BLOW UP rental - Anfrage #'.$project->id.'.pdf';
+        $filename = Craft::t('app', 'Inquiry #').$project->id.'.pdf';
         // TODO Paolo set this title in blowup website, then put stantard title to something like "Project"
         if(isset($settings['pdfFilename']) && !empty($settings['pdfFilename'])) {
             $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
@@ -133,8 +134,6 @@ class ProjectsService extends Component
             $projectPdfFooter = $settings['projectPdfFooter'];
         }
 
-
-
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
         $options->set('debugKeepTemp', TRUE);
@@ -149,7 +148,8 @@ class ProjectsService extends Component
         // Parameters
         $x          = 494;
         $y          = 790;
-        $text       = "Seite {PAGE_NUM} / {PAGE_COUNT}";
+        //$text       = "Seite {PAGE_NUM} / {PAGE_COUNT}";
+        $text       = Craft::t('app', 'Page')." {PAGE_NUM} / {PAGE_COUNT}";
         $font       = $dompdf->getFontMetrics()->get_font('Helvetica', 'normal');
         $size       = 10;
         $color      = array(0,0,0);
