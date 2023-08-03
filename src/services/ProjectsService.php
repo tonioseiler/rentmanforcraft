@@ -122,7 +122,7 @@ class ProjectsService extends Component
 
         $templateToUse = 'rentman-for-craft/pdf/project';
         if(isset($settings['templateForProjectPdf']['default']['template']) && !empty($settings['templateForProjectPdf']['default']['template'])) {
-            $templateToUse = $settings['templateForProjectPdf'];
+            $templateToUse = $settings['templateForProjectPdf']['default']['template'];
             $html = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_SITE);
         } else {
             $html = Craft::$app->getView()->renderTemplate($templateToUse,['project' => $project], View::TEMPLATE_MODE_CP);
