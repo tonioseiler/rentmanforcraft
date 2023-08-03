@@ -140,5 +140,6 @@ class Settings extends Model
                                 ];
     public $pdfFilename = '';
     public $templateForProjectPdf = [];
+    public $projectPdfFooter = '';
 
 }
