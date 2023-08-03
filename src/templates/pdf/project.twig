@@ -7,7 +7,7 @@
     <h1 class="page-header">Anfrage #{{ project.id }} - {{ project.dateUpdated|date }} - {{ project.title }}</h1>
 
 
-    <h2>Rechnungsadresse und Kontaktdaten</h2>
+    <h2>{{ 'Billing address and contact details'|t('app') }}</h2>
     <p>
         {{ project.contact_person_first_name }} {{ project.contact_person_lastname }} <br/>
         {% if project.contact_name is not empty %}
