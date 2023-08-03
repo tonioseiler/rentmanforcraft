@@ -326,12 +326,14 @@ class ApiController extends Controller
             }
             $message = Craft::$app
                 ->getMailer()
-                /*->setSubject('Your subject here')*/
+                ->compose()
+                ->setSubject('Your subject here')
                 ->setHtmlBody($body)
                 ->setTo($project->contact_person_email)
                 /*->setCc($emailSettings->fromEmail)*/
                 ->setFrom($emailSettings->fromEmail);
-            $message->subject = 'Your subject here';
+            //$message->subject = 'Your subject here';
+            //$message->template = 'Your subject here';
             $filePath = $projectService->generatePDF($project, false);
             $message->attach($filePath);
             $message->send();
