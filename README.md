@@ -41,7 +41,7 @@ composer require furbo/rentman-for-craft
 2. Add the API URL, usually `https://api.rentman.net/`
 3. Add the API Key, more infos here: https://support.rentman.io/hc/en-us/articles/360013767839-The-Rentman-API
 4. Choose the templates and urls for products, categories and projects
-5. Click on the **Custmisation** tab: here you can choose your own templates and settings for generated emails and pdfs
+5. Click on the **Customisation** tab: here you can choose your own templates and settings for generated emails and pdfs
 
 
 ## Code Examples
