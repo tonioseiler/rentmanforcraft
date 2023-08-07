@@ -113,7 +113,7 @@ class ProjectsService extends Component
 
         $plugin = RentmanForCraft::getInstance();
         $settings = $plugin->getSettings();
-        $filename = Craft::t('app', 'Inquiry #').$project->id.'.pdf';
+        $filename = Craft::t('rentman-for-craft', 'Inquiry #').$project->id.'.pdf';
         if(isset($settings['pdfFilename']) && !empty($settings['pdfFilename'])) {
             $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
         }
@@ -146,7 +146,7 @@ class ProjectsService extends Component
         $x          = 494;
         $y          = 790;
         //$text       = "Seite {PAGE_NUM} / {PAGE_COUNT}";
-        $text       = Craft::t('app', 'Page')." {PAGE_NUM} / {PAGE_COUNT}";
+        $text       = Craft::t('rentman-for-craft', 'Page')." {PAGE_NUM} / {PAGE_COUNT}";
         $font       = $dompdf->getFontMetrics()->get_font('Helvetica', 'normal');
         $size       = 10;
         $color      = array(0,0,0);

@@ -41,7 +41,7 @@ class Products extends BaseRelationField
      */
     public static function displayName(): string
     {
-        return Craft::t('app', 'Rentman - Products');
+        return Craft::t('rentman-for-craft', 'Rentman - Products');
     }
 
     /**
@@ -57,7 +57,7 @@ class Products extends BaseRelationField
      */
     public static function defaultSelectionLabel(): string
     {
-        return Craft::t('app', 'Add an item');
+        return Craft::t('rentman-for-craft', 'Add an item');
     }
 
 }

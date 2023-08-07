@@ -120,11 +120,11 @@ class Category extends RentmanElement
     protected static function defineSortOptions(): array
     {
         return [
-            'title' => Craft::t('app', 'Title'),
-            'slug' => Craft::t('app', 'Slug'),
-            'uri' => Craft::t('app', 'URI'),
+            'title' => Craft::t('rentman-for-craft', 'Title'),
+            'slug' => Craft::t('rentman-for-craft', 'Slug'),
+            'uri' => Craft::t('rentman-for-craft', 'URI'),
             [
-                'label' => Craft::t('app', 'Date Created'),
+                'label' => Craft::t('rentman-for-craft', 'Date Created'),
                 'orderBy' => 'elements.dateCreated',
                 'attribute' => 'dateCreated',
                 'defaultDir' => 'desc',
@@ -207,7 +207,6 @@ class Category extends RentmanElement
         if (parent::canView($user)) {
             return true;
         }
-        // todo: implement user permissions
         return $user->can('viewCategories');
     }
 
@@ -216,7 +215,6 @@ class Category extends RentmanElement
         if (parent::canSave($user)) {
             return true;
         }
-        // todo: implement user permissions
         return $user->can('saveCategories');
     }
 
@@ -225,7 +223,6 @@ class Category extends RentmanElement
         if (parent::canDuplicate($user)) {
             return true;
         }
-        // todo: implement user permissions
         return $user->can('saveCategories');
     }
 
@@ -234,7 +231,6 @@ class Category extends RentmanElement
         if (parent::canSave($user)) {
             return true;
         }
-        // todo: implement user permissions
         return $user->can('deleteCategories');
     }
 

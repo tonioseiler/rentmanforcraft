@@ -172,23 +172,23 @@ class Project extends RentmanElement
     protected static function defineSortOptions(): array
     {
         return [
-            'title' => Craft::t('app', 'Title'),
-            'slug' => Craft::t('app', 'Slug'),
-            'uri' => Craft::t('app', 'URI'),
+            'title' => Craft::t('rentman-for-craft', 'Title'),
+            'slug' => Craft::t('rentman-for-craft', 'Slug'),
+            'uri' => Craft::t('rentman-for-craft', 'URI'),
             [
-                'label' => Craft::t('app', 'Date Created'),
+                'label' => Craft::t('rentman-for-craft', 'Date Created'),
                 'orderBy' => 'elements.dateCreated',
                 'attribute' => 'dateCreated',
                 'defaultDir' => 'desc',
             ],
             [
-                'label' => Craft::t('app', 'Date Updated'),
+                'label' => Craft::t('rentman-for-craft', 'Date Updated'),
                 'orderBy' => 'elements.dateUpdated',
                 'attribute' => 'dateUpdated',
                 'defaultDir' => 'desc',
             ],
             [
-                'label' => Craft::t('app', 'ID'),
+                'label' => Craft::t('rentman-for-craft', 'ID'),
                 'orderBy' => 'elements.id',
                 'attribute' => 'id',
             ],
@@ -199,11 +199,11 @@ class Project extends RentmanElement
     protected static function defineTableAttributes(): array
     {
         return [
-            'slug' => ['label' => Craft::t('app', 'Slug')],
-            'link' => ['label' => Craft::t('app', 'Link'), 'icon' => 'world'],
-            'id' => ['label' => Craft::t('app', 'ID')],
-            'dateCreated' => ['label' => Craft::t('app', 'Date Created')],
-            'dateUpdated' => ['label' => Craft::t('app', 'Date Updated')]
+            'slug' => ['label' => Craft::t('rentman-for-craft', 'Slug')],
+            'link' => ['label' => Craft::t('rentman-for-craft', 'Link'), 'icon' => 'world'],
+            'id' => ['label' => Craft::t('rentman-for-craft', 'ID')],
+            'dateCreated' => ['label' => Craft::t('rentman-for-craft', 'Date Created')],
+            'dateUpdated' => ['label' => Craft::t('rentman-for-craft', 'Date Updated')]
         ];
     }
 
@@ -234,7 +234,7 @@ class Project extends RentmanElement
         $url = $this->getUrl();
         if ($url) {
             $previewTargets[] = [
-                'label' => Craft::t('app', 'Primary {type} page', [
+                'label' => Craft::t('rentman-for-craft', 'Primary {type} page', [
                     'type' => self::lowerDisplayName(),
                 ]),
                 'url' => $url,
@@ -262,7 +262,6 @@ class Project extends RentmanElement
         if (parent::canView($user)) {
             return true;
         }
-        // todo: implement user permissions
         return $user->can('viewProjects');
         */
 
@@ -290,7 +289,6 @@ class Project extends RentmanElement
         if (parent::canSave($user)) {
             return true;
         }
-        // todo: implement user permissions
         return $user->can('saveProjects');
 
 
@@ -302,7 +300,6 @@ class Project extends RentmanElement
         if (parent::canDuplicate($user)) {
             return true;
         }
-        // todo: implement user permissions
         return $user->can('saveProjects');
     }
 
@@ -311,7 +308,6 @@ class Project extends RentmanElement
         if (parent::canSave($user)) {
             return true;
         }
-        // todo: implement user permissions
         return $user->can('deleteProjects');
     }
 

@@ -250,7 +250,6 @@ class ApiController extends Controller
         if (isset($params['shooting_days'])) {
             $projectId = Session::get('ACTIVE_PROJECT_ID', 0);
             $user = Craft::$app->getUser()->getIdentity();
-            // TODO paolo deal with empty($user), but at this point even the guest should have a session and project id....
             if (empty($user)) {
                 $project = Project::find()
                     /*->id($params['projectId'])*/
@@ -326,10 +325,10 @@ class ApiController extends Controller
 
             $emailSubject = 'Project submitted';
             if(isset($settings['projectEmailSubject']) && !empty($settings['projectEmailSubject'])) {
-                $emailSubject = Craft::t('app', $settings['projectEmailSubject']);
+                $emailSubject = Craft::t('rentman-for-craft', $settings['projectEmailSubject']);
             }
 
-            $filename = Craft::t('app', 'Inquiry #').$project->id.'.pdf';
+            $filename = Craft::t('rentman-for-craft', 'Inquiry #').$project->id.'.pdf';
             if(isset($settings['pdfFilename']) && !empty($settings['pdfFilename'])) {
                 $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
             }
@@ -340,7 +339,7 @@ class ApiController extends Controller
                 ->setSubject($emailSubject)
                 ->setHtmlBody($body)
                 ->setTo($project->contact_person_email)
-                /*TODO Paolo reactivate ->setCc($emailSettings->fromEmail)*/
+                ->setCc($emailSettings->fromEmail)
                 ->setFrom($emailSettings->fromEmail);
             $filePath = $projectService->generatePDF($project, false);
 
