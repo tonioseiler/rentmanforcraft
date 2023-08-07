@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Simple Transactional Email</title>
+    <title>Thank you for your request</title>
     <style>
         img {
             border: none;
@@ -350,148 +350,14 @@
     </style>
 </head>
 <body>
-<p class="container">Guten Tag {{ project.contact_person_first_name }} {{ project.contact_person_lastname }}<br><br>
+<p class="container">Hello {{ project.contact_person_first_name }} {{ project.contact_person_lastname }}<br><br>
 
-    Vielen Dank für die Anfrage. Gerne senden wir dir die Offerte schnellstmöglich zu.<br><br>
+    Thank you for your request. We will send you the offer as soon as possible.<br><br>
 
-    Bei Fragen sind wir für dich da.<br><br>
+    If you have any questions, we are there for you.<br><br>
 
-    Liebe Grüsse,<br>
-    Blowup Rental<br>
-    +41 44 501 55 30 - mail@blowup-rental.ch - https://blowup-rental.ch<br>
+    Best regards
+
 </p>
 </body>
 </html>
-
-
-{#
-<h1 class="page-header">{{ 'Inquiry #'|t('app') }}{{ project.id }} - {{ project.dateUpdated|date }} - {{ project.title }}</h1>
-
-
-<h2>{{ 'Billing address and contact details'|t('app') }}</h2>
-<p>
-    {{ project.contact_person_first_name }} {{ project.contact_person_lastname }} <br/>
-    {% if project.contact_name is not empty %}
-        {{ project.contact_name }}<br/>
-    {% endif %}
-    {% if project.contact_person_email is not empty %}
-        E-Mail:{{ project.contact_person_email }}<br/>
-    {% endif %}
-    {% if project.contact_mailing_number is not empty %}
-        {{ 'Phone'|t('app') }}:{{ project.contact_mailing_number }}<br/>
-    {% endif %}
-    {% if project.contact_mailing_street is not empty %}
-        {{ project.contact_mailing_street }}
-        {% if project.contact_mailing_postalcode is not empty %}
-            - {{ project.contact_mailing_postalcode }}
-            {% if project.contact_mailing_city is not empty %}
-                {{ project.contact_mailing_city }}
-                {% if project.contact_mailing_country is not empty %}
-                    - {{ project.contact_mailing_country }}
-                {% endif %}
-            {% endif %}
-        {% endif %}
-    {% endif %}
-</p>
-
-<br>
-<hr><br>
-
-{% if project.location_name is not empty or project.location_mailing_number is not empty or project.location_mailing_street is not empty or project.location_mailing_postalcode is not empty or project.location_mailing_city is not empty or project.location_mailing_country is not empty %}
-    <h2>{{ 'Production address'|t('app') }}</h2>
-    <p>
-        {% if project.location_name is not empty %}
-            {{ project.location_name }}<br/>
-        {% endif %}
-
-        {% if project.location_mailing_street is not empty %}
-            {{ project.location_mailing_street }}
-            {% if project.location_mailing_postalcode is not empty %}
-                - {{ project.location_mailing_postalcode }}
-                {% if project.location_mailing_city is not empty %}
-                    {{ project.location_mailing_city }}
-                    {% if project.location_mailing_country is not empty %}
-                        - {{ project.location_mailing_country }}
-                    {% endif %}
-                {% endif %}
-            {% endif %}
-        {% endif %}
-        {% if project.location_mailing_number is not empty %}
-            <br>T: {{ project.location_mailing_number }}<br/>
-        {% endif %}
-        <br><br>
-    </p>
-    <br>
-    <hr><br>
-{% endif %}
-
-<h2>{{ 'Project details'|t('app') }}</h2>
-<p>
-    {{ 'Title'|t('app') }}: {{ project.title }}<br>
-    {{ 'Shooting days'|t('app') }}: {{ project.shooting_days }}<br>
-    {{ 'Rental period'|t('app') }}: {{ project.in|date }} - {{ project.out|date }}<br>
-    {{ 'Shooting period'|t('app') }}:  {{ project.planperiod_start|date }} - {{ project.planperiod_end|date }}<br>
-</p>
-<br>
-<hr><br>
-
-{% if project.remark is not empty %}
-    <h2>{{ 'Contact name, phone, email and comment'|t('app') }}</h2>
-    <p>
-        {{ project.remark|nl2br }}
-    </p>
-    <br>
-    <hr><br>
-{% endif %}
-
-<table class="table-order-items">
-    <thead>
-    <tr>
-        <th class="title">{{ 'Denomination'|t('app') }}</th>
-        <th class="kg">kg</th>
-        <th>{{ 'CHF'|t('app') }}</th>
-        <th>{{ 'Quantity'|t('app') }}</th>
-        <th>{{ 'Total'|t('app') }} ({{ project.shooting_days > 1 ? project.shooting_days~' '~'Days'|t('app') : '1 '~ 'Day'|t('app') }})</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% set productsGroupedByCats = project.getItemsGroupedByCategory %}
-    {% for categoryId, products in productsGroupedByCats %}
-        {% set category = craft.rentman.getCategoryById(categoryId) %}
-        <tr class="category">
-            <td colspan="5">
-                {{ category.displayname }}:
-            </td>
-        </tr>
-        {% for product in products %}
-            {% set productMainData = craft.rentman.getProductById(product.productId) %}
-            <tr class="product">
-                <td class="title">
-                    {{ productMainData.displayname }}
-                </td>
-                <td class="kg">
-                    {{ productMainData.weight }}
-                </td>
-                <td>
-                    {{ productMainData.price|number_format(2, '.', '’') }}
-                </td>
-                <td>
-                    {{ product.quantity }}
-                </td>
-                <td>
-                    {{ product.price|number_format(2, '.', '’') }}
-                </td>
-            </tr>
-        {% endfor %}
-
-    {% endfor %}
-    <tfoot>
-    <tr class="total">
-        <td colspan="5">
-            {{ project.price|number_format(2, '.', '’') }}
-        </td>
-    </tr>
-    </tfoot>
-    </tbody>
-</table>
-#}
