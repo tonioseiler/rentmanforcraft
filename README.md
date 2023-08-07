@@ -4,7 +4,7 @@
 <p>Automatically Import <a href="https://rentman.io/" target="_blank">Rentman</a> Products to <a href="https://craftcms.com/" target="_blank">Craft</a>. It lets visitors create orders. Orders are automatically send to Rentman as a project request.</p>
 
 
-![Screenshot](resources/img/plugin-banner.jpg)
+![Screenshot](resources/img/rentman-craft-backend-snapshot.jpg)
 
 
 
@@ -102,7 +102,13 @@ composer require furbo/rentman-for-craft
 {% endfor %}
 </ul>
 ```
+<hr />
 
+### Get all categories in an array (recursive)
+
+```
+{% set categories = craft.rentman.getCategoriesRecursive(0) %}  
+```
 <hr />
 
 ### Print full categories tree
@@ -122,8 +128,12 @@ composer require furbo/rentman-for-craft
 {{craft.rentman.printCategoryTree(false, 3193)|raw}}
 ```
 
-<hr />
+
+## Translations
+
+You can copy the `rentman-for-craft.php` translations files from the plugin's translations folder to your site's translations folder and translate them there.
+
 
 ## Support
 
-If you have any issues with this plugin, please [create an issue](https://github.com/tonioseiler/rentman-for-craft-cms/issues) on GitHub or contact us at [Furbo](mailto:support@furbo.ch).
+If you have any issues with this plugin, please [create an issue](https://github.com/tonioseiler/rentmanforcraft/issues) on GitHub or contact us at [Furbo](mailto:support@furbo.ch).
