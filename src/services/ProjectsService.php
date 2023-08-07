@@ -113,9 +113,7 @@ class ProjectsService extends Component
 
         $plugin = RentmanForCraft::getInstance();
         $settings = $plugin->getSettings();
-        //$filename = 'BLOW UP rental - Anfrage #'.$project->id.'.pdf';
         $filename = Craft::t('app', 'Inquiry #').$project->id.'.pdf';
-        // TODO Paolo set this title in blowup website, then put stantard title to something like "Project"
         if(isset($settings['pdfFilename']) && !empty($settings['pdfFilename'])) {
             $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
         }

@@ -244,15 +244,16 @@ class RentmanForCraft extends Plugin
         );
 
         //custom system messages TODO paolo remove: this is no longer used, as we now use the email/project.twig template that can be overridden with a (custom) site template
+        /*
         Event::on(SystemMessages::class, SystemMessages::EVENT_REGISTER_MESSAGES, function (RegisterEmailMessagesEvent $event) {
-            /*
+
             $event->messages[] = [
                 'key' => 'project_ordered',
                 'heading' => 'BLOW UP rental - Projekt eingereicht',
                 'subject' => 'BLOW UP rental - Projekt eingereicht',
                 'body' => 'email body content'
             ];
-            */
+
 
             $params = Craft::$app->request->getBodyParams();
             if (isset($params['projectId'])) {
@@ -284,6 +285,7 @@ Bei Fragen sind wir für dich da.";
 
 
         });
+        */
 
 
     }

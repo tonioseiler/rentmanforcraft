@@ -380,7 +380,7 @@ class RentmanService extends Component
             $remark .= '<br />: Drehtage'.$project->shooting_days;
         }
 
-        $email = $project->contact_person_email ?? 'mail@blowup-rental.ch';
+        $email = $project->contact_person_email ?? '';
 
         $data = [
             'contact_mailing_number' => $project->contact_mailing_number ?? '',
