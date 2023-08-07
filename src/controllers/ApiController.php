@@ -302,7 +302,7 @@ class ApiController extends Controller
             Session::set('ACTIVE_PROJECT_ID', 0);
             $emailSettings = App::mailSettings();
 
-            /*
+            /* Paolo: this is no longer used, as we now use the email/project.twig template that can be overridden with a (custom) site template
             $message = Craft::$app
                     ->getMailer()
                     ->composeFromKey('project_ordered', ['project', $project])
@@ -315,7 +315,6 @@ class ApiController extends Controller
             */
 
 
-            // TODO paolo finish new version
 
             $templateToUse = 'rentman-for-craft/email/project';
             if(isset($settings['templateForProjectEmail']['default']['template']) && !empty($settings['templateForProjectEmail']['default']['template'])) {
@@ -331,7 +330,6 @@ class ApiController extends Controller
             }
 
             $filename = Craft::t('app', 'Inquiry #').$project->id.'.pdf';
-            // TODO Paolo set this title in blowup website, then put stantard title to something like "Project"
             if(isset($settings['pdfFilename']) && !empty($settings['pdfFilename'])) {
                 $filename = $settings['pdfFilename'].' - #'.$project->id.'.pdf';
             }
@@ -342,10 +340,8 @@ class ApiController extends Controller
                 ->setSubject($emailSubject)
                 ->setHtmlBody($body)
                 ->setTo($project->contact_person_email)
-                /*->setCc($emailSettings->fromEmail)*/
+                /*TODO Paolo reactivate ->setCc($emailSettings->fromEmail)*/
                 ->setFrom($emailSettings->fromEmail);
-            //$message->subject = 'Your subject here';
-            //$message->template = 'Your subject here';
             $filePath = $projectService->generatePDF($project, false);
 
             $message->attach($filePath, ['fileName' => $filename, 'contentType' => 'application/pdf']);

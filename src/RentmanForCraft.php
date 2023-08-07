@@ -243,7 +243,7 @@ class RentmanForCraft extends Plugin
             }
         );
 
-        //custom system messages TODO paolo: this is no longer used, as we now use the email/project.twig template that can be overridden with a custom site template
+        //custom system messages TODO paolo remove: this is no longer used, as we now use the email/project.twig template that can be overridden with a (custom) site template
         Event::on(SystemMessages::class, SystemMessages::EVENT_REGISTER_MESSAGES, function (RegisterEmailMessagesEvent $event) {
             /*
             $event->messages[] = [
