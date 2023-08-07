@@ -316,7 +316,7 @@
 
         {{ forms.editableTableField({
             label: "Project\'s PDF template"|t('app'),
-            instructions: "Define the template to be used for the project's pdf."|t('app'),
+            instructions: "Define the template to be used for the project's pdf. If not set, we will use the plugins internal template /templates/pdf/project.twig"|t('app'),
             id: 'templateForProjectPdf',
             name: 'templateForProjectPdf',
             cols: {
@@ -370,7 +370,7 @@
 
         {{ forms.editableTableField({
             label: "Project\'s email template"|t('app'),
-            instructions: "Define the template to be used for the project's email."|t('app'),
+            instructions: "Define the template to be used for the project's email. If not set, we will use the plugins internal template /templates/email/project.twig"|t('app'),
             id: 'templateForProjectEmail',
             name: 'templateForProjectEmail',
             cols: {
