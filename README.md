@@ -3,6 +3,11 @@
 <h1 align="left">Rentman for Craft</h1>
 <p>Automatically Import <a href="https://rentman.io/" target="_blank">Rentman</a> Products to <a href="https://craftcms.com/" target="_blank">Craft</a>. It lets visitors create orders. Orders are automatically send to Rentman as a project request.</p>
 
+
+![Screenshot](resources/img/plugin-banner.jpg)
+
+
+
 ## Requirements
 
 This plugin requires Craft CMS 4.3.5 or later, and PHP 8.0.2 or later.
