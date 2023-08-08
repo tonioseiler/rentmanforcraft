@@ -1,7 +1,7 @@
 <img src="resources/img/plugin-logo.png" width="100" height="100">
 
 <h1 align="left">Rentman for Craft</h1>
-<p>Automatically Import <a href="https://rentman.io/" target="_blank">Rentman</a> Products to <a href="https://craftcms.com/" target="_blank">Craft</a>. It lets visitors create orders. Orders are automatically send to Rentman as a project request.</p>
+<p>Automatically import <a href="https://rentman.io/" target="_blank">Rentman</a> products to <a href="https://craftcms.com/" target="_blank">Craft</a>. It lets visitors create orders. Orders are automatically sent to Rentman as project requests.</p>
 
 
 ![Screenshot](resources/img/rentman-craft-backend-snapshot.jpg)
@@ -87,7 +87,7 @@ composer require furbo/rentman-for-craft
 
 <hr />
 
-### Get categories first two levels TODO Paolo explain or add recursive method
+### Get categories first two levels
 ```
 <ul>
 {% for mainCategory in craft.rentman.getCategories() %}
