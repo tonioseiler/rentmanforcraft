@@ -104,6 +104,7 @@ composer require furbo/rentman-for-craft
 ```
 <hr />
 
+
 ### Get all categories in an array (recursive)
 
 ```
