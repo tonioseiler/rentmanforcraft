@@ -1,5 +1,7 @@
 # Release Notes for Rentman for Craft
 
+## 1.0.5 - 2023-08-10
+New screenshots
 
 ## 1.0.4 - 2023-08-10
 Bug fixes
