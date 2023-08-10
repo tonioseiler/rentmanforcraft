@@ -4,10 +4,10 @@
 <p>Automatically import <a href="https://rentman.io/" target="_blank">Rentman</a> products to <a href="https://craftcms.com/" target="_blank">Craft</a>. It lets visitors create orders. Orders are automatically sent to Rentman as project requests.</p>
 
 
-![Screenshot](resources/img/rentman-craft-backend-snapshot-v2.jpg)
-![Screenshot](resources/img/rentman-craft-product-detail-v2.jpg)
-![Screenshot](resources/img/rentman-craft-products-v2.jpg)
-![Screenshot](resources/img/rentman-craft-project-v2.jpg)
+![Screenshot](resources/img/rentman-craft-backend-snapshot-v3.jpg)
+![Screenshot](resources/img/rentman-craft-product-detail-v3.jpg)
+![Screenshot](resources/img/rentman-craft-products-v3.jpg)
+![Screenshot](resources/img/rentman-craft-project-v3.jpg)
 
 
 
