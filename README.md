@@ -5,6 +5,9 @@
 
 
 ![Screenshot](resources/img/rentman-craft-backend-snapshot.jpg)
+![Screenshot](resources/img/rentman-craft-product-detail.png)
+![Screenshot](resources/img/rentman-craft-products.png)
+![Screenshot](resources/img/rentman-craft-project.png)
 
 
 
