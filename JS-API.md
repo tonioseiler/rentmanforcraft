@@ -107,7 +107,7 @@ rentman.getActiveProject(function(result) {
 - Handle responses in your callback functions to ensure you're taking proper actions based on the results, especially for error handling or when no data is returned.
 
 
-# Example using jquery
+# Example using jQuery
 
 **Note**: This is just an example documentation.
 
@@ -137,7 +137,8 @@ The app initializes various event listeners:
 
 - `productQuantityChange`: Listens to changes in product quantity.
 - `projectShootingDaysChange`: Listens to changes in the shooting days of a project.
-- And many others...
+
+... and many others, see below.
 
 ## Methods
 
@@ -148,7 +149,7 @@ These are functions used to manage projects:
 - `projectUpdateProductsQuantities`: Updates the quantities of products for a project.
 - `delayedProjectUpdateProductsQuantities`: Delays the update of product quantities for a project.
 
-... and many more.
+... and many others, see below.
 
 ## Main App Object
 
