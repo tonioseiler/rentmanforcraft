@@ -11,6 +11,7 @@ First, ensure that the Rentman Plugin is properly installed and configured in yo
 ## **Initialization**
 
 When your webpage is loaded, the API will automatically initialize. No additional steps are required.
+The API call all accessible throud the global window.rentman varianble.
 
 ## **Methods**
 
