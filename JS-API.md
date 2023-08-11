@@ -119,6 +119,37 @@ window.$ = window.jQuery = jquery;
 ```
 
 
+
+
+## Initialization
+
+On document's content being loaded:
+
+```javascript
+document.addEventListener('DOMContentLoaded', function (event) {
+    app.init();
+});
+```
+
+## Event Listeners
+
+The app initializes various event listeners:
+
+- `productQuantityChange`: Listens to changes in product quantity.
+- `projectShootingDaysChange`: Listens to changes in the shooting days of a project.
+- And many others...
+
+## Methods
+
+These are functions used to manage projects:
+
+- `projectDeleteConfirm`: Used to confirm deletion of a project.
+- `projectUpdateTotals`: Update the totals displayed for a project.
+- `projectUpdateProductsQuantities`: Updates the quantities of products for a project.
+- `delayedProjectUpdateProductsQuantities`: Delays the update of product quantities for a project.
+
+... and many more.
+
 ## Main App Object
 
 The primary object for this website's functionality is the `app` object:
@@ -456,35 +487,6 @@ window.app = {
     }
 };
 ```
-
-### Initialization
-
-On document's content being loaded:
-
-```javascript
-document.addEventListener('DOMContentLoaded', function (event) {
-    app.init();
-});
-```
-
-### Event Listeners
-
-The app initializes various event listeners:
-
-- `productQuantityChange`: Listens to changes in product quantity.
-- `projectShootingDaysChange`: Listens to changes in the shooting days of a project.
-- And many others...
-
-### Methods
-
-These are functions used to manage projects:
-
-- `projectDeleteConfirm`: Used to confirm deletion of a project.
-- `projectUpdateTotals`: Update the totals displayed for a project.
-- `projectUpdateProductsQuantities`: Updates the quantities of products for a project.
-- `delayedProjectUpdateProductsQuantities`: Delays the update of product quantities for a project.
-
-... and many more.
 
 ---
 
