@@ -1,5 +1,9 @@
 # Release Notes for Rentman for Craft
 
+## 1.0.6 - 2023-08-11
+### Added
+* Example templates for product / category / project pages
+
 ## 1.0.5 - 2023-08-10
 New screenshots
 
