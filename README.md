@@ -51,7 +51,7 @@ composer require furbo/rentman-for-craft
 ## Code Examples
 
 ### Get a single product
-```
+```twig
 {% set product = craft.rentman.getProductById(2550) %}
 {{product.displayname}}
 ```
@@ -59,7 +59,7 @@ composer require furbo/rentman-for-craft
 <hr />
 
 ### Get products by category
-```
+```html
 <ul>
 {% for product in craft.rentman.getProductsByCategory(3207) %}
     <li><a href="{{product.getUrl()}}">{{product.displayname}}</a></li>
@@ -70,7 +70,7 @@ composer require furbo/rentman-for-craft
 <hr />
 
 ### Get all products
-```
+```html
 <ul>
 {% for product in craft.rentman.getAllProducts() %}
     <li><a href="{{product.getUrl()}}">{{product.displayname}}</a></li>
@@ -81,7 +81,7 @@ composer require furbo/rentman-for-craft
 <hr />
 
 ### Get main categories
-```
+```html
 <ul>
 {% for mainCategory in craft.rentman.getCategories() %}
     <li><a href="{{mainCategory.getUrl()}}">{{mainCategory.displayname}}</a></li>
@@ -92,7 +92,7 @@ composer require furbo/rentman-for-craft
 <hr />
 
 ### Get categories first two levels
-```
+```html
 <ul>
 {% for mainCategory in craft.rentman.getCategories() %}
     <li><a href="{{mainCategory.getUrl()}}">{{mainCategory.displayname}}</a></li>
@@ -134,7 +134,7 @@ composer require furbo/rentman-for-craft
 ```
 
 ### Product page
-```
+```html
 {% extends "/layouts/app" %}
 {% set product = craft.rentman.getProductById(product.id) %}
 {% block title %}{{ product.displayname }}{% endblock %}
@@ -252,7 +252,7 @@ composer require furbo/rentman-for-craft
 ```
 
 ### Category page
-```
+```html
 {% extends "/layouts/app" %}
 {% if not category is defined %}
     {% set category = '' %}
@@ -320,7 +320,7 @@ composer require furbo/rentman-for-craft
 ```
 
 ### Project page
-```
+```html
 {% block content %}
 
     {% set isActiveProject = false %}
@@ -512,6 +512,10 @@ composer require furbo/rentman-for-craft
     
 {% endblock %}
 ```
+
+## JavaScript API
+The Rentman Plugin for CraftCMS provides a JavaScript API to manage projects and perform associated actions. [Here](JS-API.md) is a detailed guide on how to use this API.
+
 
 ## Translations
 
