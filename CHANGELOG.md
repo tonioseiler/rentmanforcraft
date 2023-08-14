@@ -4,7 +4,8 @@
 ### Added
 * Backend translations
 
-
+### Fixed
+* Backend submenu highlight fixes
 
 
 ## 1.0.6 - 2023-08-11
