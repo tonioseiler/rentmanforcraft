@@ -17,12 +17,12 @@
             <div class="" role="tablist" aria-label="Primary fields">
                 <a class="sel" href="#fields" tabindex="0" role="tab" data-id="settings-tab-main-settings" aria-selected="true">
                     <span class="tab-label">
-                        Main settings
+                        {{ 'Main settings'|t('rentman-for-craft') }}
                     </span>
                 </a>
                 <a href="#translations" tabindex="-1" role="tab" data-id="settings-tab-translations" aria-selected="false">
                     <span class="tab-label">
-                        Customisation
+                        {{ 'Customisation'|t('rentman-for-craft') }}
                     </span>
                 </a>
             </div>
@@ -53,7 +53,7 @@
 
             <div class="field">
                 <div class="heading">
-                    <label>Automatically send projects to rentman</label>
+                    <label>{{ 'Automatically send projects to rentman'|t('rentman-for-craft') }}</label>
                 </div>
 
                 {{ forms.lightswitch({
@@ -95,29 +95,29 @@
                 {% endfor %}
 
                 {{ forms.editableTableField({
-                    label: "Product URLS"|t('app'),
-                    instructions: "Define URL and template to be used for products."|t('app'),
+                    label: "Product URLS"|t('rentman-for-craft'),
+                    instructions: "Define URL and template to be used for products."|t('rentman-for-craft'),
                     id: 'productRoutes',
                     name: 'productRoutes',
                     cols: {
                         heading: {
                             type: 'heading',
-                            heading: "Site"|t('app'),
+                            heading: "Site"|t('rentman-for-craft'),
                             thin: true
                         },
                         uriFormat: {
                             type: 'singleline',
-                            heading: "Entry URI Format"|t('app'),
-                            info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('app'),
-                            placeholder: 'Leave blank if entries don’t have URLs'|t('app'),
+                            heading: "Entry URI Format"|t('rentman-for-craft'),
+                            info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('rentman-for-craft'),
+                            placeholder: 'Leave blank if entries don’t have URLs'|t('rentman-for-craft'),
                             code: true,
                             width: 500,
                             class: ['type-channel', 'type-structure']|filter
                         },
                         template: {
                             type: 'template',
-                            heading: "Template"|t('app'),
-                            info: "Which template should be loaded when an entry’s URL is requested."|t('app'),
+                            heading: "Template"|t('rentman-for-craft'),
+                            info: "Which template should be loaded when an entry’s URL is requested."|t('rentman-for-craft'),
                             code: true
                         }
                     }|filter,
@@ -148,29 +148,29 @@
                 {% endfor %}
 
                 {{ forms.editableTableField({
-                    label: "Category URLS"|t('app'),
-                    instructions: "Define URLS and template to be used to categories."|t('app'),
+                    label: "Category URLS"|t('rentman-for-craft'),
+                    instructions: "Define URL and template to be used for categories."|t('rentman-for-craft'),
                     id: 'categoryRoutes',
                     name: 'categoryRoutes',
                     cols: {
                         heading: {
                             type: 'heading',
-                            heading: "Site"|t('app'),
+                            heading: "Site"|t('rentman-for-craft'),
                             thin: true
                         },
                         uriFormat: {
                             type: 'singleline',
-                            heading: "Entry URI Format"|t('app'),
-                            info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('app'),
-                            placeholder: 'Leave blank if entries don’t have URLs'|t('app'),
+                            heading: "Entry URI Format"|t('rentman-for-craft'),
+                            info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('rentman-for-craft'),
+                            placeholder: 'Leave blank if entries don’t have URLs'|t('rentman-for-craft'),
                             code: true,
                             width: 500,
                             class: ['type-channel', 'type-structure']|filter
                         },
                         template: {
                             type: 'template',
-                            heading: "Template"|t('app'),
-                            info: "Which template should be loaded when an entry’s URL is requested."|t('app'),
+                            heading: "Template"|t('rentman-for-craft'),
+                            info: "Which template should be loaded when an entry’s URL is requested."|t('rentman-for-craft'),
                             code: true
                         }
                     }|filter,
@@ -201,29 +201,29 @@
                 {% endfor %}
 
                 {{ forms.editableTableField({
-                    label: "Project URLS"|t('app'),
-                    instructions: "Define URLS and template to be used for projects."|t('app'),
+                    label: "Project URLS"|t('rentman-for-craft'),
+                    instructions: "Define URLS and template to be used for projects."|t('rentman-for-craft'),
                     id: 'projectRoutes',
                     name: 'projectRoutes',
                     cols: {
                         heading: {
                             type: 'heading',
-                            heading: "Site"|t('app'),
+                            heading: "Site"|t('rentman-for-craft'),
                             thin: true
                         },
                         uriFormat: {
                             type: 'singleline',
-                            heading: "Entry URI Format"|t('app'),
-                            info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('app'),
-                            placeholder: 'Leave blank if entries don’t have URLs'|t('app'),
+                            heading: "Entry URI Format"|t('rentman-for-craft'),
+                            info: "What entry URIs should look like for the site. Leave blank if entries don’t have URLs."|t('rentman-for-craft'),
+                            placeholder: 'Leave blank if entries don’t have URLs'|t('rentman-for-craft'),
                             code: true,
                             width: 500,
                             class: ['type-channel', 'type-structure']|filter
                         },
                         template: {
                             type: 'template',
-                            heading: "Template"|t('app'),
-                            info: "Which template should be loaded when an entry’s URL is requested."|t('app'),
+                            heading: "Template"|t('rentman-for-craft'),
+                            info: "Which template should be loaded when an entry’s URL is requested."|t('rentman-for-craft'),
                             code: true
                         }
                     }|filter,
@@ -238,14 +238,14 @@
 
 
                 {{ forms.editableTableField({
-                    label: "Shooting Days Factor",
+                    label: "Shooting Days Factor"|t('rentman-for-craft'),
                     instructions: "",
                     id: 'shootingDaysFactor',
                     name: 'shootingDaysFactor',
                     cols: {
                         days: {
                             type: 'number',
-                            heading: "Days",
+                            heading: "Days"|t('rentman-for-craft'),
                             info: "",
                             placeholder: '',
                             code: true,
@@ -254,7 +254,7 @@
                         },
                         factor: {
                             type: 'number',
-                            heading: "Factor",
+                            heading: "Factor"|t('rentman-for-craft'),
                             info: "What factor should be applied to calcualte price for x days",
                             code: true,
                             width: 10,
@@ -270,7 +270,7 @@
                 <hr/>
 
                 {{ forms.fieldLayoutDesignerField({
-                    label: "Additional fields for products"|t('app'),
+                    label: "Additional fields for products"|t('rentman-for-craft'),
                     id: 'product-fields',
                     fieldLayout: craft.app.fields.getLayoutByType(
                         'furbo\\rentmanforcraft\\elements\\Product'
@@ -286,7 +286,7 @@
 
         {{ forms.textField({
             label: 'Control Panel Title',
-            instructions: 'How the plugin will be called in the Control Panel',
+            instructions: 'How the plugin will be labelled in the Control Panel'|t('rentman-for-craft'),
             id: 'cpTitle',
             name: 'cpTitle',
             value: settings['cpTitle']}) }}
@@ -294,8 +294,8 @@
         <hr>
 
         {{ forms.textField({
-            label: 'Project\'s PDF Filename',
-            instructions: 'This sets the name of the selected project\'s pdf file that downloaded by the users. Note that "- #{project id}.pdf" will be added at the end of the file',
+            label: "Project's PDF Filename"|t('rentman-for-craft'),
+            instructions: 'This sets the name of the selected project\'s pdf file that downloaded by the users. Note that "- #{project id}.pdf" will be added at the end of the file'|t('rentman-for-craft'),
             id: 'pdfFilename',
             name: 'pdfFilename',
             value: settings['pdfFilename']}) }}
@@ -315,20 +315,20 @@
         {% endfor %}
 
         {{ forms.editableTableField({
-            label: "Project\'s PDF template"|t('app'),
-            instructions: "Define the template to be used for the project's pdf. If not set, we will use the plugins internal template /templates/pdf/project.twig"|t('app'),
+            label: "Project's PDF template"|t('rentman-for-craft'),
+            instructions: "Define the template to be used for the project's pdf. If not set, we will use the plugins internal template /templates/pdf/project.twig"|t('rentman-for-craft'),
             id: 'templateForProjectPdf',
             name: 'templateForProjectPdf',
             cols: {
                 heading: {
                     type: 'heading',
-                    heading: "Site"|t('app'),
+                    heading: "Site"|t('rentman-for-craft'),
                     thin: true
                 },
                 template: {
                     type: 'template',
-                    heading: "Template"|t('app'),
-                    info: "Which template should be use for project's pdf."|t('app'),
+                    heading: "Template"|t('rentman-for-craft'),
+                    info: "Which template should be use for project's pdf."|t('rentman-for-craft'),
                     code: true
                 }
             }|filter,
@@ -369,20 +369,20 @@
         {% endfor %}
 
         {{ forms.editableTableField({
-            label: "Project\'s email template"|t('app'),
-            instructions: "Define the template to be used for the project's email. If not set, we will use the plugins internal template /templates/email/project.twig"|t('app'),
+            label: "Project\'s email template"|t('rentman-for-craft'),
+            instructions: "Define the template to be used for the project's email. If not set, we will use the plugins internal template /templates/email/project.twig"|t('rentman-for-craft'),
             id: 'templateForProjectEmail',
             name: 'templateForProjectEmail',
             cols: {
                 heading: {
                     type: 'heading',
-                    heading: "Site"|t('app'),
+                    heading: "Site"|t('rentman-for-craft'),
                     thin: true
                 },
                 template: {
                     type: 'template',
-                    heading: "Template"|t('app'),
-                    info: "Which template should be use for project's email."|t('app'),
+                    heading: "Template"|t('rentman-for-craft'),
+                    info: "Which template should be use for project's email."|t('rentman-for-craft'),
                     code: true
                 }
             }|filter,
