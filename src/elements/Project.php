@@ -347,7 +347,7 @@ class Project extends RentmanElement
 
         //
         $projectTab = new FieldLayoutTab();
-        $projectTab->name = Craft::t('rentman-for-craft', Craft::t('rentman-for-craft', 'Project'));
+        $projectTab->name = Craft::t('rentman-for-craft','Project');
         $projectTab->setLayout($fieldLayout);
         $layoutElements = [];
         $layoutElements[] = new TitleField(['label' => Craft::t('rentman-for-craft', 'project.title')]);
@@ -390,7 +390,7 @@ class Project extends RentmanElement
 
         //
         $itemsTab = new FieldLayoutTab();
-        $itemsTab->name = Craft::t('rentman-for-craft', Craft::t('rentman-for-craft', 'Products'));
+        $itemsTab->name = Craft::t('rentman-for-craft', 'Products');
         $itemsTab->setLayout($fieldLayout);
         $layoutElements = [];
         $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/projects/_items', ['label' => Craft::t('rentman-for-craft', 'project.items'), 'project' => $this]);
@@ -398,40 +398,40 @@ class Project extends RentmanElement
 
         //
         $contactTab = new FieldLayoutTab();
-        $contactTab->name = Craft::t('rentman-for-craft', Craft::t('rentman-for-craft', 'Contact'));
+        $contactTab->name = Craft::t('rentman-for-craft','Contact');
         $contactTab->setLayout($fieldLayout);
         $layoutElements = [];
         $layoutElements[] = new TextField([
             'attribute' => 'contact_person_first_name',
-            'label' => 'Vorname'
+            'label' => Craft::t('rentman-for-craft','contact.firstname')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'contact_person_lastname',
-            'label' => 'Nachname'
+            'label' => Craft::t('rentman-for-craft','contact.lastname')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'contact_person_email',
-            'label' => 'Email'
+            'label' => Craft::t('rentman-for-craft','contact.email')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'contact_mailing_number',
-            'label' => 'Telefon'
+            'label' => Craft::t('rentman-for-craft','contact.telephone')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'contact_mailing_street',
-            'label' => 'Adresse'
+            'label' => Craft::t('rentman-for-craft','contact.address')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'contact_mailing_postalcode',
-            'label' => 'PLZ'
+            'label' => Craft::t('rentman-for-craft','contact.zip')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'contact_mailing_city',
-            'label' => 'Stadt'
+            'label' => Craft::t('rentman-for-craft','contact.city')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'contact_mailing_country',
-            'label' => 'Land'
+            'label' => Craft::t('rentman-for-craft','contact.country')
         ]);
         $contactTab->setElements($layoutElements);
 
