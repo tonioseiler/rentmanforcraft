@@ -136,8 +136,8 @@ composer require furbo/rentman-for-craft
 
 ### Complete twig pages - examples
 - [Product page](examples/product.twig)
-- [Category page](examples/product.twig)
-- [Project page](examples/product.twig)
+- [Category page](examples/category.twig)
+- [Project page](examples/project.twig)
 
 
 ## JavaScript API
