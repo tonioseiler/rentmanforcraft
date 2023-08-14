@@ -10,14 +10,14 @@
 
 {# The content of the CP Section #}
 {% block content %}
-    {% set currentUrl = craft.app.request.url %}
-    {{ redirectInput(currentUrl) }}
+    {{ redirectInput('settings/plugins/rentman-for-craft-cms') }}
+
     <header id="content-header" class="pane-header">
         <div id="tabs" class="pane-tabs">
             <div class="" role="tablist" aria-label="Primary fields">
                 <a class="sel" href="#fields" tabindex="0" role="tab" data-id="settings-tab-main-settings" aria-selected="true">
                     <span class="tab-label">
-                        {{ 'Main settings'|t('rentman-for-craft') }} {{ currentUrl }}
+                        {{ 'Main settings'|t('rentman-for-craft') }}
                     </span>
                 </a>
                 <a href="#translations" tabindex="-1" role="tab" data-id="settings-tab-translations" aria-selected="false">
