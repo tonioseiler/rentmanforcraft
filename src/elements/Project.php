@@ -347,7 +347,7 @@ class Project extends RentmanElement
 
         //
         $projectTab = new FieldLayoutTab();
-        $projectTab->name = Craft::t('rentman-for-craft', 'Projekt');
+        $projectTab->name = Craft::t('rentman-for-craft', Craft::t('rentman-for-craft', 'Project'));
         $projectTab->setLayout($fieldLayout);
         $layoutElements = [];
         $layoutElements[] = new TitleField(['label' => Craft::t('rentman-for-craft', 'project.title')]);
