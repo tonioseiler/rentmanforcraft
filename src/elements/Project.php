@@ -390,7 +390,7 @@ class Project extends RentmanElement
 
         //
         $itemsTab = new FieldLayoutTab();
-        $itemsTab->name = Craft::t('rentman-for-craft', 'Produkte');
+        $itemsTab->name = Craft::t('rentman-for-craft', Craft::t('rentman-for-craft', 'Products'));
         $itemsTab->setLayout($fieldLayout);
         $layoutElements = [];
         $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/projects/_items', ['label' => Craft::t('rentman-for-craft', 'project.items'), 'project' => $this]);
@@ -398,7 +398,7 @@ class Project extends RentmanElement
 
         //
         $contactTab = new FieldLayoutTab();
-        $contactTab->name = Craft::t('rentman-for-craft', 'Kontakt');
+        $contactTab->name = Craft::t('rentman-for-craft', Craft::t('rentman-for-craft', 'Contact'));
         $contactTab->setLayout($fieldLayout);
         $layoutElements = [];
         $layoutElements[] = new TextField([
@@ -439,7 +439,7 @@ class Project extends RentmanElement
 
         //
         $locationTab = new FieldLayoutTab();
-        $locationTab->name = Craft::t('rentman-for-craft', 'Produktion');
+        $locationTab->name = Craft::t('rentman-for-craft', Craft::t('rentman-for-craft', 'Production'));
         $locationTab->setLayout($fieldLayout);
         $layoutElements = [];
         $layoutElements[] = new TextField([
