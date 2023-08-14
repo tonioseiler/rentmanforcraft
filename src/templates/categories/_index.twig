@@ -2,3 +2,12 @@
 {% set title = 'Categories'|t('app') %}
 {% set elementType = 'furbo\\rentmanforcraft\\elements\\Category' %}
 {% set canHaveDrafts = true %}
+
+{% js %}
+    $(document).ready(function() {
+        $('#nav-rentman-for-craft ul li a').removeClass('sel');
+        $('#nav-rentman-for-craft ul li:eq(1) a').addClass('sel');
+    });
+{% endjs %}
+
+{% do view.registerAssetBundle("furbo\\rentmanforcraft\\web\\assets\\rentmanforcraft\\RentmanForCraftCPAsset") %}
