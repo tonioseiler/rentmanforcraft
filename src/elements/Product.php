@@ -415,7 +415,7 @@ class Product extends RentmanElement
         
         $layoutElements = [];
         
-        $layoutElements[] = $this->createImportedValueLayoutElement('title', Craft::t('rentman-for-craft', 'product.title'), $this->title);
+        $layoutElements[] = $this->createImportedValueLayoutElement('title', Craft::t('rentman-for-craft', 'Product name'), $this->title);
         $layoutElements[] = $this->createImportedValueLayoutElement('displayname', Craft::t('rentman-for-craft', 'Display name'), $this->displayname);
         $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/_includes/show/images', ['label' => Craft::t('rentman-for-craft', 'Images'), 'images' => $this->getImages(), 'id' => 'images']);
         $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/_includes/show/files', ['label' => Craft::t('rentman-for-craft', 'Files'), 'files' => $this->getFiles(), 'id' => 'files']);
