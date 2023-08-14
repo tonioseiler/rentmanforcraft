@@ -354,37 +354,37 @@ class Project extends RentmanElement
 
         $layoutElements[] = new TextField([
             'attribute' => 'in',
-            'label' => 'Abholdatum',
+            'label' => Craft::t('rentman-for-craft', 'project.pickupdate'),
             'readonly' => 'true'
         ]);
 
         $layoutElements[] = new TextField([
             'attribute' => 'out',
-            'label' => 'Rückgabedatum',
+            'label' => Craft::t('rentman-for-craft', 'project.returndate'),
             'readonly' => 'true'
         ]);
 
         $layoutElements[] = new TextField([
             'attribute' => 'planperiod_start',
-            'label' => 'Drehbeginn',
+            'label' => Craft::t('rentman-for-craft', 'project.startofshooting'),
             'readonly' => 'true'
         ]);
 
         $layoutElements[] = new TextField([
             'attribute' => 'planperiod_end',
-            'label' => 'Drehende',
+            'label' => Craft::t('rentman-for-craft', 'project.endofshooting'),
             'readonly' => 'true'
         ]);
 
         $layoutElements[] = new TextField([
             'attribute' => 'shooting_days',
-            'label' => 'Drehtage',
+            'label' => Craft::t('rentman-for-craft', 'project.shootingdays'),
             'readonly' => 'true'
         ]);
 
         $layoutElements[] = new TextareaField([
             'attribute' => 'remark',
-            'label' => 'Bemerkungen'
+            'label' => Craft::t('rentman-for-craft', 'project.remarks')
         ]);
         $projectTab->setElements($layoutElements);
 
