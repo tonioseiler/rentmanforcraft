@@ -11,10 +11,9 @@
 {# The content of the CP Section #}
 {% block content %}
 
-    {% namespace '' %}
-
+    {% namespace %}
     <input type="hidden" name="redirect" value="{{ 'settings/plugins/rentman-for-craft-cms'|hash }}">
-
+    {% endnamespace %}
     {% namespace 'settings' %}
     <header id="content-header" class="pane-header">
         <div id="tabs" class="pane-tabs">
@@ -396,7 +395,7 @@
             allowDelete: false,
             allowReorder: false
         }) }}
-
+    {% endnamespace %}
     </div>
 
     {% js %}
