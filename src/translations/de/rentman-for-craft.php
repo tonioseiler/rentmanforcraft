@@ -23,6 +23,8 @@ return [
     'ID' => 'ID',
     'Link' => 'Link',
     'All projects' => 'All projects',
+    'All products' => 'All products',
+    'All categories' => 'All categories',
     'Products' => 'Produkte',
     'Categories' => 'Kategorien',
     'Projects' => 'Projekte',
