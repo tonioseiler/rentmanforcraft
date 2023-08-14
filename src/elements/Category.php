@@ -144,7 +144,7 @@ class Category extends RentmanElement
             'slug' => ['label' => Craft::t('app', 'Slug')],
             'link' => ['label' => Craft::t('app', 'Link'), 'icon' => 'world'],
             'id' => ['label' => Craft::t('app', 'ID')],
-            'rentmanId' => ['label' => Craft::t('rentman-for-craft', 'category.rentmanId')],
+            'rentmanId' => ['label' => Craft::t('rentman-for-craft', 'Rentman ID')],
             'dateCreated' => ['label' => Craft::t('app', 'Date Created')],
             'dateUpdated' => ['label' => Craft::t('app', 'Date Updated')],
             // ...
@@ -290,8 +290,8 @@ class Category extends RentmanElement
         
         $layoutElements = [];
         
-        $layoutElements[] = $this->createImportedValueLayoutElement('title', Craft::t('rentman-for-craft', 'category.title'), $this->title);
-        $layoutElements[] = $this->createImportedValueLayoutElement('displayname', Craft::t('rentman-for-craft', 'category.displayname'), $this->displayname);
+        $layoutElements[] = $this->createImportedValueLayoutElement('title', Craft::t('rentman-for-craft', 'Category name'), $this->title);
+        $layoutElements[] = $this->createImportedValueLayoutElement('displayname', Craft::t('rentman-for-craft', 'Display name'), $this->displayname);
         
         $fieldLayout = new FieldLayout();
     
