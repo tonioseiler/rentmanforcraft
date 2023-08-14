@@ -20,7 +20,7 @@
 
             {% include '/layouts/_partials/_category-tree.twig'  with { categoryId: 0 } %}
 
-            <h1">{{ project.title }}</h1>
+            <h1>{{ project.title }}</h1>
             {% if project.getItems|length %}
                 <div id="project-submit-button-container">
                     {% set missingRequiredFields = false %}
