@@ -2,3 +2,11 @@
 {% set title = 'Projects'|t('rentman-for-craft') %}
 {% set elementType = 'furbo\\rentmanforcraft\\elements\\Project' %}
 {% set canHaveDrafts = true %}
+
+{% js %}
+    $(document).ready(function() {
+        //$('#settings-tabs a').removeClass('sel');
+        $('#nav-rentman-for-craft ul li a').removeClass('sel');
+        $('#nav-rentman-for-craft ul:eq(2) a').addClass('sel');
+    });
+{% endjs %}
