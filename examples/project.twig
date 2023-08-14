@@ -1,0 +1,190 @@
+{% block content %}
+
+    {% set isActiveProject = false %}
+    {% set activeProject = craft.rentman.getActiveProject() %}
+    {% if project is not defined %}
+        {% set project = activeProject %}
+        {% set isActiveProject = true %}
+    {% else %}
+        {% set activeProject = craft.rentman.getActiveProject() %}
+        {% if activeProject %}
+            {% if project.id == activeProject.id %}
+                {% set isActiveProject = true %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% if project is not null %}
+
+        {% if project.canView() %}
+
+            {% include '/layouts/_partials/_category-tree.twig'  with { categoryId: 0 } %}
+
+            <h1">{{ project.title }}</h1>
+            {% if project.getItems|length %}
+                <div id="project-submit-button-container">
+                    {% set missingRequiredFields = false %}
+                    {% if isActiveProject %}
+                        <button class="mt-5" type="button" onclick="window.location.href='/cart';">cart</button>
+                        <button class="mt-5" type="button" onclick="window.location.href='/project-edit';">Edit Project</button>
+                        {% if project.contact_person_first_name=='' or project.contact_person_lastname=='' %}
+                            {% set missingRequiredFields = true %}
+                        {% endif %}
+                        <form id="project-submit" method="post" accept-charset="UTF-8" enctype="multipart/form-data" class="inline">
+                            {{ csrfInput() }}
+                            {{ actionInput('/rentman-for-craft/api/submit-project') }}
+                            {{ hiddenInput('projectId', project.id) }}
+                            {{ redirectInput('/tnxs') }}
+                            <button class="mt-5" type="submit" {{ missingRequiredFields ?  'disabled' }}>Send request</button>
+                        </form>
+
+                        {% if missingRequiredFields %}
+                            <h2>NOTE</h2>
+                            <a href="/project-edit">Edit the project</a> to be able to submit it
+                        {% endif %}
+                    {% else %}
+                        {% if project.status == 'draft' %}
+                            <button class="project-setactive mt-5" type="button" data-project-id="{{ project.id }}">Activate project</button>
+                        {% endif %}
+                        <button class="project-copy mt-5" type="button" data-project-id="{{ project.id }}">Projekt kopieren</button>
+                    {% endif %}
+                </div>
+                <br>
+                <div><strong>Shooting days::</strong> {{ project.shooting_days }}</div><br>
+                <div>
+                    <table>
+                        <thead>
+                        <tr class="border-b-2 border-b-darkgrey">
+                            <th scope="col">Title</th>
+                            <th scope="col">kg</th>
+                            <th scope="col">CHF</th>
+                            <th scope="col">
+                                <span class="hidden sm:inline">Quantity </span><span class="inline sm:hidden">Qty</span>
+                            </th>
+                            <th scope="col">Total ({{ project.shooting_days > 1 ? project.shooting_days~' Days' : '1 Day' }})</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set productsGroupedByCats = project.getItemsGroupedByCategory %}
+                        {% for categoryId, products in productsGroupedByCats %}
+                            {% set category = craft.rentman.getCategoryById(categoryId) %}
+                            <tr>
+                                <th scope="row">
+                                    {{ category.displayname }}:
+                                </th>
+                            </tr>
+                            {% for product in products %}
+                                {% set productMainData = craft.rentman.getProductById(product.productId) %}
+                                <tr>
+                                    <th scope="row" ">
+                                    <a href="/{{ productMainData.uri }}">{{ productMainData.displayname }}</a>
+                                    </th>
+                                    <td>
+                                        {{ productMainData.weight }}
+                                    </td>
+                                    <td>
+                                        {{ productMainData.price|number_format(2, '.', '’') }}
+                                    </td>
+                                    <td>
+                                        {{ product.quantity }}
+                                    </td>
+                                    <td>
+                                        {{ product.price|number_format(2, '.', '’') }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                        <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                {{ project.price|number_format(2, '.', '’') }}
+                            </td>
+                        </tr>
+                        </tfoot>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="customer-main-data">
+                    <div>
+                        <div>
+                            {{ project.contact_person_first_name }} {{ project.contact_person_lastname }}<br>
+                            {{ project.contact_mailing_street }}<br>
+                            {{ project.contact_mailing_postalcode }}  {{ project.contact_mailing_city }}
+                            {{ project.contact_mailing_country }}
+                        </div>
+                        <div>
+                            {{ project.contact_person_email }}<br>
+                            {{ project.contact_mailing_number }}<br>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="customer-production-data">
+                    <div>Produktion</div>
+                    <div>
+                        {{ project.location_name }}
+                        {{ project.location_mailing_street }}
+                        {{ project.location_mailing_postalcode }}
+                        {{ project.location_mailing_city }}
+                        {{ project.location_mailing_country }}
+                        {{ project.location_mailing_number }}
+                    </div>
+                </div>
+                <hr>
+                <div class="project-dates">
+                    <div>Abholdatum:<br>{{ project.in|date }}</div>
+                    <div>Rückgabedatum:<br>{{ project.out|date }}</div>
+                    <div>Drehbeginn:<br>{{ project.planperiod_start|date }}</div>
+                    <div>Drehende:<br>{{ project.planperiod_end|date }}</div>
+                </div>
+
+                {% if project.remark %}
+                    <div>Contact name, telephoon, email and notes:</strong><br>{{ project.remark|nl2br }}</div>
+                {% endif %}
+
+                <div id="project-submit-button-container">
+                    {% set missingRequiredFields = false %}
+                    {% if isActiveProject %}
+                        <button type="button" onclick="window.location.href='/cart';">Cart</button>
+                        <button type="button" onclick="window.location.href='/project-edit';">Edit project</button>
+                        {% if project.contact_person_first_name=='' or project.contact_person_lastname=='' %}
+                            {% set missingRequiredFields = true %}
+                        {% endif %}
+                        <form id="project-submit" method="post" accept-charset="UTF-8" enctype="multipart/form-data" class="inline">
+                            {{ csrfInput() }}
+                            {{ actionInput('/rentman-for-craft/api/submit-project') }}
+                            {{ hiddenInput('projectId', project.id) }}
+                            {{ redirectInput('/tnxs') }}
+                            <button type="submit" {{ missingRequiredFields ?  'disabled' }}>Send request</button>
+                        </form>
+                        {% if missingRequiredFields %}
+                            <h2 class="mt-[2rem]">NOTE</h2>
+                            <a href="/project-edit">Edit the project</a> to be able to submit it
+                        {% endif %}
+                    {% else %}
+                        {% if project.status == 'draft' %}
+                            <button type="button" data-project-id="{{ project.id }}"Activate project</button>
+                        {% endif %}
+                        <button type="button" data-project-id="{{ project.id }}">Duplicate project</button>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div>Cart is empty</div>
+                {% if not isActiveProject %}
+                    {% if project.status == 'draft' %}
+                        <button  type="button" data-project-id="{{ project.id }}">Activate project</button>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+
+        {% else %}
+            {# trying to access someone else's project #}
+            {% redirect "/" %}
+        {% endif %}
+
+    {% else %}
+        {# project not defined #}
+        {% redirect "/" %}
+    {% endif %}
+
+{% endblock %}

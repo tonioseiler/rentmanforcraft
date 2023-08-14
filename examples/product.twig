@@ -1,0 +1,114 @@
+{% extends "/layouts/app" %}
+{% set product = craft.rentman.getProductById(product.id) %}
+{% block title %}{{ product.displayname }}{% endblock %}
+
+{% block content %}
+    {% include '/layouts/_partials/_category-tree.twig'  with { categoryId: product.categoryId } %}
+    <h1>{{ product.displayname }}</h1>
+    <div>Code: {{ product.code }}</div>
+    <div>Price day: CHF {{ product.price }}.-</div>
+    {% if product.weight %}
+        <div>Weight: {{ product.weight }}kg</div>
+    {% endif %}
+    <br>
+    <div class="description">
+        {{ product.shop_description_short|raw }}
+    </div>
+
+    {% set files = product.files|json_decode %}
+    {% if files|length > 0 %}
+        <ul class="files">
+            {% for file in files %}
+                {% if file.in_webshop %}
+                    <li><a href="{{ file.url }}" target="_blank">{{ file.displayname }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="image">
+        {% set images = product.images|json_decode %}
+        {% for image in images %}
+            <img src="{{ image.url }}" alt="{{ product.displayname }}">
+        {% endfor %}
+    </div>
+
+    <div class="accessories">
+        <h2>Set content</h2>
+        <div class="accessories__content">
+            {% for setContentProduct in setContentProducts %}
+                {% set product = craft.rentman.getProductById(setContentProduct.productId) %}
+                {% if product %}
+                    <div class="accessories__single">
+                        {% if product.in_shop %}
+                            <a href="/{{ product.uri }}">
+                                {% set images = product.images|json_decode %}
+                                {% if images|length > 0 %}
+                                    {{ images[0].url }}
+                                    {{ product.title }}
+                                {% else %}
+                                    {{ product.title }}
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            {% set images = product.images|json_decode %}
+                            {% if images|length > 0 %}
+                                {{ images[0].url }}
+                                {{ product.title }}
+                            {% else %}
+                                {{ product.title }}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    {% set atLeastOneAccessory = false %}
+    {% set accessories = craft.rentman.getProductAccesories(product.id) %}
+    {% if accessories|length > 0 %}
+        {% for acc in accessories %}
+            {% if not atLeastOneAccessory %}
+                {% set accProduct = craft.rentman.getProductById(acc.productId) %}
+                {% if accProduct %}
+                    {% set atLeastOneAccessory = true %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if atLeastOneAccessory %}
+        <div class="accessories">
+            <h2>Accessories</h2>
+            <div class="accessories__content">
+                {% for acc in accessories %}
+                    {% set accProduct = craft.rentman.getProductById(acc.productId) %}
+                    {% if accProduct %}
+                        <div class="accessories__single">
+                            {% if accProduct.in_shop %}
+                                <a href="/{{ accProduct.uri }}">
+                                    {% set images = accProduct.images|json_decode %}
+                                    {% if images|length > 0 %}
+                                        {{ images[0].url }}
+                                        {{ accProduct.title }}
+                                    {% else %}
+                                        {{ accProduct.title }}
+                                    {% endif %}
+                                </a>
+                            {% else %}
+                                {% set images = accProduct.images|json_decode %}
+                                {% if images|length > 0 %}
+                                    {{ images[0].url }}
+                                    {{ accProduct.title }}
+                                {% else %}
+                                    {{ accProduct.title }}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    ...
+{% endblock %}

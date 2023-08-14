@@ -14,7 +14,7 @@ window.app = {
                     if ($('body').hasClass('logged-in')) {
                         rentman.getUserProjects(function (projects) {
                             if (projects.length > 1) {
-                            ...
+                            //...
                             }
                         });
                     }

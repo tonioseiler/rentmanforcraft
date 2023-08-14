@@ -1,0 +1,64 @@
+{% extends "/layouts/app" %}
+{% if not category is defined %}
+    {% set category = '' %}
+    {% for mainCategory in craft.rentman.getCategories()|slice(0,1) %}
+        {% set category = mainCategory %}
+    {% endfor %}
+{% endif %}
+{% block title %}{{ category.displayname }}{% endblock %}
+{% block content %}
+
+    {% include '/layouts/_partials/_category-tree.twig'  with { categoryId: category.id } %}
+
+    {# list products that are directly in this category #}
+    <div class="products-list">
+        {% if craft.rentman.getProductsByCategory(category.id) %}
+            <div class="header listitem grid">
+                <div>Title</div>
+                <div class="weight">kg</div>
+                <div class="price">CHF</div>
+                <div></div>
+            </div>
+            {% for product in craft.rentman.getProductsByCategory(category.id) %}
+                <div>
+                    <div><a href="/{{ product.uri }}">{{ product.displayname }}</a></div>
+                    <div class="weight">{{ product.weight ? product.weight : '-' }}</div>
+                    <div class="price">{{ product.price|number_format(2, '.', '’') }}</div>
+                    <div class="chooser">
+                        <input type="text" pattern="[0-9]+" maxlength="2" value="{{ craft.rentman.getProjectProductQuantity(product.id) }}" class="product-quantity" data-product-id="{{ product.id }}">
+                        <span class="icon-minus product-quantity-minus"></span>
+                        <span class="icon-plus product-quantity-plus"></span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {# list subcategories and related products #}
+    {% set subcats=craft.rentman.getCategoriesRecursive(category.id) %}
+    {% for subcat in subcats %}
+        {% set products = craft.rentman.getProductsByCategory(subcat['id']) %}
+        {% if products %}
+            <h2 class="cat-name"><a href="/{{ subcat.uri }}">{{ subcat.displayname }}</a></h2>
+            <div class="header listitem grid">
+                <div>Title</div>
+                <div class="weight">kg</div>
+                <div class="price">CHF</div>
+                <div></div>
+            </div>
+            {% for product in products %}
+                <div class="listitem grid">
+                    <div><a href="/{{ product.uri }}">{{ product.displayname }}</a></div>
+                    <div class="weight">{{ product.weight ? product.weight : '-' }}</div>
+                    <div class="price">{{ product.price|number_format(2, '.', '’') }}</div>
+                    <div class="chooser">
+                        <input type="text" pattern="[0-9]+" maxlength="2" value="{{ craft.rentman.getProjectProductQuantity(product.id) }}" class="product-quantity" data-product-id="{{ product.id }}">
+                        <span class="icon-minus product-quantity-minus"></span>
+                        <span class="icon-plus product-quantity-plus"></span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}
