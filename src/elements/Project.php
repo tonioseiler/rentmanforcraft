@@ -439,32 +439,32 @@ class Project extends RentmanElement
 
         //
         $locationTab = new FieldLayoutTab();
-        $locationTab->name = Craft::t('rentman-for-craft', Craft::t('rentman-for-craft', 'Production'));
+        $locationTab->name = Craft::t('rentman-for-craft','Production');
         $locationTab->setLayout($fieldLayout);
         $layoutElements = [];
         $layoutElements[] = new TextField([
             'attribute' => 'location_name',
-            'label' => 'Name'
+            'label' => Craft::t('rentman-for-craft','production.name')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'location_mailing_number',
-            'label' => 'Telefon'
+            'label' => Craft::t('rentman-for-craft','contact.telephone')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'location_mailing_street',
-            'label' => 'Adresse'
+            'label' => Craft::t('rentman-for-craft','contact.address')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'location_mailing_postalcode',
-            'label' => 'PLZ'
+            'label' => Craft::t('rentman-for-craft','contact.zip')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'location_mailing_city',
-            'label' => 'Stadt'
+            'label' => Craft::t('rentman-for-craft','contact.city')
         ]);
         $layoutElements[] = new TextField([
             'attribute' => 'location_mailing_country',
-            'label' => 'Land'
+            'label' => Craft::t('rentman-for-craft','contact.country')
         ]);
         $locationTab->setElements($layoutElements);
         
