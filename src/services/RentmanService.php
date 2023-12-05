@@ -382,6 +382,10 @@ class RentmanService extends Component
 
         $email = $project->contact_person_email ?? '';
 
+        // TODO Paolo 1. find which field is the one triggering the rentman factor bug: "out" or "usageperiod_start" or "planperiod_end"
+        // TODO Paolo 2. add 1 minute to the field: 'usageperiod_end' => (new Carbon($this->formatDateTime($project->planperiod_end)))->addSeconds(5)->toAtomString(),
+
+
         $data = [
             'contact_mailing_number' => $project->contact_mailing_number ?? '',
             'contact_mailing_country' => $project->contact_mailing_country ?? '',
