@@ -384,8 +384,13 @@ class RentmanService extends Component
 
         // TODO Paolo 1. find which field is the one triggering the rentman factor bug: "out" or "usageperiod_start" or "planperiod_end"
         // TODO Paolo 2. add 1 minute to the field: 'usageperiod_end' => (new Carbon($this->formatDateTime($project->planperiod_end)))->addSeconds(5)->toAtomString(),
+        //$usageperiod_end' => (new Carbon($this->formatDateTime($project->planperiod_end)))->addSeconds(5)->toAtomString(),
 
-
+        $usageperiod_start = $this->formatDateTime($project->planperiod_start) ?? '';
+        $usageperiod_end = $this->formatDateTime($project->planperiod_end) ?? '';
+        if(($project->shooting_days == 1) && ($usageperiod_end != '')) {
+            $usageperiod_end = (new Carbon($this->formatDateTime($project->planperiod_end)))->addSeconds(5)->toAtomString();
+        }
         $data = [
             'contact_mailing_number' => $project->contact_mailing_number ?? '',
             'contact_mailing_country' => $project->contact_mailing_country ?? '',
@@ -398,8 +403,8 @@ class RentmanService extends Component
             'contact_person_middle_name' => $project->contact_person_middle_name ?? '',
             'contact_person_first_name' => $project->contact_person_first_name ?? '',
             /*'usageperiod_end' => $this->formatDateTime($project->planperiod_end) ?? '',*/
-            'usageperiod_end' => (new Carbon($this->formatDateTime($project->planperiod_end)))->addSeconds(5)->toAtomString(),
-            'usageperiod_start' => $this->formatDateTime($project->planperiod_start) ?? '',
+            'usageperiod_end' => $usageperiod_end,
+            'usageperiod_start' => $usageperiod_start,
             'in' => $this->formatDateTime($project->in),
             'out' => $this->formatDateTime($project->out),
             'location_mailing_number' => $project->location_mailing_number ?? '',
