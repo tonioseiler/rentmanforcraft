@@ -420,7 +420,6 @@ class RentmanService extends Component
             'price' => $project->price
         ];
 
-
         $response = $this->client->request('POST', $this->apiUrl.'projectrequests', [
             'headers' => $this->requestHeaders,
             'body'    => json_encode($data)
@@ -433,6 +432,9 @@ class RentmanService extends Component
         $count = 0;
         foreach ($project->getItems() as $item) {
             $product = $item->getProduct();
+            // TODO Paolo: check $item->factor
+            die(floatval($item->factor));
+
             $this->addProductToProject($rentmanProjectId, $product->displayname, $item->quantity, floatval($item->unit_price), floatval($item->factor), $count);
 
             //check if there is automatic accessoies
