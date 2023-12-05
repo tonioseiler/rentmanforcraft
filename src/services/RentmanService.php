@@ -397,7 +397,8 @@ class RentmanService extends Component
             'contact_person_email' => $email,
             'contact_person_middle_name' => $project->contact_person_middle_name ?? '',
             'contact_person_first_name' => $project->contact_person_first_name ?? '',
-            'usageperiod_end' => $this->formatDateTime($project->planperiod_end) ?? '',
+            /*'usageperiod_end' => $this->formatDateTime($project->planperiod_end) ?? '',*/
+            'usageperiod_end' => (new Carbon($this->formatDateTime($project->planperiod_end)))->addSeconds(5)->toAtomString(),
             'usageperiod_start' => $this->formatDateTime($project->planperiod_start) ?? '',
             'in' => $this->formatDateTime($project->in),
             'out' => $this->formatDateTime($project->out),
