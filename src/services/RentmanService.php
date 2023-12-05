@@ -432,9 +432,7 @@ class RentmanService extends Component
         $count = 0;
         foreach ($project->getItems() as $item) {
             $product = $item->getProduct();
-            // TODO Paolo: check $item->factor
-            die(floatval($item->factor));
-
+            // Done Paolo: check $item->factor, it is correct
             $this->addProductToProject($rentmanProjectId, $product->displayname, $item->quantity, floatval($item->unit_price), floatval($item->factor), $count);
 
             //check if there is automatic accessoies
