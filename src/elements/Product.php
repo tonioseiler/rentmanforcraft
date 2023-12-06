@@ -295,6 +295,9 @@ class Product extends RentmanElement
         if (parent::canView($user)) {
             return true;
         }
+        if ($user->can('accessPlugin-rentman-for-craft')) {
+            return true;
+        }
         return $user->can('viewProducts');
     }
 
