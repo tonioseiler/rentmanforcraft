@@ -280,6 +280,9 @@ class Project extends RentmanElement
         if ($currentUser->admin) {
             return true;
         }
+        if ($currentUser->can('accessPlugin-rentman-for-craft')) {
+            return true;
+        }
         return $currentUser->id == $this->userId;
     }
 
