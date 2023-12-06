@@ -218,6 +218,9 @@ class Category extends RentmanElement
         if (parent::canSave($user)) {
             return true;
         }
+        if ($user->can('accessPlugin-rentman-for-craft')) {
+            return true;
+        }
         return $user->can('saveCategories');
     }
 
