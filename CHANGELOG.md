@@ -4,6 +4,7 @@
 ### Added
 * Backend translations
 * Patch for Rentman days calculation
+* Custom factor for sales products
 
 ### Fixed
 * Backend submenu highlight fixes
