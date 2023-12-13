@@ -81,9 +81,10 @@ class ProjectsService extends Component
         $project = $item->getProject();
         $product = $item->getProduct();
 
-        // TODO Paolo: sales always have factor 1
+        // sales always have factor 1
         if( $product->rental_sales == 'Sale' ) {
-            $factor = $project->shooting_days;
+            //$factor = $project->shooting_days;
+            $factor = 1;
         } else {
             $factor = $this->getShootingDaysFactor($project->shooting_days);
         }
