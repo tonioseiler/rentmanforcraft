@@ -2,7 +2,21 @@
     "name": "furbo/rentman-for-craft",
     "description": "Automatically Import Rentman Products to Craft. Let visitors create orders. Orders are automatically send to rentman as a project request.",
     "type": "craft-plugin",
+    "version": "1.0.7",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "commerce wallee"
+    ],
     "license": "proprietary",
+    "authors": [
+        {
+            "name": "Furbo GmbH",
+            "homepage": "https://www.furbo.ch"
+        }
+    ],
     "support": {
         "email": "support@furbo.ch",
         "issues": "https://github.com/tonioseiler/rentmanforcraft/issues?state=open",
@@ -29,6 +43,7 @@
         "handle": "rentman-for-craft",
         "name": "Rentman for Craft",
         "developer": "Furbo GmbH",
+        "developerUrl": "http://www.furbo.ch",
         "documentationUrl": "https://github.com/tonioseiler/rentmanforcraft",
         "class": "furbo\\rentmanforcraft\\RentmanForCraft"
     },

@@ -1,12 +1,13 @@
 # Release Notes for Rentman for Craft
 
-## 1.0.7 - 2023-08-14
+## 1.0.7 - 2023-12-13
 ### Added
 * Backend translations
+* Patch for Rentman days calculation
 
 ### Fixed
 * Backend submenu highlight fixes
-
+* Privileges for projects and categories
 
 ## 1.0.6 - 2023-08-11
 ### Added
