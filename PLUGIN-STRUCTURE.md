@@ -1,5 +1,18 @@
 # Rentman for Craft — Plugin Structure
 
+## Table of Contents
+
+- [Directory Tree](#directory-tree)
+- [Database Tables](#database-tables)
+- [Element Types](#element-types)
+- [Services](#services)
+- [Web API](#web-api-apicontroller)
+- [Twig Variable](#twig-variable-craftrentman)
+- [Plugin Settings](#plugin-settings)
+- [Console Commands](#console-commands)
+
+---
+
 ## Directory Tree
 
 ```

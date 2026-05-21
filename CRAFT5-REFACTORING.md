@@ -1,5 +1,19 @@
 # Craft CMS 5 Refactoring Notes
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Changes Made](#changes-made)
+  - [src/elements/Product.php](#srcelementsproductphp)
+  - [src/elements/Category.php](#srcelementscategoryphp)
+  - [src/elements/Project.php](#srcelementsprojectphp)
+  - [src/elements/RentmanElement.php](#srcelementsrentmanelementphp)
+  - [src/templates/projects/_items.twig](#srctemplatesprojects_itemstwig)
+  - [src/migrations/m260521_000000_migrate_titles_to_elements_sites.php](#srcmigrations)
+- [Key Craft CMS 4 → 5 API Differences](#key-craft-cms-4--5-api-differences-relevant-to-this-plugin)
+
+---
+
 ## Overview
 
 This plugin was originally built for Craft CMS 4. The following changes were made to
