@@ -24,7 +24,6 @@ use furbo\rentmanforcraft\elements\conditions\ProductCondition;
 use furbo\rentmanforcraft\elements\db\ProductQuery;
 use furbo\rentmanforcraft\records\Product as ProductRecord;
 use furbo\rentmanforcraft\RentmanForCraft;
-use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Product element type
@@ -100,11 +99,6 @@ class Product extends RentmanElement
     }
 
     public static function trackChanges(): bool
-    {
-        return true;
-    }
-
-    public static function hasContent(): bool
     {
         return true;
     }
@@ -195,7 +189,6 @@ class Product extends RentmanElement
             'slug' => ['label' => Craft::t('rentman-for-craft', 'Slug')],
             'link' => ['label' => Craft::t('rentman-for-craft', 'Link'), 'icon' => 'world'],
             'id' => ['label' => Craft::t('rentman-for-craft', 'ID')],
-            'images' => ['label' => Craft::t('rentman-for-craft', 'Images')],
             'rentmanId' => ['label' => Craft::t('rentman-for-craft', 'Rentman ID')],
             'files' => ['label' => Craft::t('rentman-for-craft', 'Files')],
             'dateCreated' => ['label' => Craft::t('rentman-for-craft', 'Date Created')],
@@ -207,7 +200,6 @@ class Product extends RentmanElement
     protected static function defineDefaultTableAttributes(string $source): array
     {
         return [
-            'images',
             'rentmanId',
             'link',
             'files',
@@ -222,7 +214,7 @@ class Product extends RentmanElement
                 $images = $this->getImages();
                 if (count($images) > 0) {
                     $tmp = $this->createHtmlLayoutElement('rentman-for-craft/_includes/index/images', ['images' => $this->getImages()]);
-                    return $tmp->formHtml();
+                    return $tmp->formHtml() ?? '';
                 }
                 return '';
             case 'files':
@@ -410,7 +402,7 @@ class Product extends RentmanElement
         parent::afterSave($isNew);
     }
 
-    public function getFieldLayout(): ?craft\models\FieldLayout
+    public function getFieldLayout(): ?FieldLayout
     {
 
         //possible elements
@@ -418,7 +410,7 @@ class Product extends RentmanElement
         
         $layoutElements = [];
         
-        $layoutElements[] = $this->createImportedValueLayoutElement('title', Craft::t('rentman-for-craft', 'Product name'), $this->title);
+        $layoutElements[] = $this->createImportedValueLayoutElement('title', Craft::t('rentman-for-craft', 'Product name'), $this->title ?: $this->displayname);
         $layoutElements[] = $this->createImportedValueLayoutElement('displayname', Craft::t('rentman-for-craft', 'Display name'), $this->displayname);
         $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/_includes/show/images', ['label' => Craft::t('rentman-for-craft', 'Images'), 'images' => $this->getImages(), 'id' => 'images']);
         $layoutElements[] = $this->createHtmlLayoutElement('rentman-for-craft/_includes/show/files', ['label' => Craft::t('rentman-for-craft', 'Files'), 'files' => $this->getFiles(), 'id' => 'files']);
@@ -504,17 +496,11 @@ class Product extends RentmanElement
     }
 
 
-    public function getIsEditable(): bool
-    {
-        return true;
-    }
-
-
     public function getImages(): Array {
         $tmp = json_decode($this->images, true);
         if (empty($tmp)) return [];
         return array_filter($tmp, function($img) {
-            return $img['in_webshop'] && $img['public'];
+            return $img['public'];
         });
     }
 

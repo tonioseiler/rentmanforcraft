@@ -7,6 +7,7 @@ use craft\base\Element;
 use craft\elements\User;
 use craft\elements\conditions\ElementConditionInterface;
 use craft\elements\db\ElementQueryInterface;
+use craft\elements\ElementCollection;
 use craft\helpers\UrlHelper;
 use craft\models\FieldLayout;
 use craft\models\FieldLayoutTab;
@@ -17,7 +18,6 @@ use furbo\rentmanforcraft\elements\conditions\CategoryCondition;
 use furbo\rentmanforcraft\elements\db\CategoryQuery;
 use furbo\rentmanforcraft\records\Category as CategoryRecord;
 use furbo\rentmanforcraft\RentmanForCraft;
-use Illuminate\Support\Collection;
 
 /**
  * Category element type
@@ -57,11 +57,6 @@ class Category extends RentmanElement
     }
 
     public static function trackChanges(): bool
-    {
-        return true;
-    }
-
-    public static function hasContent(): bool
     {
         return true;
     }
@@ -289,14 +284,14 @@ class Category extends RentmanElement
 
     }
 
-    public function getFieldLayout(): ?craft\models\FieldLayout
+    public function getFieldLayout(): ?FieldLayout
     {
         //possible elements
         // https://docs.craftcms.com/api/v4/craft-base-fieldlayoutelement.html
         
         $layoutElements = [];
         
-        $layoutElements[] = $this->createImportedValueLayoutElement('title', Craft::t('rentman-for-craft', 'Category name'), $this->title);
+        $layoutElements[] = $this->createImportedValueLayoutElement('title', Craft::t('rentman-for-craft', 'Category name'), $this->title ?: $this->displayname);
         $layoutElements[] = $this->createImportedValueLayoutElement('displayname', Craft::t('rentman-for-craft', 'Display name'), $this->displayname);
         
         $fieldLayout = new FieldLayout();
@@ -324,12 +319,7 @@ class Category extends RentmanElement
         return $data;
     }
 
-    public function getIsEditable(): bool
-    {
-        return true;
-    }
-
-    public function getChildren(): ElementQueryInterface|Collection
+    public function getChildren(): ElementQueryInterface|ElementCollection
     {
         return self::find()
                 ->parentId($this->id);

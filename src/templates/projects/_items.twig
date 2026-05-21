@@ -12,9 +12,9 @@
     <tbody>
     {% for item in project.getItems() %}
         {% set product = item.getProduct().getElement() %}
-        {% if product.title is defined %}
+        {% if product %}
             <tr>
-                <td>{{ product.title }}</td>
+                <td>{{ product.displayname ?: product.title }}</td>
                 <td class="number">{{ product.weight }}</td>
                 <td class="number">{{ item.unit_price|number_format(2, '.', '\'') }}</td>
                 <td class="number">{{ item.quantity }}</td>

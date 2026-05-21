@@ -91,11 +91,6 @@ class Project extends RentmanElement
         return true;
     }
 
-    public static function hasContent(): bool
-    {
-        return true;
-    }
-
     public static function hasTitles(): bool
     {
         return true;
@@ -256,7 +251,7 @@ class Project extends RentmanElement
         ];
     }
 
-    public function canView(User $user = null): bool
+    public function canView(?User $user = null): bool
     {
         /*
         if (parent::canView($user)) {
@@ -340,7 +335,7 @@ class Project extends RentmanElement
         ]);
     }
 
-    public function getFieldLayout(): ?craft\models\FieldLayout
+    public function getFieldLayout(): ?FieldLayout
     {
 
         //possible elements
@@ -358,31 +353,31 @@ class Project extends RentmanElement
         $layoutElements[] = new TextField([
             'attribute' => 'in',
             'label' => Craft::t('rentman-for-craft', 'Pickup date'),
-            'readonly' => 'true'
+            'readonly' => true
         ]);
 
         $layoutElements[] = new TextField([
             'attribute' => 'out',
             'label' => Craft::t('rentman-for-craft', 'Return date'),
-            'readonly' => 'true'
+            'readonly' => true
         ]);
 
         $layoutElements[] = new TextField([
             'attribute' => 'planperiod_start',
             'label' => Craft::t('rentman-for-craft', 'Start of shooting'),
-            'readonly' => 'true'
+            'readonly' => true
         ]);
 
         $layoutElements[] = new TextField([
             'attribute' => 'planperiod_end',
             'label' => Craft::t('rentman-for-craft', 'End of shooting'),
-            'readonly' => 'true'
+            'readonly' => true
         ]);
 
         $layoutElements[] = new TextField([
             'attribute' => 'shooting_days',
             'label' => Craft::t('rentman-for-craft', 'Shooting days'),
-            'readonly' => 'true'
+            'readonly' => true
         ]);
 
         $layoutElements[] = new TextareaField([
