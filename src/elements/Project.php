@@ -220,7 +220,7 @@ class Project extends RentmanElement
 
     public function getUriFormat(): ?string {
         $settings = RentmanForCraft::getInstance()->getSettings()->projectRoutes;
-        return $settings[$this->site->handle]['uriFormat'];
+        return $settings[$this->site->handle]['uriFormat'] ?? null;
     }
 
     protected function previewTargets(): array
@@ -241,6 +241,9 @@ class Project extends RentmanElement
     protected function route(): array|string|null
     {
         $projectRoutes = RentmanForCraft::getInstance()->getSettings()->projectRoutes;
+        if (empty($projectRoutes[$this->site->handle]['template'])) {
+            return null;
+        }
         return [
             'templates/render', [
                 'template' => $projectRoutes[$this->site->handle]['template'],

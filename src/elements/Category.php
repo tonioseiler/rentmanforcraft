@@ -166,7 +166,7 @@ class Category extends RentmanElement
     public function getUriFormat(): ?string
     {
         $settings = RentmanForCraft::getInstance()->getSettings()->categoryRoutes;
-        return $settings[$this->site->handle]['uriFormat'];
+        return $settings[$this->site->handle]['uriFormat'] ?? null;
     }
 
     protected function previewTargets(): array
@@ -187,6 +187,9 @@ class Category extends RentmanElement
     protected function route(): array|string|null
     {
         $categoryRoutes = RentmanForCraft::getInstance()->getSettings()->categoryRoutes;
+        if (empty($categoryRoutes[$this->site->handle]['template'])) {
+            return null;
+        }
         return [
             'templates/render', [
                 'template' => $categoryRoutes[$this->site->handle]['template'],

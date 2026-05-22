@@ -15,7 +15,9 @@ use furbo\rentmanforcraft\elements\Project;
 use furbo\rentmanforcraft\records\Project as ProjectRecord;
 use furbo\rentmanforcraft\records\ProjectItem;
 use furbo\rentmanforcraft\RentmanForCraft;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**
@@ -182,11 +184,13 @@ class ApiController extends Controller
         $request = Craft::$app->getRequest();
         $params = $request->getBodyParams();
 
-        $product = null;
-        if (isset($params['productId'])) {
-            $product = Product::find()
-                ->id($params['productId'])
-                ->one();
+        if (empty($params['productId'])) {
+            throw new BadRequestHttpException('Missing productId parameter.');
+        }
+
+        $product = Product::find()->id($params['productId'])->one();
+        if (!$product) {
+            throw new NotFoundHttpException('Product not found.');
         }
 
         $projectId = Session::get('ACTIVE_PROJECT_ID', 0);
@@ -214,16 +218,7 @@ class ApiController extends Controller
             $item->delete();
         }
 
-        // paolo: added
-        if (empty($user)) {
-            $project = Project::find()
-                ->id($projectId)
-                ->one();
-        } else {
-            $project = Project::find()
-                ->id($projectId)
-                ->one();
-        }
+        $project = Project::find()->id($projectId)->one();
 
         $projectService = RentmanForCraft::getInstance()->projectsService;
         $projectService->updateProjectItemsAndPrice($project);
@@ -552,6 +547,10 @@ class ApiController extends Controller
     }
 
     protected function createProjectResponse($project) {
+        if (!$project) {
+            return ['project' => null, 'totals' => [], 'items' => []];
+        }
+
         $projectService = RentmanForCraft::getInstance()->projectsService;
 
         return [
@@ -567,8 +566,10 @@ class ApiController extends Controller
 
         if ($request->method == 'GET') {
             $params = $request->getQueryParams();
-        } else  if ($request->method == 'POST') {
+        } elseif ($request->method == 'POST') {
             $params = $request->getBodyParams();
+        } else {
+            $params = [];
         }
         $user = Craft::$app->getUser()->getIdentity();
 
@@ -583,6 +584,9 @@ class ApiController extends Controller
                 $project = $projectService->getActiveProject();
 
                 // guest user can only access active project
+                if (!$project) {
+                    throw new ForbiddenHttpException('User not authorized to access this project.');
+                }
 
                 if ($project->id == $params['projectId']) {
                     return Project::find()

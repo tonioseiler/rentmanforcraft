@@ -70,13 +70,6 @@ class ProjectsService extends Component
         ];
     }
 
-    // DOING Paolo
-    public function getProjectItemsGroupedByCategory($project) {
-        return getItemsGroupedByCategory();
-    }
-
-
-
     public function updateProjectItem($item) {
         $project = $item->getProject();
         $product = $item->getProduct();

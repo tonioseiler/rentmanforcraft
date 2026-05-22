@@ -251,7 +251,7 @@ class Product extends RentmanElement
 
     public function getUriFormat(): ?string {
         $settings = RentmanForCraft::getInstance()->getSettings()->productRoutes;
-        return $settings[$this->site->handle]['uriFormat'];
+        return $settings[$this->site->handle]['uriFormat'] ?? null;
     }
 
     protected function previewTargets(): array
@@ -272,6 +272,9 @@ class Product extends RentmanElement
     protected function route(): array|string|null
     {
         $productRoutes = RentmanForCraft::getInstance()->getSettings()->productRoutes;
+        if (empty($productRoutes[$this->site->handle]['template'])) {
+            return null;
+        }
         return [
             'templates/render', [
                 'template' => $productRoutes[$this->site->handle]['template'],
@@ -458,10 +461,6 @@ class Product extends RentmanElement
     public function getSidebarHtml(bool $static): string {
         //do not show the status switch
         return '';
-    }
-
-    public function getThumbUrl(int $size): ?string {
-        return 'thumb url';
     }
 
     public function getMetadata(): array {

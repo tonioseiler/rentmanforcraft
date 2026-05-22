@@ -81,11 +81,13 @@ class RentmanForCraftVariable
         $activeCatIds = [];
         if (!empty($activeCategoryId)) {
             $tmp = Category::find()->id($activeCategoryId)->one();
-            while (!$tmp->isMainCategory()) {
+            while ($tmp && !$tmp->isMainCategory()) {
                 $activeCatIds[] = $tmp->id;
                 $tmp = $tmp->getParent();
             }
-            $activeCatIds[] = $tmp->id;
+            if ($tmp) {
+                $activeCatIds[] = $tmp->id;
+            }
         }
 
         if ($fullTree) {
@@ -133,11 +135,13 @@ class RentmanForCraftVariable
         $activeCatIds = [];
         if (!empty($activeCategoryId)) {
             $tmp = Category::find()->id($activeCategoryId)->one();
-            while (!$tmp->isMainCategory()) {
+            while ($tmp && !$tmp->isMainCategory()) {
                 $activeCatIds[] = $tmp->id;
                 $tmp = $tmp->getParent();
             }
-            $activeCatIds[] = $tmp->id;
+            if ($tmp) {
+                $activeCatIds[] = $tmp->id;
+            }
         }
 
         if ($fullTree) {
