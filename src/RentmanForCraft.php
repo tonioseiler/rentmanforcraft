@@ -91,6 +91,7 @@ class RentmanForCraft extends Plugin
 
         $cpNavItem['label'] = $settings['cpTitle'];
         $cpNavItem['url'] = 'rentman-for-craft';
+        $cpNavItem['icon'] = __DIR__ . '/icon-mask.svg';
 
         $cpNavItem['subnav'] = [];
         $cpNavItem['subnav']['products'] = ['label' => Craft::t('rentman-for-craft', 'Products'), 'url' => 'rentman-for-craft/products'];
