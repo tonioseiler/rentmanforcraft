@@ -1,5 +1,8 @@
 # Release Notes for Rentman for Craft
 
+## 2.0.0 - 2026-06-30
+* Compatible with Craft cms version 5
+
 ## 1.0.7 - 2023-12-13
 ### Added
 * Backend translations
