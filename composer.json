@@ -2,7 +2,7 @@
     "name": "furbo/rentman-for-craft",
     "description": "Automatically Import Rentman Products to Craft. Let visitors create orders. Orders are automatically send to rentman as a project request.",
     "type": "craft-plugin",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "keywords": [
         "craft",
         "cms",

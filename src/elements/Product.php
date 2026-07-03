@@ -438,7 +438,7 @@ class Product extends RentmanElement
         $layoutElements[] = $this->createImportedValueLayoutElement('current', Craft::t('rentman-for-craft', 'Current'), $this->current);
         $layoutElements[] = $this->createImportedValueLayoutElement('ledger', Craft::t('rentman-for-craft', 'Ledger'), $this->ledger);
         $layoutElements[] = $this->createImportedValueLayoutElement('defaultValuegroup', Craft::t('rentman-for-craft', 'Default value group'), $this->defaultValuegroup);
-        $layoutElements[] = $this->createImportedValueLayoutElement('custom', Craft::t('rentman-for-craft', 'Custom values'), is_array($this->custom) ? $this->custom : json_decode($this->custom));
+        $layoutElements[] = $this->createImportedValueLayoutElement('custom', Craft::t('rentman-for-craft', 'Custom values'), is_array($this->custom) ? $this->custom : json_decode($this->custom, true));
         
         $fieldLayout = new FieldLayout();
     

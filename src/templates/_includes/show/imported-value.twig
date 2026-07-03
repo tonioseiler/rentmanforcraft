@@ -7,8 +7,11 @@
             -
         {% elseif value is iterable %}
             <ul>
-            {% for v in value %}
-                <li>{{v}}</li>
+            {% for k, v in value %}
+                <li>
+                    {%- if k is not same as(loop.index0) %}<strong>{{ k }}:</strong> {% endif -%}
+                    {{- v is iterable ? v|json_encode : v -}}
+                </li>
             {% endfor %}
             </ul>
         {% else %}

@@ -27,6 +27,9 @@ abstract class RentmanElement extends Element
     }
 
     protected function createImportedValueLayoutElement($id, $label, $value): FieldLayoutElement {
+        if ($value instanceof \stdClass) {
+            $value = get_object_vars($value);
+        }
         return $this->createHtmlLayoutElement('rentman-for-craft/_includes/show/imported-value', compact('id', 'label', 'value'));
     }
     

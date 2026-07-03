@@ -1,5 +1,11 @@
 # Release Notes for Rentman for Craft
 
+## 2.0.1 - 2026-07-03
+### Fixed
+* Fixed a `nl2br(): Argument #1 ($string) must be of type string, stdClass given` error that broke the Products element index and edit pages in the control panel when a product had custom values ([Product::getFieldLayout()] now decodes the `custom` JSON to an associative array)
+* Imported values that decode to an object are now normalized to an array before rendering, as an extra safeguard
+* The imported-value template now renders array values with their keys and no longer breaks on nested arrays
+
 ## 2.0.0 - 2026-06-30
 * Compatible with Craft cms version 5
 
