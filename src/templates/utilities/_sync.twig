@@ -1,0 +1,84 @@
+{# Utilities → Rentman Sync, the state comes from rentman-for-craft/sync/status (PID file of the console command) #}
+
+<p>{{ 'Fetches all categories and products from Rentman. A full sync takes about 20 minutes. You can leave this page while the sync is running.'|t('rentman-for-craft') }}</p>
+
+<div class="flex">
+    <button id="rentman-sync-btn" class="btn submit" type="button">{{ 'Sync now'|t('rentman-for-craft') }}</button>
+    <div id="rentman-sync-spinner" class="spinner hidden"></div>
+    <div id="rentman-sync-status" class="light"></div>
+</div>
+
+{% js %}
+(function () {
+    const btn     = document.getElementById('rentman-sync-btn');
+    const spinner = document.getElementById('rentman-sync-spinner');
+    const status  = document.getElementById('rentman-sync-status');
+
+    const messages = {
+        running: {{ 'Running…'|t('rentman-for-craft')|json_encode|raw }},
+        done:    {{ 'Sync done'|t('rentman-for-craft')|json_encode|raw }},
+        error:   {{ 'Could not get the sync status.'|t('rentman-for-craft')|json_encode|raw }},
+    };
+
+    let pollTimer = null;
+    // PID returned by start: counts as running until the command has written the PID file
+    let startedPid = null;
+
+    function setRunning(running) {
+        btn.disabled = running;
+        btn.classList.toggle('disabled', running);
+        spinner.classList.toggle('hidden', !running);
+        if (running) {
+            status.textContent = messages.running;
+        }
+    }
+
+    function finish(message) {
+        clearTimeout(pollTimer);
+        pollTimer = null;
+        startedPid = null;
+        setRunning(false);
+        status.textContent = message;
+    }
+
+    function poll() {
+        Craft.sendActionRequest('GET', 'rentman-for-craft/sync/status', {params: startedPid ? {pid: startedPid} : {}})
+            .then(({data}) => {
+                if (data.running) {
+                    pollTimer = setTimeout(poll, 3000);
+                } else {
+                    finish(messages.done);
+                }
+            })
+            .catch(() => finish(messages.error));
+    }
+
+    btn.addEventListener('click', function () {
+        setRunning(true);
+
+        Craft.sendActionRequest('POST', 'rentman-for-craft/sync/start')
+            .then(({data}) => {
+                if (data.started) {
+                    startedPid = data.pid;
+                    pollTimer = setTimeout(poll, 3000);
+                } else if (data.running) {
+                    // already running (e.g. started by cron): show it as running
+                    pollTimer = setTimeout(poll, 3000);
+                } else {
+                    finish(data.error);
+                }
+            })
+            .catch(({response}) => finish(response?.data?.message || messages.error));
+    });
+
+    // Coming back to the page while a sync is running: restore the running state
+    Craft.sendActionRequest('GET', 'rentman-for-craft/sync/status')
+        .then(({data}) => {
+            if (data.running) {
+                setRunning(true);
+                pollTimer = setTimeout(poll, 3000);
+            }
+        })
+        .catch(() => {});
+})();
+{% endjs %}

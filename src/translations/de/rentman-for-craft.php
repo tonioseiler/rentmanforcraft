@@ -189,4 +189,13 @@ return [
     'Project submitted' => 'Projekt eingereicht',
     'Send project to Rentman' => 'Send project to Rentman',
     'Contact' => 'Kontakt',
+    'Rentman Sync' => 'Rentman-Sync',
+    'Sync now' => 'Jetzt synchronisieren',
+    'Running…' => 'Läuft…',
+    'Sync done' => 'Synchronisierung abgeschlossen',
+    'Could not get the sync status.' => 'Der Status der Synchronisierung konnte nicht abgerufen werden.',
+    'Fetches all categories and products from Rentman. A full sync takes about 20 minutes. You can leave this page while the sync is running.' => 'Holt alle Kategorien und Produkte von Rentman. Eine vollständige Synchronisierung dauert etwa 20 Minuten. Sie können diese Seite verlassen, während die Synchronisierung läuft.',
+    'A sync is already running.' => 'Es läuft bereits eine Synchronisierung.',
+    'The sync can’t be started from the control panel because shell_exec() is disabled on this server.' => 'Die Synchronisierung kann nicht im Control Panel gestartet werden, weil shell_exec() auf diesem Server deaktiviert ist.',
+    'The sync could not be started.' => 'Die Synchronisierung konnte nicht gestartet werden.',
 ];

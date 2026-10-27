@@ -18,6 +18,7 @@ use craft\log\MonologTarget;
 use craft\services\Elements;
 use craft\services\Fields;
 use craft\services\SystemMessages;
+use craft\services\Utilities;
 use craft\web\UrlManager;
 use craft\web\View;
 use craft\web\twig\variables\Cp;
@@ -31,6 +32,7 @@ use furbo\rentmanforcraft\services\CategoriesService;
 use furbo\rentmanforcraft\services\ProductsService;
 use furbo\rentmanforcraft\services\ProjectsService;
 use furbo\rentmanforcraft\services\RentmanService;
+use furbo\rentmanforcraft\utilities\SyncUtility;
 use furbo\rentmanforcraft\variables\RentmanForCraftVariable;
 use furbo\rentmanforcraft\web\assets\rentmanforcraft\RentmanForCraftCPAsset;
 use yii\base\Event;
@@ -193,6 +195,15 @@ class RentmanForCraft extends Plugin
             Fields::EVENT_REGISTER_FIELD_TYPES,
             function (RegisterComponentTypesEvent $event) {
                 $event->types[] = ProductsField::class;
+            }
+        );
+
+        // Register our utilities
+        Event::on(
+            Utilities::class,
+            Utilities::EVENT_REGISTER_UTILITIES,
+            function (RegisterComponentTypesEvent $event) {
+                $event->types[] = SyncUtility::class;
             }
         );
 

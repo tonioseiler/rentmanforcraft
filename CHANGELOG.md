@@ -1,5 +1,11 @@
 # Release Notes for Rentman for Craft
 
+## 2.1.0 - 2026-10-27
+### Added
+* Utilities → Rentman Sync: starts the sync of categories and products from the control panel and shows "Running…" (also when coming back to the page) until the sync is done. Requires the "Rentman Sync" utility permission and `shell_exec()` on the server; the PHP CLI binary can be set with the `PHP_BINARY` environment variable
+### Changed
+* The `rentman-for-craft/rentman/update-all`, `update-products` and `update-categories` console commands now refuse to start while another sync is running (exit code 75), tracked in `storage/logs/rentman-sync.pid`
+
 ## 2.0.1 - 2026-07-03
 ### Fixed
 * Fixed a `nl2br(): Argument #1 ($string) must be of type string, stdClass given` error that broke the Products element index and edit pages in the control panel when a product had custom values ([Product::getFieldLayout()] now decodes the `custom` JSON to an associative array)

@@ -20,6 +20,11 @@ use Illuminate\Support\Arr;
 class RentmanService extends Component
 {
 
+    // Holds the PID of the running sync (console command), used to show the sync state in the CP utility
+    public const SYNC_PID_FILE = '@storage/logs/rentman-sync.pid';
+    // A PID file older than this (seconds) is stale, a full sync takes about 20 minutes
+    public const SYNC_MAX_RUNTIME = 7200;
+
     var $apiUrl = '';
     var $apiKey = '';
     var $client = null;
@@ -258,6 +263,73 @@ class RentmanService extends Component
             }
         }*/
 
+    }
+
+    public function getSyncPidPath(): string {
+        return Craft::getAlias(self::SYNC_PID_FILE);
+    }
+
+    /**
+     * Returns the PID of the running sync, or null when no sync is running.
+     * A stale PID file (process gone, PID reused by another process, or older than SYNC_MAX_RUNTIME) is removed.
+     */
+    public function runningSyncPid(): ?int {
+        $pidPath = $this->getSyncPidPath();
+
+        if (!file_exists($pidPath)) {
+            return null;
+        }
+
+        $pid = (int)@file_get_contents($pidPath);
+        $isRunning = $pid > 0
+            && time() - (int)@filemtime($pidPath) < self::SYNC_MAX_RUNTIME
+            && $this->isSyncProcessRunning($pid);
+
+        if ($isRunning) {
+            return $pid;
+        }
+
+        @unlink($pidPath);
+        return null;
+    }
+
+    /**
+     * Whether the given PID is a running rentman-for-craft console command.
+     * Used by the CP utility right after starting a sync, before the command has written the PID file.
+     */
+    public function isSyncProcessRunning(int $pid): bool {
+        return $pid > 0 && $this->isProcessAlive($pid) && $this->isSyncProcess($pid) !== false;
+    }
+
+    private function isProcessAlive(int $pid): bool {
+        if (!function_exists('posix_kill')) {
+            // can't check, rely on isSyncProcess() and SYNC_MAX_RUNTIME
+            return true;
+        }
+        if (posix_kill($pid, 0)) {
+            return true;
+        }
+        // EPERM: the process exists but belongs to another user (e.g. cron and web server run as different users)
+        return posix_get_last_error() === 1;
+    }
+
+    /**
+     * Whether the process is a rentman-for-craft console command (the PID may have been reused after a reboot).
+     * Returns null when it can't be checked.
+     */
+    private function isSyncProcess(int $pid): ?bool {
+        if (!function_exists('shell_exec')) {
+            return null;
+        }
+        $output = @shell_exec('ps -p ' . $pid . ' -o command= 2>/dev/null; echo "|$?"');
+        if (!is_string($output) || !preg_match('/^(.*)\|(\d+)\s*$/s', $output, $matches)) {
+            return null;
+        }
+        if ($matches[2] === '0') {
+            return str_contains($matches[1], 'rentman-for-craft/');
+        }
+        // ps exits with 1 when there is no such process, anything else means ps itself failed
+        return $matches[2] === '1' ? false : null;
     }
 
     public function getProductAccesories($productId) {

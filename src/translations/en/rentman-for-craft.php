@@ -189,4 +189,13 @@ return [
     'Project submitted' => 'Project submitted',
     'Send project to Rentman' => 'Send project to Rentman',
     'Contact' => 'Contact',
+    'Rentman Sync' => 'Rentman Sync',
+    'Sync now' => 'Sync now',
+    'Running…' => 'Running…',
+    'Sync done' => 'Sync done',
+    'Could not get the sync status.' => 'Could not get the sync status.',
+    'Fetches all categories and products from Rentman. A full sync takes about 20 minutes. You can leave this page while the sync is running.' => 'Fetches all categories and products from Rentman. A full sync takes about 20 minutes. You can leave this page while the sync is running.',
+    'A sync is already running.' => 'A sync is already running.',
+    'The sync can’t be started from the control panel because shell_exec() is disabled on this server.' => 'The sync can’t be started from the control panel because shell_exec() is disabled on this server.',
+    'The sync could not be started.' => 'The sync could not be started.',
 ];
